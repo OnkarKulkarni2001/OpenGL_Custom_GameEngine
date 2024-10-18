@@ -6,6 +6,9 @@
 #include "cShaderCompiler.h"
 #include "cVAOManager.h"
 #include "cScene.h"
+#include "IPlayer.h"
+#include "cPlayer.h"
+#include "cAiEnemy.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -56,6 +59,7 @@ int main() {
     for (int index = 0; index != scene.pModels.size(); index++) {
         numberOfVerticesToRenderForAllModels += scene.pModels[index].numberOfVerticesToRender;
     }
+
 
     // Camera Initialization
     FlyCam flyCam(800, 600, glm::vec3(0.0f, 0.0f, -4.0f), 180.0f);

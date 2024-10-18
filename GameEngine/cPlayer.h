@@ -10,13 +10,20 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp> 
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
+#include "cLoadModels.h"
 
 class cPlayer : public IPlayer {
 public:
-	void MoveForward(float value) override;
-	void MoveBackward(float value) override;
-	void MoveLeft(float value) override;
-	void MoveRight(float value) override;
+	cLoadModels* playerModel;
+
+	cPlayer(cLoadModels& playerModel);
+	~cPlayer();
+
+	void MoveForward() override;
+	void MoveBackward() override;
+	void MoveLeft() override;
+	void MoveRight() override;
+	void Jump() override;
 	void Fire() override;
 	void DecreaseHealth(float value) override;
 	void IncreaseHealth(float value) override;

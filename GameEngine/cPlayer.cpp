@@ -1,23 +1,51 @@
 #include "cPlayer.h"
 
+cPlayer::cPlayer(cLoadModels& playerModel)
+{
+    playerHealth = 150.0f;
+    playerSpeed = 0.01f;
+    this->playerModel = &playerModel;
+    playerLocation = glm::vec3(playerModel.pMeshTransform.x, playerModel.pMeshTransform.y, playerModel.pMeshTransform.z);
+    playerForwardVector = glm::vec3 (0.0f, 0.0f, 1.0f);		// will be looking in z direction
+    playerRightVector = glm::vec3 (1.0f, 0.0f, 0.0f);		// will be in x direction
+    playerUpVector = glm::vec3 (0.0f, 1.0f, 0.0f);			// will be in y direction
+}
+
+cPlayer::~cPlayer()
+{
+
+}
+
 void cPlayer::MoveForward()
 {
     playerLocation += playerSpeed * playerForwardVector;
+    playerModel->pMeshTransform.x = playerLocation.x;
+    playerModel->pMeshTransform.y = playerLocation.y;
+    playerModel->pMeshTransform.z = playerLocation.z;
 }
 
 void cPlayer::MoveBackward()
 {
     playerLocation -= playerSpeed * playerForwardVector;
+    playerModel->pMeshTransform.x = playerLocation.x;
+    playerModel->pMeshTransform.y = playerLocation.y;
+    playerModel->pMeshTransform.z = playerLocation.z;
 }
 
 void cPlayer::MoveLeft()
 {
     playerLocation -= playerSpeed * playerRightVector;
+    playerModel->pMeshTransform.x = playerLocation.x;
+    playerModel->pMeshTransform.y = playerLocation.y;
+    playerModel->pMeshTransform.z = playerLocation.z;
 }
 
 void cPlayer::MoveRight()
 {
     playerLocation += playerSpeed * playerRightVector;
+    playerModel->pMeshTransform.x = playerLocation.x;
+    playerModel->pMeshTransform.y = playerLocation.y;
+    playerModel->pMeshTransform.z = playerLocation.z;
 }
 
 void cPlayer::Jump()

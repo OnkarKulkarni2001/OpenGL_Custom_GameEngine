@@ -1,23 +1,50 @@
 #include "cAiEnemy.h"
 
+cAiEnemy::cAiEnemy(cLoadModels& enemyModel)
+{
+    enemyHealth = 150.0f;
+    enemySpeed = 0.02f;
+    this->enemyModel = &enemyModel;
+    enemyLocation = glm::vec3(enemyModel.pMeshTransform.x, enemyModel.pMeshTransform.y, enemyModel.pMeshTransform.z);
+    enemyForwardVector = glm::vec3(0.0f, 0.0f, 1.0f);		// will be looking in z direction
+    enemyRightVector = glm::vec3(1.0f, 0.0f, 0.0f);		// will be in x direction
+    enemyUpVector = glm::vec3(0.0f, 1.0f, 0.0f);			// will be in y direction
+}
+
+cAiEnemy::~cAiEnemy()
+{
+}
+
 void cAiEnemy::MoveForward()
 {
     enemyLocation += enemySpeed * enemyForwardVector;
+    enemyModel->pMeshTransform.x = enemyLocation.x;
+    enemyModel->pMeshTransform.y = enemyLocation.y;
+    enemyModel->pMeshTransform.z = enemyLocation.z;
 }
 
 void cAiEnemy::MoveBackward()
 {
     enemyLocation -= enemySpeed * enemyForwardVector;
+    enemyModel->pMeshTransform.x = enemyLocation.x;
+    enemyModel->pMeshTransform.y = enemyLocation.y;
+    enemyModel->pMeshTransform.z = enemyLocation.z;
 }
 
 void cAiEnemy::MoveLeft()
 {
     enemyLocation -= enemySpeed * enemyRightVector;
+    enemyModel->pMeshTransform.x = enemyLocation.x;
+    enemyModel->pMeshTransform.y = enemyLocation.y;
+    enemyModel->pMeshTransform.z = enemyLocation.z;
 }
 
 void cAiEnemy::MoveRight()
 {
     enemyLocation += enemySpeed * enemyRightVector;
+    enemyModel->pMeshTransform.x = enemyLocation.x;
+    enemyModel->pMeshTransform.y = enemyLocation.y;
+    enemyModel->pMeshTransform.z = enemyLocation.z;
 }
 
 void cAiEnemy::Jump()

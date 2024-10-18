@@ -141,6 +141,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\glad.c" />
+    <ClCompile Include="cAiEnemy.cpp" />
+    <ClCompile Include="cPlayer.cpp" />
     <ClCompile Include="cScene.cpp" />
     <ClCompile Include="cShaderCompiler.cpp" />
     <ClCompile Include="cVAOManager.cpp" />
@@ -153,6 +155,9 @@
     <None Include="VertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cAiEnemy.h" />
+    <ClInclude Include="cPlayer.h" />
+    <ClInclude Include="IPlayer.h" />
     <ClInclude Include="cScene.h" />
     <ClInclude Include="cShaderCompiler.h" />
     <ClInclude Include="cVAOManager.h" />
