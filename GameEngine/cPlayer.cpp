@@ -22,7 +22,7 @@ void cPlayer::MoveRight(float value)
 
 void cPlayer::Fire()
 {
-    // TODO: Implement firelogic
+    // TODO: Implement fire logic
 }
 
 void cPlayer::DecreaseHealth(float value)
@@ -37,74 +37,74 @@ void cPlayer::IncreaseHealth(float value)
 
 
 // Getters
-double cPlayer::GetPlayerHealth()
+double cPlayer::GetHealth()
 {
     return playerHealth;
 }
 
-glm::vec3 cPlayer::GetPlayerLocation()
+glm::vec3 cPlayer::GetLocation()
 {
     return playerLocation;
 }
 
-void cPlayer::GetPlayerWeapon()
+void cPlayer::GetWeapon()
 {
     // TODO: Implement struct
 }
 
-float cPlayer::GetPlayerSpeed()
+float cPlayer::GetSpeed()
 {
     return playerSpeed;
 }
 
-glm::vec3 cPlayer::GetPlayerForwardVector()
+glm::vec3 cPlayer::GetForwardVector()
 {
     return playerForwardVector;
 }
 
-glm::vec3 cPlayer::GetPlayerRightVector()
+glm::vec3 cPlayer::GetRightVector()
 {
     return playerRightVector;
 }
 
-glm::vec3 cPlayer::GetPlayerUpVector()
+glm::vec3 cPlayer::GetUpVector()
 {
     return playerUpVector;
 }
 
 
 // Setters
-void cPlayer::SetPlayerHealth(float value)
+void cPlayer::SetHealth(float value)
 {
     playerHealth = value;
 }
 
-void cPlayer::SetPlayerLocation(float x, float y, float z)
+void cPlayer::SetLocation(float x, float y, float z)
 {
     playerLocation = glm::vec3(x, y, z);
 }
 
-void cPlayer::SetPlayerWeapon()
+void cPlayer::SetWeapon()
 {
     // TODO: Implement struct for this
 }
 
-void cPlayer::SetPlayerSpeed(float value)
+void cPlayer::SetSpeed(float value)
 {
     playerSpeed = value;
 }
 
-void cPlayer::SetPlayerForwardVector(float x, float y, float z)
+void cPlayer::SetForwardVector(float x, float y, float z)
 {
     playerForwardVector = glm::vec3(x, y, z);
 }
 
-void cPlayer::SetPlayerRightVector(float x, float y, float z)
+void cPlayer::SetRightVector(float x, float y, float z)
 {
     playerRightVector = glm::vec3(x, y, z);
 }
 
-void cPlayer::SetPlayerUpVector(float x, float y, float z)
+void cPlayer::SetUpVector(float x, float y, float z)
 {
     playerUpVector = glm::vec3(x, y, z);
 }

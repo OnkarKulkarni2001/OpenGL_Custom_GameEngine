@@ -11,20 +11,20 @@ public:
 	virtual bool IsDead() = 0;
 
 	// Getters
-	virtual double GetPlayerHealth() = 0;
-	virtual glm::vec3 GetPlayerLocation() = 0;
-	virtual void GetPlayerWeapon() = 0;
-	virtual float GetPlayerSpeed() = 0;
-	virtual glm::vec3 GetPlayerForwardVector() = 0;
-	virtual glm::vec3 GetPlayerRightVector() = 0;
-	virtual glm::vec3 GetPlayerUpVector() = 0;								// Maybe for jumping!
+	virtual double GetHealth() = 0;
+	virtual glm::vec3 GetLocation() = 0;
+	virtual void GetWeapon() = 0;
+	virtual float GetSpeed() = 0;
+	virtual glm::vec3 GetForwardVector() = 0;
+	virtual glm::vec3 GetRightVector() = 0;
+	virtual glm::vec3 GetUpVector() = 0;								// Maybe for jumping!
 
 	// Setters
-	virtual void SetPlayerHealth(float value) = 0;
-	virtual void SetPlayerLocation(float x, float y, float z) = 0;
-	virtual void SetPlayerWeapon() = 0;									// Will need some struct to pass to this function!
-	virtual void SetPlayerSpeed(float value) = 0;
-	virtual void SetPlayerForwardVector(float x, float y, float z) = 0;
-	virtual void SetPlayerRightVector(float x, float y, float z) = 0;
-	virtual void SetPlayerUpVector(float x, float y, float z) = 0;
+	virtual void SetHealth(float value) = 0;
+	virtual void SetLocation(float x, float y, float z) = 0;
+	virtual void SetWeapon() = 0;									// Will need some struct to pass to this function!
+	virtual void SetSpeed(float value) = 0;
+	virtual void SetForwardVector(float x, float y, float z) = 0;
+	virtual void SetRightVector(float x, float y, float z) = 0;
+	virtual void SetUpVector(float x, float y, float z) = 0;
 };

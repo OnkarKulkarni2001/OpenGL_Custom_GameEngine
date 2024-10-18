@@ -11,12 +11,13 @@
 #include <glm/gtc/matrix_transform.hpp> 
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 
-class cPlayer : public IPlayer {
+class cAiEnemy : public IPlayer {
 public:
 	void MoveForward(float value) override;
 	void MoveBackward(float value) override;
 	void MoveLeft(float value) override;
 	void MoveRight(float value) override;
+	void Jump() override;
 	void Fire() override;
 	void DecreaseHealth(float value) override;
 	void IncreaseHealth(float value) override;
@@ -41,13 +42,13 @@ public:
 	void SetUpVector(float x, float y, float z) override;
 
 private:
-	float playerHealth;
-	float playerSpeed;
+	float enemyHealth;
+	float enemySpeed;
 
-	glm::vec3 playerLocation;
-	glm::vec3 playerForwardVector;		// will be looking in z direction
-	glm::vec3 playerRightVector;		// will be in x direction
-	glm::vec3 playerUpVector;			// will be in y direction
+	glm::vec3 enemyLocation;
+	glm::vec3 enemyForwardVector;		// will be looking in z direction
+	glm::vec3 enemyRightVector;		// will be in x direction
+	glm::vec3 enemyUpVector;			// will be in y direction
 
 	//TODO: Add player weapon
 };
