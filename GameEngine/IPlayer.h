@@ -1,10 +1,11 @@
 #pragma once
 class IPlayer {
 public:
-	virtual void MoveForward(float value) = 0;
-	virtual void MoveBackward(float value) = 0;
-	virtual void MoveLeft(float value) = 0;
-	virtual void MoveRight(float value) = 0;
+	virtual void MoveForward() = 0;
+	virtual void MoveBackward() = 0;
+	virtual void MoveLeft() = 0;
+	virtual void MoveRight() = 0;
+	virtual void Jump() = 0;
 	virtual void Fire() = 0;
 	virtual void DecreaseHealth(float value) = 0;
 	virtual void IncreaseHealth(float value) = 0;

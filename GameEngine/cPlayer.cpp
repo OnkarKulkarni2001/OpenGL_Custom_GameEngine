@@ -1,23 +1,28 @@
 #include "cPlayer.h"
 
-void cPlayer::MoveForward(float value)
+void cPlayer::MoveForward()
 {
-    playerLocation += value * playerForwardVector;
+    playerLocation += playerSpeed * playerForwardVector;
 }
 
-void cPlayer::MoveBackward(float value)
+void cPlayer::MoveBackward()
 {
-    playerLocation -= value * playerForwardVector;
+    playerLocation -= playerSpeed * playerForwardVector;
 }
 
-void cPlayer::MoveLeft(float value)
+void cPlayer::MoveLeft()
 {
-    playerLocation -= value * playerRightVector;
+    playerLocation -= playerSpeed * playerRightVector;
 }
 
-void cPlayer::MoveRight(float value)
+void cPlayer::MoveRight()
 {
-    playerLocation += value * playerRightVector;
+    playerLocation += playerSpeed * playerRightVector;
+}
+
+void cPlayer::Jump()
+{
+    // TODO
 }
 
 void cPlayer::Fire()
@@ -111,5 +116,7 @@ void cPlayer::SetUpVector(float x, float y, float z)
 
 bool cPlayer::IsDead()
 {
+    if (playerHealth <= 0)
+        return true;
     return false;
 }

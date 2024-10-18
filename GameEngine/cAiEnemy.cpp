@@ -1,23 +1,23 @@
 #include "cAiEnemy.h"
 
-void cAiEnemy::MoveForward(float value)
+void cAiEnemy::MoveForward()
 {
-    enemyLocation += value * enemyForwardVector;
+    enemyLocation += enemySpeed * enemyForwardVector;
 }
 
-void cAiEnemy::MoveBackward(float value)
+void cAiEnemy::MoveBackward()
 {
-    enemyLocation -= value * enemyForwardVector;
+    enemyLocation -= enemySpeed * enemyForwardVector;
 }
 
-void cAiEnemy::MoveLeft(float value)
+void cAiEnemy::MoveLeft()
 {
-    enemyLocation -= value * enemyRightVector;
+    enemyLocation -= enemySpeed * enemyRightVector;
 }
 
-void cAiEnemy::MoveRight(float value)
+void cAiEnemy::MoveRight()
 {
-    enemyLocation += value * enemyRightVector;
+    enemyLocation += enemySpeed * enemyRightVector;
 }
 
 void cAiEnemy::Jump()
@@ -116,5 +116,7 @@ void cAiEnemy::SetUpVector(float x, float y, float z)
 
 bool cAiEnemy::IsDead()
 {
+    if (enemyHealth <= 0)
+        return true;
     return false;
 }
