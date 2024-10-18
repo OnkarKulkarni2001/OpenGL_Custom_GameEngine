@@ -13,7 +13,8 @@ GLuint cVAOManager::BindVAOVBO(GLuint &VBO, int numberOfMeshesToLoad, std::vecto
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
     const GLint vertexPosition_location = glGetAttribLocation(shaderProgram, "aPos");
-    const GLint vertexColor_location = glGetAttribLocation(shaderProgram, "FragColor");
+    const GLint vertexNormal_location = glGetAttribLocation(shaderProgram, "vNormal");
+    const GLint vertexColor_location = glGetAttribLocation(shaderProgram, "aCol");
 
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -26,9 +27,17 @@ GLuint cVAOManager::BindVAOVBO(GLuint &VBO, int numberOfMeshesToLoad, std::vecto
         sizeof(cLoadModels::sVerticesToRender),
         (void*)offsetof(cLoadModels::sVerticesToRender, cLoadModels::sVerticesToRender::vertexPosition));
 
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(vertexColor_location,
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(vertexNormal_location,
         3,
+        GL_FLOAT,
+        GL_FALSE,
+        sizeof(cLoadModels::sVerticesToRender),
+        (void*)offsetof(cLoadModels::sVerticesToRender, cLoadModels::sVerticesToRender::vertexNormal));
+
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(vertexColor_location,
+        4,
         GL_FLOAT,
         GL_FALSE,
         sizeof(cLoadModels::sVerticesToRender),

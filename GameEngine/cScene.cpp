@@ -5,7 +5,7 @@
 using namespace std;
 
 void cScene::CreateScene() {
-    std::string sceneFileName = "D:/Graphics1/GameEngine/sceneFile.txt";
+    std::string sceneFileName = "D:/Graphics1/GameEngine/sceneFileWithNormals.txt";
     std::string token = "";
 
     ifstream sceneFile(sceneFileName);

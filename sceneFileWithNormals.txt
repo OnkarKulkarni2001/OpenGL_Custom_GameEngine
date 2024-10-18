@@ -1,0 +1,16 @@
+number_of_meshes 3
+
+mesh_paths 
+"D:\Graphics1\GameEngine\assets\models\bun_zipper_xyz_n_rgba.ply"
+"D:\Graphics1\GameEngine\assets\models\Cheese_xyz_n_rgba.ply"
+"D:\Graphics1\GameEngine\assets\models\Dragon_2.5Edited_xyz_n_rgba.ply"
+
+
+meshTransform layout
+x y z xScale yScale zScale xRotation yRotation zRotation
+where rotations are angles.
+
+mesh_transforms
+0.0 0.0 0.0 1.2 1.3 1.5 0.0 0.0 0.0
+4.0 3.3 2.2 0.8 1.0 0.9 0.0 0.0 0.0
+6.1 3.0 4.0 1.5 1.6 1.7 0.0 0.0 0.0

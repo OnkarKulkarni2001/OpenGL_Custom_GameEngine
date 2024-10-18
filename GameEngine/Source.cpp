@@ -81,8 +81,12 @@ int main() {
         // Use our shader program and draw the triangle
         glUseProgram(shaderProgram);
 
+        // ------------------------------------------------------------------------------------------------------------------------------
+        // You can create player objects here and make them move from here
+        // ------------------------------------------------------------------------------------------------------------------------------
+
         glBindVertexArray(VAO);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        shader.SetSceneView(window);        // Press 1, 2 or 3 for different viewModes like wireframe, fill or point
 
         int offset = 0;
         for (int index = 0; index != scene.pModels.size(); index++) {

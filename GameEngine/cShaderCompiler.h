@@ -13,4 +13,5 @@ public:
 	GLuint shaderProgram;
 
 	GLuint CompileShader();
+	void SetSceneView(GLFWwindow* window);
 };

@@ -40,6 +40,9 @@
     <Filter Include="Player\AIEnemy">
       <UniqueIdentifier>{18c54023-3b0a-4081-b404-cb2a30263cff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Lights">
+      <UniqueIdentifier>{eecf9100-45d4-46ef-b0de-ec7990504063}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -68,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="cAiEnemy.cpp">
       <Filter>Player\AIEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="cLightManager.cpp">
+      <Filter>Lights</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +108,9 @@
     </ClInclude>
     <ClInclude Include="cAiEnemy.h">
       <Filter>Player\AIEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="cLightManager.h">
+      <Filter>Lights</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -21,9 +21,9 @@ public:
 	int discard;
 
 	struct sVertex {
-		float x;
-		float y;
-		float z;
+		float x, y, z;
+		float nx, ny, nz;
+		float r, g, b, a; // Colors (RGBA)
 	};
 
 	struct sFaces {
@@ -34,11 +34,18 @@ public:
 
 	struct sVerticesToRender {
 		glm::vec3 vertexPosition;
+		glm::vec3 vertexNormal;
 		glm::vec4 vertexColor;
 	};
 
 	struct sMeshTransform {
 		float x, y, z, xScale, yScale, zScale, xRotation, yRotation, zRotation;
+	};
+
+	struct sMaterial {
+		float shininess;
+		glm::vec3 diffuse;
+		glm::vec3 specular;
 	};
 
 	sMeshTransform pMeshTransform;

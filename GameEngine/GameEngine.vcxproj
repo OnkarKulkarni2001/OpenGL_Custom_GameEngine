@@ -142,6 +142,7 @@
   <ItemGroup>
     <ClCompile Include="..\glad.c" />
     <ClCompile Include="cAiEnemy.cpp" />
+    <ClCompile Include="cLightManager.cpp" />
     <ClCompile Include="cPlayer.cpp" />
     <ClCompile Include="cScene.cpp" />
     <ClCompile Include="cShaderCompiler.cpp" />
@@ -156,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cAiEnemy.h" />
+    <ClInclude Include="cLightManager.h" />
     <ClInclude Include="cPlayer.h" />
     <ClInclude Include="IPlayer.h" />
     <ClInclude Include="cScene.h" />

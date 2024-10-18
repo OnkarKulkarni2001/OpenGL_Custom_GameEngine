@@ -47,3 +47,18 @@ GLuint cShaderCompiler::CompileShader()
     glDeleteShader(fragmentShader);
     return shaderProgram;
 }
+
+void cShaderCompiler::SetSceneView(GLFWwindow* window)
+{
+    GLenum viewMode = GL_LINE;
+    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+        viewMode = GL_POINT;
+    }
+    if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
+        viewMode = GL_LINE;
+    }
+    if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) {
+        viewMode = GL_FILL;
+    }
+    glPolygonMode(GL_FRONT_AND_BACK, viewMode);
+}
