@@ -1,6 +1,6 @@
 #include "cShaderCompiler.h"
 #include "VertexShader.glsl"
-#include "FragmentShader.glsl"
+#include "FragmentShaderCopy.glsl"
 #include <iostream>
 
 GLuint cShaderCompiler::CompileShader()

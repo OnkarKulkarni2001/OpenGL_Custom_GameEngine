@@ -87,19 +87,19 @@ void cScene::CreateScene(std::string sceneFileName) {
     }
 }
 
-void cScene::ExportMaterial(GLuint shaderProgram, int numberOfMaterials)
-{
-    if (glGetUniformLocation(shaderProgram, "material.shininess") == -1 ||
-        glGetUniformLocation(shaderProgram, "material.diffuse") == -1 ||
-        glGetUniformLocation(shaderProgram, "material.specular") == -1) {
-        std::cerr << "Error: Material uniform location not found in shader." << std::endl;
-        return;
-    }
-
-    for (int indexOfMaterial = 0; indexOfMaterial != numberOfMaterials; indexOfMaterial++) {
-        const cLoadModels::sMaterial& material = pModels[indexOfMaterial].pMaterial;
-        glUniform1f(glGetUniformLocation(shaderProgram, "material.shininess"), material.shininess);
-        glUniform3fv(glGetUniformLocation(shaderProgram, "material.diffuse"), 1, glm::value_ptr(material.diffuse));
-        glUniform3fv(glGetUniformLocation(shaderProgram, "material.specular"), 1, glm::value_ptr(material.specular));
-    }
-}
+//void cScene::ExportMaterial(GLuint shaderProgram, int numberOfMaterials)
+//{
+//    if (glGetUniformLocation(shaderProgram, "material.shininess") == -1 ||
+//        glGetUniformLocation(shaderProgram, "material.diffuse") == -1 ||
+//        glGetUniformLocation(shaderProgram, "material.specular") == -1) {
+//        std::cerr << "Error: Material uniform location not found in shader." << std::endl;
+//        return;
+//    }
+//
+//    for (int indexOfMaterial = 0; indexOfMaterial != numberOfMaterials; indexOfMaterial++) {
+//        const cLoadModels::sMaterial& material = pModels[indexOfMaterial].pMaterial;
+//        glUniform1f(glGetUniformLocation(shaderProgram, "material.shininess"), material.shininess);
+//        glUniform3fv(glGetUniformLocation(shaderProgram, "material.diffuse"), 1, glm::value_ptr(material.diffuse));
+//        glUniform3fv(glGetUniformLocation(shaderProgram, "material.specular"), 1, glm::value_ptr(material.specular));
+//    }
+//}

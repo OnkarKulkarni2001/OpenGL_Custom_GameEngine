@@ -51,6 +51,7 @@ int main() {
     // Import Scene
     cScene scene;
     scene.CreateScene("D:/Graphics1/GameEngine/sceneFileWithNormals.txt");
+    //scene.ExportMaterial(shaderProgram, scene.numberOfMeshesToLoad);            // Considering number of materials = number of meshes to load
 
     GLuint VAO, VBO;
     cVAOManager VAOManager;
@@ -63,7 +64,7 @@ int main() {
 
     cLightManager lightManager;
     lightManager.LoadLights("D:/Graphics1/GameEngine/lightsFile.txt");
-    lightManager.TurnOnLights(shaderProgram, 5);
+
     // Camera Initialization
     FlyCam flyCam(800, 600, glm::vec3(0.0f, 0.0f, -4.0f), 180.0f);
     
@@ -79,10 +80,12 @@ int main() {
 
         // Rendering commands here
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Use our shader program and draw the triangle
         glUseProgram(shaderProgram);
+
+        lightManager.TurnOnLights(shaderProgram, 5);
 
         // ------------------------------------------------------------------------------------------------------------------------------
         // You can create player objects here and make them move from here
@@ -96,7 +99,6 @@ int main() {
 
             glm::mat4 model = scene.pModels[index].CreateModelMatrix(shaderProgram, scene.pModels[index]);      // Creation of model matrix with arguements passed in sceneFile.txt
             unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
-            scene.ExportMaterial(shaderProgram, scene.numberOfMeshesToLoad);            // Considering number of materials = number of meshes to load
             glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
             glDrawArrays(GL_TRIANGLES, offset, scene.pModels[index].numberOfVerticesToRender);

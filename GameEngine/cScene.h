@@ -17,6 +17,6 @@ public:
 	std::vector<std::string> pathOfMeshesToLoad;
 	std::vector<cLoadModels> pModels;
 
-	void ExportMaterial(GLuint shaderProgram, int numberOfMaterials);
+	//void ExportMaterial(GLuint shaderProgram, int numberOfMaterials);		// TODO:
 	void CreateScene(std::string sceneFileName);
 };

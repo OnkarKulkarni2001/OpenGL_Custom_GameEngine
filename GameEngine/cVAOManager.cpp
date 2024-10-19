@@ -14,7 +14,7 @@ GLuint cVAOManager::BindVAOVBO(GLuint &VBO, int numberOfMeshesToLoad, std::vecto
 
     const GLint vertexPosition_location = glGetAttribLocation(shaderProgram, "aPos");
     const GLint vertexNormal_location = glGetAttribLocation(shaderProgram, "vNormal");
-    const GLint vertexColor_location = glGetAttribLocation(shaderProgram, "aCol");
+    const GLint vertexColor_location = glGetAttribLocation(shaderProgram, "objectColor");
 
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
