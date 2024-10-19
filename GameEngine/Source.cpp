@@ -9,6 +9,7 @@
 #include "IPlayer.h"
 #include "cPlayer.h"
 #include "cAiEnemy.h"
+#include "cLightManager.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -49,8 +50,8 @@ int main() {
 
     // Import Scene
     cScene scene;
-    scene.CreateScene();
-    
+    scene.CreateScene("D:/Graphics1/GameEngine/sceneFileWithNormals.txt");
+
     GLuint VAO, VBO;
     cVAOManager VAOManager;
     VAO = VAOManager.BindVAOVBO(VBO, scene.numberOfMeshesToLoad, scene.pModels);
@@ -60,7 +61,9 @@ int main() {
         numberOfVerticesToRenderForAllModels += scene.pModels[index].numberOfVerticesToRender;
     }
 
-
+    cLightManager lightManager;
+    lightManager.LoadLights("D:/Graphics1/GameEngine/lightsFile.txt");
+    lightManager.TurnOnLights(shaderProgram, 5);
     // Camera Initialization
     FlyCam flyCam(800, 600, glm::vec3(0.0f, 0.0f, -4.0f), 180.0f);
     
@@ -93,6 +96,7 @@ int main() {
 
             glm::mat4 model = scene.pModels[index].CreateModelMatrix(shaderProgram, scene.pModels[index]);      // Creation of model matrix with arguements passed in sceneFile.txt
             unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
+            scene.ExportMaterial(shaderProgram, scene.numberOfMeshesToLoad);            // Considering number of materials = number of meshes to load
             glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
             glDrawArrays(GL_TRIANGLES, offset, scene.pModels[index].numberOfVerticesToRender);

@@ -15,7 +15,8 @@ public:
 	//
 	//sMeshTransform* pMeshTransform;
 	std::vector<std::string> pathOfMeshesToLoad;
-
 	std::vector<cLoadModels> pModels;
-	void CreateScene();
+
+	void ExportMaterial(GLuint shaderProgram, int numberOfMaterials);
+	void CreateScene(std::string sceneFileName);
 };

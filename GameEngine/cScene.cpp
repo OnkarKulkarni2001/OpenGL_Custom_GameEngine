@@ -4,8 +4,8 @@
 
 using namespace std;
 
-void cScene::CreateScene() {
-    std::string sceneFileName = "D:/Graphics1/GameEngine/sceneFileWithNormals.txt";
+void cScene::CreateScene(std::string sceneFileName) {
+    //std::string sceneFileName = "D:/Graphics1/GameEngine/sceneFileWithNormals.txt";
     std::string token = "";
 
     ifstream sceneFile(sceneFileName);
@@ -66,5 +66,40 @@ void cScene::CreateScene() {
         sceneFile >> pModels[modelIndex].pMeshTransform.zRotation;
 
         modelIndex++;
+    }
+
+    while (token != "mesh_material") {
+        sceneFile >> token;
+    }
+
+    int materialModelIndex = 0;
+    for (unsigned int indexOfMaterial = 0; indexOfMaterial != numberOfMeshesToLoad; indexOfMaterial++) {
+        sceneFile >> pModels[indexOfMaterial].pMaterial.shininess;
+
+        sceneFile >> pModels[indexOfMaterial].pMaterial.diffuse.x;
+        sceneFile >> pModels[indexOfMaterial].pMaterial.diffuse.y;
+        sceneFile >> pModels[indexOfMaterial].pMaterial.diffuse.z;
+
+        sceneFile >> pModels[indexOfMaterial].pMaterial.specular.x;
+        sceneFile >> pModels[indexOfMaterial].pMaterial.specular.y;
+        sceneFile >> pModels[indexOfMaterial].pMaterial.specular.z;
+        materialModelIndex++;
+    }
+}
+
+void cScene::ExportMaterial(GLuint shaderProgram, int numberOfMaterials)
+{
+    if (glGetUniformLocation(shaderProgram, "material.shininess") == -1 ||
+        glGetUniformLocation(shaderProgram, "material.diffuse") == -1 ||
+        glGetUniformLocation(shaderProgram, "material.specular") == -1) {
+        std::cerr << "Error: Material uniform location not found in shader." << std::endl;
+        return;
+    }
+
+    for (int indexOfMaterial = 0; indexOfMaterial != numberOfMaterials; indexOfMaterial++) {
+        const cLoadModels::sMaterial& material = pModels[indexOfMaterial].pMaterial;
+        glUniform1f(glGetUniformLocation(shaderProgram, "material.shininess"), material.shininess);
+        glUniform3fv(glGetUniformLocation(shaderProgram, "material.diffuse"), 1, glm::value_ptr(material.diffuse));
+        glUniform3fv(glGetUniformLocation(shaderProgram, "material.specular"), 1, glm::value_ptr(material.specular));
     }
 }

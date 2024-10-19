@@ -13,6 +13,7 @@ void FlyCam::cameraMatrix(float FOVdeg, float nearPlane, float farPlane, GLuint 
 	// Send the camera matrix (view * projection) to the shader
 	GLuint uniformLocation = glGetUniformLocation(shaderProgram, uniform);
 	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(projection * view));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "camLocation"), 1, glm::value_ptr(camLocation));
     camControls(window);
 }
 

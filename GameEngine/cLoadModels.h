@@ -52,6 +52,9 @@ public:
 	sVertex* pVertex;
 	sFaces* pFaces;
 	sVerticesToRender* pVerticesToRender;
+	sMaterial pMaterial;
+
+	sMaterial* vMaterial;		// this dynamic array is added just because I wanted to access index of materials from ExportMaterial function.
 
 	void LoadPlyModel(string ModelFileName);
 	glm::mat4 CreateModelMatrix(GLuint shaderProgram, cLoadModels plyModel);

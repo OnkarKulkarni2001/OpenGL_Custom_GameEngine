@@ -59,40 +59,34 @@ void cLoadModels::LoadPlyModel(string ModelFileName) {
 	unsigned int vertexIndex = 0;
 
 	for (unsigned int indexOfFace = 0; indexOfFace != numberOfFaces; indexOfFace++) {
-		pVerticesToRender[vertexIndex + 0].vertexPosition.x = pVertex[pFaces[indexOfFace].vertexNumber1].x;
+		pVerticesToRender[vertexIndex + 0].vertexPosition.x = pVertex[pFaces[indexOfFace].vertexNumber1].x;		// Vertex1 of face
 		pVerticesToRender[vertexIndex + 0].vertexPosition.y = pVertex[pFaces[indexOfFace].vertexNumber1].y;
-		pVerticesToRender[vertexIndex + 0].vertexPosition.z = pVertex[pFaces[indexOfFace].vertexNumber1].z;
-
+		pVerticesToRender[vertexIndex + 0].vertexPosition.z = pVertex[pFaces[indexOfFace].vertexNumber1].z;		
 		pVerticesToRender[vertexIndex + 0].vertexNormal.x = pVertex[pFaces[indexOfFace].vertexNumber1].nx;
 		pVerticesToRender[vertexIndex + 0].vertexNormal.y = pVertex[pFaces[indexOfFace].vertexNumber1].ny;
 		pVerticesToRender[vertexIndex + 0].vertexNormal.z = pVertex[pFaces[indexOfFace].vertexNumber1].nz;
-		
 		pVerticesToRender[vertexIndex + 0].vertexColor.r = pVertex[pFaces[indexOfFace].vertexNumber1].r;
 		pVerticesToRender[vertexIndex + 0].vertexColor.g = pVertex[pFaces[indexOfFace].vertexNumber1].g;
 		pVerticesToRender[vertexIndex + 0].vertexColor.b = pVertex[pFaces[indexOfFace].vertexNumber1].b;
 		pVerticesToRender[vertexIndex + 0].vertexColor.a = pVertex[pFaces[indexOfFace].vertexNumber1].a;
 
-		pVerticesToRender[vertexIndex + 1].vertexPosition.x = pVertex[pFaces[indexOfFace].vertexNumber2].x;
+		pVerticesToRender[vertexIndex + 1].vertexPosition.x = pVertex[pFaces[indexOfFace].vertexNumber2].x;		// Vertex2 of face
 		pVerticesToRender[vertexIndex + 1].vertexPosition.y = pVertex[pFaces[indexOfFace].vertexNumber2].y;
 		pVerticesToRender[vertexIndex + 1].vertexPosition.z = pVertex[pFaces[indexOfFace].vertexNumber2].z;
-		
 		pVerticesToRender[vertexIndex + 1].vertexNormal.x = pVertex[pFaces[indexOfFace].vertexNumber2].nx;
 		pVerticesToRender[vertexIndex + 1].vertexNormal.y = pVertex[pFaces[indexOfFace].vertexNumber2].ny;
 		pVerticesToRender[vertexIndex + 1].vertexNormal.z = pVertex[pFaces[indexOfFace].vertexNumber2].nz;
-		
 		pVerticesToRender[vertexIndex + 1].vertexColor.r = pVertex[pFaces[indexOfFace].vertexNumber1].r;
 		pVerticesToRender[vertexIndex + 1].vertexColor.g = pVertex[pFaces[indexOfFace].vertexNumber1].g;
 		pVerticesToRender[vertexIndex + 1].vertexColor.b = pVertex[pFaces[indexOfFace].vertexNumber1].b;
 		pVerticesToRender[vertexIndex + 1].vertexColor.a = pVertex[pFaces[indexOfFace].vertexNumber1].a;
 		
-		pVerticesToRender[vertexIndex + 2].vertexPosition.x = pVertex[pFaces[indexOfFace].vertexNumber3].x;
+		pVerticesToRender[vertexIndex + 2].vertexPosition.x = pVertex[pFaces[indexOfFace].vertexNumber3].x;		// Vertex3 of face
 		pVerticesToRender[vertexIndex + 2].vertexPosition.y = pVertex[pFaces[indexOfFace].vertexNumber3].y;
 		pVerticesToRender[vertexIndex + 2].vertexPosition.z = pVertex[pFaces[indexOfFace].vertexNumber3].z;
-		
 		pVerticesToRender[vertexIndex + 2].vertexNormal.x = pVertex[pFaces[indexOfFace].vertexNumber3].nx;
 		pVerticesToRender[vertexIndex + 2].vertexNormal.y = pVertex[pFaces[indexOfFace].vertexNumber3].ny;
 		pVerticesToRender[vertexIndex + 2].vertexNormal.z = pVertex[pFaces[indexOfFace].vertexNumber3].nz;
-		
 		pVerticesToRender[vertexIndex + 2].vertexColor.r = pVertex[pFaces[indexOfFace].vertexNumber1].r;
 		pVerticesToRender[vertexIndex + 2].vertexColor.g = pVertex[pFaces[indexOfFace].vertexNumber1].g;
 		pVerticesToRender[vertexIndex + 2].vertexColor.b = pVertex[pFaces[indexOfFace].vertexNumber1].b;
@@ -121,6 +115,5 @@ glm::mat4 cLoadModels::CreateModelMatrix(GLuint shaderProgram, cLoadModels plyMo
 
 	GLuint modelLocation = glGetUniformLocation(shaderProgram, "model");
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
-
 	return model;
 }
