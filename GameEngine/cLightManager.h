@@ -18,7 +18,7 @@ public:
 
 	struct sLights {
 		unsigned int index;
-		glm::vec4 position;		// position for point lights
+		glm::vec3 position;		// position for point lights
 		glm::vec4 color;
 		glm::vec4 ambient;
 		glm::vec4 diffuse;		// diffuse color
@@ -28,7 +28,7 @@ public:
 		glm::vec4 param1;		// x = light type, y = inner angle, z = outer angle
 		glm::vec4 param2;		// x = on/off
 	};
-
+	sLights pLights;
 	std::vector<sLights> lights;
 
 	cLightManager();

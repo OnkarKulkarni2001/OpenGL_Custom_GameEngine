@@ -81,50 +81,6 @@ void cLightManager::LoadLights(std::string lightsFilePath)
 		lightsFile >> lights.param2.z;
 		lightsFile >> lights.param2.w;
 
-		std::cout  << lights.position.x << " ";
-		std::cout  << lights.position.y << " ";
-		std::cout  << lights.position.z << " ";
-
-		std::cout  << lights.color.r << " ";
-		std::cout  << lights.color.g << " ";
-		std::cout << lights.color.b << " ";
-		std::cout << lights.color.a << " ";
-
-		std::cout  << lights.ambient.x << " ";
-		std::cout  << lights.ambient.y << " ";
-		std::cout  << lights.ambient.z << " ";
-		std::cout  << lights.ambient.w << " ";
-
-		std::cout  << lights.diffuse.x << " ";
-		std::cout  << lights.diffuse.y << " ";
-		std::cout << lights.diffuse.z << " ";
-		std::cout  << lights.diffuse.w << " ";
-
-		std::cout  << lights.specular.x << " ";
-		std::cout  << lights.specular.y << " ";
-		std::cout  << lights.specular.z << " ";
-		std::cout  << lights.specular.w << " ";
-
-		std::cout  << lights.atten.x << " ";
-		std::cout  << lights.atten.y << " ";
-		std::cout  << lights.atten.z << " ";
-		std::cout  << lights.atten.w << " ";
-
-		std::cout  << lights.direction.x << " ";
-		std::cout  << lights.direction.y << " ";
-		std::cout  << lights.direction.z << " ";
-		std::cout  << lights.direction.w << " ";
-
-		std::cout  << lights.param1.x << " ";
-		std::cout  << lights.param1.y << " ";
-		std::cout  << lights.param1.z << " ";
-		std::cout  << lights.param1.w << " ";
-
-		std::cout  << lights.param2.x << " ";
-		std::cout  << lights.param2.y << " ";
-		std::cout  << lights.param2.z << " ";
-		std::cout  << lights.param2.w << " ";
-
 		lights.index = indexOfLight;
 		this->lights.push_back(lights);	// adding lights to the vector
 	}

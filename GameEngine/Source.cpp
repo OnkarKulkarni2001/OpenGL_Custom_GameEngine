@@ -65,10 +65,10 @@ int main() {
 
     cLightManager lightManager;
     lightManager.LoadLights("D:/Graphics1/GameEngine/lightsFile.txt");
-
     // Camera Initialization
     FlyCam flyCam(800, 600, glm::vec3(0.0f, 0.0f, -4.0f), 180.0f);
-    
+    cLightMover lightMover(lightManager, flyCam, 5);
+
     // Render loop
     while (!glfwWindowShouldClose(window)) {
         // Input handling
@@ -87,11 +87,12 @@ int main() {
         // Use our shader program and draw the triangle
         glUseProgram(shaderProgram);
 
-        cLightMover light(lightManager.lights[0], flyCam);
-        light.MoveLeft();
-        lightManager.TurnOnLights(shaderProgram, 1);
-        //std::cout << light.lightPosition.x << " " << light.lightPosition.y << " " << light.lightPosition.z << std::endl;
-        //std::cout << lightManager.lights[0].position.x << " " << lightManager.lights[0].position.y << " " << lightManager.lights[0].position.z << std::endl;
+        //lightMover.MoveForward();
+        //lightMover.MoveUp();
+        //lightMover.MoveRight();
+
+        // ------------------------------------------------------------------------------------------------------------------------------
+        // You can call movement functions from light mover class for lights here now and then call turn on lights function of light manager
         // ------------------------------------------------------------------------------------------------------------------------------
         // You can create player objects here and make them move from here
         // ------------------------------------------------------------------------------------------------------------------------------
@@ -107,7 +108,6 @@ int main() {
             glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
             glDrawArrays(GL_TRIANGLES, offset, scene.pModels[index].numberOfVerticesToRender);
-
             offset += scene.pModels[index].numberOfVerticesToRender;
         }
 

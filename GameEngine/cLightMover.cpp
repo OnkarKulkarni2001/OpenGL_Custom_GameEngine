@@ -1,10 +1,8 @@
 #include "cLightMover.h"
 
 
-cLightMover::cLightMover(cLightManager::sLights& light, FlyCam& flyCam)
+cLightMover::cLightMover(cLightManager& light, FlyCam& flyCam, unsigned int numberOfLights) : flyCam(&flyCam), numberOfLights(numberOfLights)
 {
-	this->pLight = &light;
-	lightPosition = (&light)->position;
 	lightForwardVector = flyCam.camForwardVector;
 	lightRightVector = flyCam.camRightVector;
 	lightUpVector = flyCam.camUpVector;
@@ -15,60 +13,44 @@ cLightMover::~cLightMover()
 
 }
 
-void cLightMover::MoveForward()
+void cLightMover::MoveForward(cLightManager::sLights& light)
 {
 	lightPosition += lightSpeed * lightForwardVector;
-	pLight->position = glm::vec4(lightPosition, 1.0f);
-	//std::string lightPosUniform = "pLights[" + std::to_string(pLight->index) + "].position";
-	//glUniform3fv(glGetUniformLocation(shaderProgram, lightPosUniform.c_str()), 1, glm::value_ptr((lights[indexOfLight]).position));
-	//light->position.x = lightPosition.x;
-	//light->position.y = lightPosition.y;
-	//light->position.z = lightPosition.z;
+	light.position = lightPosition;
+	std::cout << lightPosition.x << " " << lightPosition.y << " " << lightPosition.z << " lightMover" << std::endl;
 }
 
-void cLightMover::MoveBackward()
+void cLightMover::MoveBackward(cLightManager::sLights& light)
 {
 	lightPosition -= lightSpeed * lightForwardVector;
-	pLight->position = glm::vec4(lightPosition,1.0f);
-	//light->position.x = lightPosition.x;
-	//light->position.y = lightPosition.y;
-	//light->position.z = lightPosition.z;
+	light.position = lightPosition;
+	std::cout << lightPosition.x << " " << lightPosition.y << " " << lightPosition.z << " lightMover" << std::endl;
 }
 
-void cLightMover::MoveLeft()
+void cLightMover::MoveLeft(cLightManager::sLights& light)
 {
 	lightPosition -= lightSpeed * lightRightVector;
-	//pLight->position = glm::vec4(lightPosition, 1.0f);
-	pLight->position.x = lightPosition.x;
-	pLight->position.y = lightPosition.y;
-	pLight->position.z = lightPosition.z;
-	std::cout << lightPosition.x << " " << lightPosition.y << " " << lightPosition.z << "lightMover" << std::endl;
-	std::cout << pLight->position.x << " " << pLight->position.y << " " << pLight->position.z << "originalLight " << std::endl;
+	light.position = lightPosition;
+	std::cout << lightPosition.x << " " << lightPosition.y << " " << lightPosition.z << " lightMover" << std::endl;
 }
 
-void cLightMover::MoveRight()
+void cLightMover::MoveRight(cLightManager::sLights& light)
 {
 	lightPosition += lightSpeed * lightRightVector;
-	pLight->position = glm::vec4(lightPosition, 1.0f);
-	//light->position.x = lightPosition.x;
-	//light->position.y = lightPosition.y;
-	//light->position.z = lightPosition.z;
+	light.position = lightPosition;
+	std::cout << lightPosition.x << " " << lightPosition.y << " " << lightPosition.z << " lightMover" << std::endl;
 }
 
-void cLightMover::MoveUp()
+void cLightMover::MoveUp(cLightManager::sLights& light)
 {
 	lightPosition += lightSpeed * lightUpVector;
-	pLight->position = glm::vec4(lightPosition, 1.0f);
-	//light->position.x = lightPosition.x;
-	//light->position.y = lightPosition.y;
-	//light->position.z = lightPosition.z;
+	light.position = lightPosition;
+	std::cout << lightPosition.x << " " << lightPosition.y << " " << lightPosition.z << " lightMover" << std::endl;
 }
 
-void cLightMover::MoveDown()
+void cLightMover::MoveDown(cLightManager::sLights& light)
 {
 	lightPosition -= lightSpeed * lightUpVector;
-	pLight->position = glm::vec4(lightPosition, 1.0f);
-	//light->position.x = lightPosition.x;
-	//light->position.y = lightPosition.y;
-	//light->position.z = lightPosition.z;
+	light.position = lightPosition;
+	std::cout << lightPosition.x << " " << lightPosition.y << " " << lightPosition.z << " lightMover" << std::endl;
 }

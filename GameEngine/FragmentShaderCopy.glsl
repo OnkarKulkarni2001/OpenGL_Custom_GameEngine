@@ -4,7 +4,7 @@ const char* fragmentShaderSource = R"(
     #define MAX_LIGHTS 10
 
     struct sLights {
-        vec4 position;      // position for point lights
+        vec3 position;      // position for point lights
         vec4 color;
         vec4 ambient;
         vec4 diffuse;       // diffuse color
@@ -36,19 +36,42 @@ const char* fragmentShaderSource = R"(
         float diff = max(dot(norm, lightDir), 0.0);
         return diff * light.color.rgb * light.diffuse.rgb;
     }
+
+    // Calculating specular lighting
+    vec3 CalculateSpecular(sLights light, vec3 norm, vec3 lightDir, vec3 viewDir) {
+        vec3 reflectDir = reflect(-lightDir, norm);
+        float spec = pow(max(dot(viewDir, reflectDir), 0.0), light.specular.w); // specular power in w component
+        return spec * light.specular.rgb * light.color.rgb;
+    }
+
     
     void main() {
+        // Calculating light direction
+        vec3 lightDir;
         vec3 norm = normalize(FragNormal);
         vec3 result = vec3(0.0);
 
         // Loop over all the lights
         for (int i = 0; i < numberOfLights; i++) {
-            vec3 lightDir = normalize(pLights[i].position.xyz - FragPos);
+
+            if (pLights[i].param1.x == 0.0) { // Point light
+                lightDir = normalize(pLights[i].position.xyz - FragPos);
+            } else if (pLights[i].param1.x == 1.0) { // Directional light
+                lightDir = normalize(-pLights[i].direction.xyz);
+            }
+
+            // Calculate lighting components
             float attenuation = CalculateAttenuation(pLights[i], FragPos);
             vec3 diffuse = CalculateDiffuse(pLights[i], norm, lightDir);
-            result += (diffuse) * attenuation;
+            vec3 viewDir = normalize(camLocation - FragPos);
+            vec3 specular = CalculateSpecular(pLights[i], norm, lightDir, viewDir);
+
+            // Accumulate lighting results
+            result += (diffuse + specular) * attenuation;
+
         }
-        
+
         FragColor = vec4(result * FragCol, 1.0);
+
     }
 )";
