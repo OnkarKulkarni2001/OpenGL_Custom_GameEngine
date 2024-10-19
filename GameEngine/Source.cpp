@@ -87,9 +87,9 @@ int main() {
         // Use our shader program and draw the triangle
         glUseProgram(shaderProgram);
 
-        lightManager.TurnOnLights(shaderProgram, 1);
         cLightMover light(lightManager.lights[0], flyCam);
         light.MoveLeft();
+        lightManager.TurnOnLights(shaderProgram, 1);
         //std::cout << light.lightPosition.x << " " << light.lightPosition.y << " " << light.lightPosition.z << std::endl;
         //std::cout << lightManager.lights[0].position.x << " " << lightManager.lights[0].position.y << " " << lightManager.lights[0].position.z << std::endl;
         // ------------------------------------------------------------------------------------------------------------------------------

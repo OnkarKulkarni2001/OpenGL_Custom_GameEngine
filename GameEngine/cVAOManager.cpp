@@ -14,12 +14,11 @@ GLuint cVAOManager::BindVAOVBO(GLuint &VBO, int numberOfMeshesToLoad, std::vecto
 
     const GLint vertexPosition_location = glGetAttribLocation(shaderProgram, "aPos");
     const GLint vertexNormal_location = glGetAttribLocation(shaderProgram, "vNormal");
-    const GLint vertexColor_location = glGetAttribLocation(shaderProgram, "objectColor");
+    const GLint vertexColor_location = glGetAttribLocation(shaderProgram, "aCol");
 
-    glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
-    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(vertexPosition_location);
     glVertexAttribPointer(vertexPosition_location,
         3,
         GL_FLOAT,
@@ -27,7 +26,7 @@ GLuint cVAOManager::BindVAOVBO(GLuint &VBO, int numberOfMeshesToLoad, std::vecto
         sizeof(cLoadModels::sVerticesToRender),
         (void*)offsetof(cLoadModels::sVerticesToRender, cLoadModels::sVerticesToRender::vertexPosition));
 
-    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(vertexNormal_location);
     glVertexAttribPointer(vertexNormal_location,
         3,
         GL_FLOAT,
@@ -35,7 +34,7 @@ GLuint cVAOManager::BindVAOVBO(GLuint &VBO, int numberOfMeshesToLoad, std::vecto
         sizeof(cLoadModels::sVerticesToRender),
         (void*)offsetof(cLoadModels::sVerticesToRender, cLoadModels::sVerticesToRender::vertexNormal));
 
-    glEnableVertexAttribArray(2);
+    glEnableVertexAttribArray(vertexColor_location);
     glVertexAttribPointer(vertexColor_location,
         4,
         GL_FLOAT,

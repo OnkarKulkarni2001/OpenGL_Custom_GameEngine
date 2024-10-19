@@ -17,6 +17,7 @@ const char* fragmentShaderSource = R"(
 
     in vec3 FragPos;    // Incoming fragment position from vertex shader
     in vec3 FragNormal; // Incoming fragment normal from vertex shader
+    in vec3 FragCol;
 
     uniform int numberOfLights; // Pass the number of active lights
     uniform sLights pLights[MAX_LIGHTS];  // Assuming you have a maximum of 10 lights
@@ -48,6 +49,6 @@ const char* fragmentShaderSource = R"(
             result += (diffuse) * attenuation;
         }
         
-        FragColor = vec4(result, 1.0);
+        FragColor = vec4(result * FragCol, 1.0);
     }
 )";
