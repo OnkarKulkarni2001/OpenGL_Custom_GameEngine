@@ -10,6 +10,7 @@
 #include "cPlayer.h"
 #include "cAiEnemy.h"
 #include "cLightManager.h"
+#include "cLightMover.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -64,6 +65,7 @@ int main() {
 
     cLightManager lightManager;
     lightManager.LoadLights("D:/Graphics1/GameEngine/lightsFile.txt");
+    lightManager.TurnOnLights(shaderProgram, 5);
 
     // Camera Initialization
     FlyCam flyCam(800, 600, glm::vec3(0.0f, 0.0f, -4.0f), 180.0f);
@@ -85,8 +87,8 @@ int main() {
         // Use our shader program and draw the triangle
         glUseProgram(shaderProgram);
 
-        lightManager.TurnOnLights(shaderProgram, 5);
-
+        cLightMover light(&lightManager.lights[2], flyCam);
+        light.MoveLeft();
         // ------------------------------------------------------------------------------------------------------------------------------
         // You can create player objects here and make them move from here
         // ------------------------------------------------------------------------------------------------------------------------------

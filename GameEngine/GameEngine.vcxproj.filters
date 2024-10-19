@@ -75,12 +75,12 @@
     <ClCompile Include="cLightManager.cpp">
       <Filter>Lights</Filter>
     </ClCompile>
+    <ClCompile Include="cLightMover.cpp">
+      <Filter>Lights</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="FragmentShader.glsl">
       <Filter>Shaders</Filter>
     </None>
     <None Include="FragmentShaderCopy.glsl">
@@ -113,6 +113,9 @@
       <Filter>Player\AIEnemy</Filter>
     </ClInclude>
     <ClInclude Include="cLightManager.h">
+      <Filter>Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="cLightMover.h">
       <Filter>Lights</Filter>
     </ClInclude>
   </ItemGroup>

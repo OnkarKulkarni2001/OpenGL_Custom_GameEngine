@@ -143,6 +143,7 @@
     <ClCompile Include="..\glad.c" />
     <ClCompile Include="cAiEnemy.cpp" />
     <ClCompile Include="cLightManager.cpp" />
+    <ClCompile Include="cLightMover.cpp" />
     <ClCompile Include="cPlayer.cpp" />
     <ClCompile Include="cScene.cpp" />
     <ClCompile Include="cShaderCompiler.cpp" />
@@ -152,13 +153,13 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FragmentShader.glsl" />
     <None Include="FragmentShaderCopy.glsl" />
     <None Include="VertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cAiEnemy.h" />
     <ClInclude Include="cLightManager.h" />
+    <ClInclude Include="cLightMover.h" />
     <ClInclude Include="cPlayer.h" />
     <ClInclude Include="IPlayer.h" />
     <ClInclude Include="cScene.h" />
