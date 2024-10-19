@@ -125,6 +125,7 @@ void cLightManager::LoadLights(std::string lightsFilePath)
 		std::cout  << lights.param2.z << " ";
 		std::cout  << lights.param2.w << " ";
 
+		lights.index = indexOfLight;
 		this->lights.push_back(lights);	// adding lights to the vector
 	}
 }

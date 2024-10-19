@@ -15,17 +15,17 @@
 class cLightMover {
 public:
 	FlyCam* flyCam = nullptr;
-	sLights* light = nullptr;
+	cLightManager::sLights* pLight = nullptr;
 
 	glm::vec3 lightPosition;
 	glm::vec3 lightForwardVector;
 	glm::vec3 lightRightVector;
 	glm::vec3 lightUpVector;
 
-	cLightMover(sLights* light, FlyCam& flyCam);
+	cLightMover(cLightManager::sLights& light, FlyCam& flyCam);
 	~cLightMover();
 
-	float lightSpeed = 0.1f;
+	float lightSpeed = 100.0f;
 	void MoveForward();
 	void MoveBackward();
 	void MoveLeft();

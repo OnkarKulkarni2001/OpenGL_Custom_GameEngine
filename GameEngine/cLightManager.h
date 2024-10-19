@@ -10,23 +10,24 @@
 #include <vector>
 #include <string>
 
-struct sLights {
-	glm::vec4 position;		// position for point lights
-	glm::vec4 color;
-	glm::vec4 ambient;
-	glm::vec4 diffuse;		// diffuse color
-	glm::vec4 specular;		// specular color (w = specular power)
-	glm::vec4 atten;		// (constant, linear, quadratic, cutoff)
-	glm::vec4 direction;	// for directional lights/ spot lights
-	glm::vec4 param1;		// x = light type, y = inner angle, z = outer angle
-	glm::vec4 param2;		// x = on/off
-};
 
 class cLightManager
 {
 public:
 	int numberOfLights;
-	//sLights* pLights;
+
+	struct sLights {
+		unsigned int index;
+		glm::vec4 position;		// position for point lights
+		glm::vec4 color;
+		glm::vec4 ambient;
+		glm::vec4 diffuse;		// diffuse color
+		glm::vec4 specular;		// specular color (w = specular power)
+		glm::vec4 atten;		// (constant, linear, quadratic, cutoff)
+		glm::vec4 direction;	// for directional lights/ spot lights
+		glm::vec4 param1;		// x = light type, y = inner angle, z = outer angle
+		glm::vec4 param2;		// x = on/off
+	};
 
 	std::vector<sLights> lights;
 

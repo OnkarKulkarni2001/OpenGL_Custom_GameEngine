@@ -65,7 +65,6 @@ int main() {
 
     cLightManager lightManager;
     lightManager.LoadLights("D:/Graphics1/GameEngine/lightsFile.txt");
-    lightManager.TurnOnLights(shaderProgram, 5);
 
     // Camera Initialization
     FlyCam flyCam(800, 600, glm::vec3(0.0f, 0.0f, -4.0f), 180.0f);
@@ -82,13 +81,17 @@ int main() {
 
         // Rendering commands here
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glEnable(GL_DEPTH_TEST);   // Enable depth testing
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Use our shader program and draw the triangle
         glUseProgram(shaderProgram);
 
-        cLightMover light(&lightManager.lights[2], flyCam);
+        lightManager.TurnOnLights(shaderProgram, 1);
+        cLightMover light(lightManager.lights[0], flyCam);
         light.MoveLeft();
+        //std::cout << light.lightPosition.x << " " << light.lightPosition.y << " " << light.lightPosition.z << std::endl;
+        //std::cout << lightManager.lights[0].position.x << " " << lightManager.lights[0].position.y << " " << lightManager.lights[0].position.z << std::endl;
         // ------------------------------------------------------------------------------------------------------------------------------
         // You can create player objects here and make them move from here
         // ------------------------------------------------------------------------------------------------------------------------------
