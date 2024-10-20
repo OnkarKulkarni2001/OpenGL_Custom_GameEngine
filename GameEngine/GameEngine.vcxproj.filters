@@ -22,9 +22,6 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{1c42ea0d-698d-4679-b619-ed1c291cad6c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="VAOManager">
-      <UniqueIdentifier>{9ef02a88-6e88-4592-98c4-dc04eb8a997b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scenes">
       <UniqueIdentifier>{8d962f1a-2ecd-4781-8bd9-d425382ffc79}</UniqueIdentifier>
     </Filter>
@@ -42,6 +39,12 @@
     </Filter>
     <Filter Include="Lights">
       <UniqueIdentifier>{eecf9100-45d4-46ef-b0de-ec7990504063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VAOManager">
+      <UniqueIdentifier>{9ef02a88-6e88-4592-98c4-dc04eb8a997b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{d603f128-da6f-4fe0-ab54-31bf099aaed5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +80,9 @@
     </ClCompile>
     <ClCompile Include="cLightMover.cpp">
       <Filter>Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="cPhysics.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +123,9 @@
     </ClInclude>
     <ClInclude Include="cLightMover.h">
       <Filter>Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="cPhysics.h">
+      <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 #include "cLightMover.h"
-
+#include <iostream>
 
 cLightMover::cLightMover(cLightManager& light, FlyCam& flyCam, unsigned int numberOfLights) : flyCam(&flyCam), numberOfLights(numberOfLights)
 {

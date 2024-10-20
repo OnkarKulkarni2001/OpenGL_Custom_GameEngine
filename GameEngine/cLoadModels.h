@@ -12,6 +12,7 @@
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 
 using namespace std;
+
 class cLoadModels {
 public:
 	string ModelFileName;
@@ -48,6 +49,7 @@ public:
 		glm::vec3 specular;
 	};
 
+	//cPhysics::sPhysicsMesh physicsMesh;
 	sMeshTransform pMeshTransform;
 	sVertex* pVertex;
 	sFaces* pFaces;

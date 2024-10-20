@@ -11,6 +11,7 @@
 #include "cAiEnemy.h"
 #include "cLightManager.h"
 #include "cLightMover.h"
+#include "cPhysics.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -69,12 +70,22 @@ int main() {
     FlyCam flyCam(800, 600, glm::vec3(0.0f, 0.0f, -4.0f), 180.0f);
     cLightMover lightMover(lightManager, flyCam, 5);
 
+
+    float deltaTime = 0;
+    float startTime, endTime;
+    // Starting physics
+    cPhysics physicsEngine;
+    physicsEngine.StartPhysics(scene);
+    
     // Render loop
     while (!glfwWindowShouldClose(window)) {
         // Input handling
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, true);
         glfwGetWindowSize(window, &flyCam.camWidth, &flyCam.camHeight);
+
+        startTime = glfwGetTime();
+        physicsEngine.CollisionCheck(deltaTime);
 
         //flyCam.camControls(window);
         flyCam.cameraMatrix(45.0f, 0.1f, 1000.0f, shaderProgram, "camMatrix", window);
@@ -111,6 +122,9 @@ int main() {
             offset += scene.pModels[index].numberOfVerticesToRender;
         }
 
+        endTime = glfwGetTime();
+        deltaTime = endTime - startTime;
+        std::cout << deltaTime << " Time passed" << std::endl;
         // Swap buffers and poll IO events (keys pressed/released, mouse moved, etc.)
         glfwSwapBuffers(window);
         glfwPollEvents();
