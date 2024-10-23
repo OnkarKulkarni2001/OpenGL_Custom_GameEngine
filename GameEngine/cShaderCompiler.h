@@ -14,4 +14,7 @@ public:
 
 	GLuint CompileShader();
 	void SetSceneView(GLFWwindow* window);
+
+private:
+	GLenum viewMode = GL_LINE;
 };

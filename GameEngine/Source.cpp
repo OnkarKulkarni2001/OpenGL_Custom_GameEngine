@@ -11,7 +11,7 @@
 #include "cAiEnemy.h"
 #include "cLightManager.h"
 #include "cLightMover.h"
-#include "cPhysics.h"
+#include "cPhysicsUpdated.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -74,18 +74,31 @@ int main() {
     float deltaTime = 0;
     float startTime, endTime;
     // Starting physics
-    cPhysics physicsEngine;
-    physicsEngine.StartPhysics(scene);
+    cPhysicsUpdated physicsEngine(scene);
+    //physicsEngine.StartPhysics(scene);
     
+    startTime = glfwGetTime();
+    
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
     // Render loop
     while (!glfwWindowShouldClose(window)) {
+
         // Input handling
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, true);
         glfwGetWindowSize(window, &flyCam.camWidth, &flyCam.camHeight);
 
-        startTime = glfwGetTime();
-        physicsEngine.CollisionCheck(deltaTime);
+        endTime = glfwGetTime();
+        deltaTime = endTime - startTime;
+        std::cout << deltaTime << " Time passed" << std::endl;
+
+        if (physicsEngine.CheckCollision(scene)) {
+            std::cout << "colliding" << std::endl;
+        }
+        else {
+            std::cout << "not colliding" << std::endl;
+        }
 
         //flyCam.camControls(window);
         flyCam.cameraMatrix(45.0f, 0.1f, 1000.0f, shaderProgram, "camMatrix", window);
@@ -104,8 +117,12 @@ int main() {
 
         // ------------------------------------------------------------------------------------------------------------------------------
         // You can call movement functions from light mover class for lights here now and then call turn on lights function of light manager
+        lightManager.TurnOnLights(shaderProgram, 5);
         // ------------------------------------------------------------------------------------------------------------------------------
         // You can create player objects here and make them move from here
+        cPlayer bunny(scene.pModels[0]);
+        bunny.SetSpeed(10.0f);
+        bunny.MoveBackward();
         // ------------------------------------------------------------------------------------------------------------------------------
 
         glBindVertexArray(VAO);
@@ -122,12 +139,10 @@ int main() {
             offset += scene.pModels[index].numberOfVerticesToRender;
         }
 
-        endTime = glfwGetTime();
-        deltaTime = endTime - startTime;
-        std::cout << deltaTime << " Time passed" << std::endl;
         // Swap buffers and poll IO events (keys pressed/released, mouse moved, etc.)
         glfwSwapBuffers(window);
         glfwPollEvents();
+
     }
 
     // Cleanup

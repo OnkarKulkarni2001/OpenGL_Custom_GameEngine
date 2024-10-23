@@ -40,8 +40,8 @@ public:
 		int collisionMeshType;			// if 1 then AABB if 2 then Sphere
 		sAABB aabb;
 		sSphere sphere;
-		cLoadModels& modelMesh;
-		cLightManager& lightMesh;		// If light also wants to move by using physics
+		//cLoadModels& modelMesh;
+		//cLightManager& lightMesh;		// If light also wants to move by using physics
 	};
 
 	struct sPhysicsMesh {
@@ -59,11 +59,12 @@ public:
 
 	std::vector<cPhysics::sPhysicsMesh> physicsObjects;
 
-	std::map<cPhysics::sPhysicsMesh, cLoadModels> meshModelMap;
+	std::map<int, cLoadModels> meshModelMap;
 
 	void StartPhysics(cScene& scene);
 	bool CollisionCheck(float deltaTime);		// Runs collision check and if objects collide returns true/false
 	void UpdateObjects();
+	void CreateCollisionMeshFromModel(const cLoadModels& model, sCollisionMesh& collisionMesh);
 
 	bool IsObjectsColliding(sPhysicsMesh& model1, sPhysicsMesh& model2, float deltaTime);		// Checks if objects are colliding or not
 };

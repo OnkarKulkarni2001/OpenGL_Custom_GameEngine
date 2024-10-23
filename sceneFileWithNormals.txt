@@ -13,7 +13,7 @@ mesh_paths
 mesh_transforms
 2.0 2.0 2.0  10 10 10  90.0 90.0 90.0
 4.0 3.3 2.2  0.8 1.0 0.9  0.0 0.0 0.0
-6.1 3.0 4.0  1.5 1.6 1.7  0.0 0.0 0.0
+6.1 3.0 4.0  0.5 0.5 0.5  0.0 0.0 0.0
 
 // firstValue is shininess, second is x, y, z values of diffuse and third is x, y, z values of specular
 mesh_material

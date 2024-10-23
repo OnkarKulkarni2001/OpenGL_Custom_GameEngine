@@ -1,11 +1,18 @@
 #include "cPhysics.h"
+#include <string>
 
 void cPhysics::StartPhysics(cScene& scene)
 {
-	physicsObjects[scene.numberOfMeshesToLoad];
+	physicsObjects.resize(scene.pModels.size());
 	for (int i = 0; i != scene.pModels.size(); i++) {
-		meshModelMap.insert(std::make_pair(physicsObjects[i], scene.pModels[i]));
+		meshModelMap.insert(std::make_pair(i, scene.pModels[i]));
 		physicsObjects[i].objectPosition = glm::vec3(scene.pModels[i].pMeshTransform.x, scene.pModels[i].pMeshTransform.y, scene.pModels[i].pMeshTransform.z);
+		
+		// Create collision mesh based on model vertices
+		physicsObjects[i].collisionMesh = new sCollisionMesh();
+
+		// Populate collision mesh from model vertices
+		CreateCollisionMeshFromModel(scene.pModels[i], *physicsObjects[i].collisionMesh);
 	}
 }
 
@@ -29,8 +36,54 @@ void cPhysics::UpdateObjects()
 
 }
 
+void cPhysics::CreateCollisionMeshFromModel(const cLoadModels& model, sCollisionMesh& collisionMesh)
+{
+	// Initialize AABB min and max points
+	glm::vec3 minPoint(FLT_MAX, FLT_MAX, FLT_MAX);
+	glm::vec3 maxPoint(FLT_MIN, FLT_MIN, FLT_MIN);
+
+	glm::vec3 center(0.0f);
+	float radius = 0.0f;
+
+	// Loop through all vertices to compute bounds
+	for (unsigned int i = 0; i < model.numberOfVerticesToRender; i++) {
+		const glm::vec3& vertexPos = model.pVerticesToRender[i].vertexPosition;
+
+		// Update AABB min and max points
+		minPoint = glm::min(minPoint, vertexPos);
+		maxPoint = glm::max(maxPoint, vertexPos);
+
+		// For Sphere: Update the center of the sphere (average position of vertices)
+		center += vertexPos;
+	}
+
+	// Finalize center of sphere
+	center /= model.numberOfVerticesToRender;
+
+	// Compute the bounding sphere radius (maximum distance from the center)
+	for (unsigned int i = 0; i < model.numberOfVerticesToRender; i++) {
+		const glm::vec3& vertexPos = model.pVerticesToRender[i].vertexPosition;
+		float distance = glm::distance(center, vertexPos);
+		radius = glm::max(radius, distance);
+	}
+
+	// Assign to collision mesh (choose one: AABB or Sphere)
+	collisionMesh.collisionMeshType = 1; // AABB
+	collisionMesh.aabb.minXYZ = minPoint;
+	collisionMesh.aabb.maxXYZ = maxPoint;
+
+	// Alternatively, use the bounding sphere
+	collisionMesh.collisionMeshType = 2; // Sphere
+	collisionMesh.sphere.sSphereCenter = center;
+	collisionMesh.sphere.sSphereRadius = radius;
+}
+
 bool cPhysics::IsObjectsColliding(sPhysicsMesh& model1, sPhysicsMesh& model2, float deltaTime)
 {
+	if (model1.collisionMesh == nullptr || model2.collisionMesh == nullptr) {
+		std::cerr << "Collision mesh is null for one or both objects." << std::endl;
+		return false;
+	}
 	// for collision between two AABB
 	if (model1.collisionMesh->collisionMeshType == 1 && model2.collisionMesh->collisionMeshType == 1) {
 		return (model1.collisionMesh->aabb.maxXYZ.x >= model2.collisionMesh->aabb.minXYZ.x &&

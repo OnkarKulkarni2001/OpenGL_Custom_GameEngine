@@ -68,23 +68,23 @@ void cScene::CreateScene(std::string sceneFileName) {
         modelIndex++;
     }
 
-    while (token != "mesh_material") {
-        sceneFile >> token;
-    }
+    //while (token != "mesh_material") {
+    //    sceneFile >> token;
+    //}
 
-    int materialModelIndex = 0;
-    for (unsigned int indexOfMaterial = 0; indexOfMaterial != numberOfMeshesToLoad; indexOfMaterial++) {
-        sceneFile >> pModels[indexOfMaterial].pMaterial.shininess;
+    //int materialModelIndex = 0;
+    //for (unsigned int indexOfMaterial = 0; indexOfMaterial != numberOfMeshesToLoad; indexOfMaterial++) {
+    //    sceneFile >> pModels[indexOfMaterial].pMaterial.shininess;
 
-        sceneFile >> pModels[indexOfMaterial].pMaterial.diffuse.x;
-        sceneFile >> pModels[indexOfMaterial].pMaterial.diffuse.y;
-        sceneFile >> pModels[indexOfMaterial].pMaterial.diffuse.z;
+    //    sceneFile >> pModels[indexOfMaterial].pMaterial.diffuse.x;
+    //    sceneFile >> pModels[indexOfMaterial].pMaterial.diffuse.y;
+    //    sceneFile >> pModels[indexOfMaterial].pMaterial.diffuse.z;
 
-        sceneFile >> pModels[indexOfMaterial].pMaterial.specular.x;
-        sceneFile >> pModels[indexOfMaterial].pMaterial.specular.y;
-        sceneFile >> pModels[indexOfMaterial].pMaterial.specular.z;
-        materialModelIndex++;
-    }
+    //    sceneFile >> pModels[indexOfMaterial].pMaterial.specular.x;
+    //    sceneFile >> pModels[indexOfMaterial].pMaterial.specular.y;
+    //    sceneFile >> pModels[indexOfMaterial].pMaterial.specular.z;
+    //    materialModelIndex++;
+    //}
 }
 
 //void cScene::ExportMaterial(GLuint shaderProgram, int numberOfMaterials)

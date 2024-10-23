@@ -50,7 +50,6 @@ GLuint cShaderCompiler::CompileShader()
 
 void cShaderCompiler::SetSceneView(GLFWwindow* window)
 {
-    GLenum viewMode = GL_LINE;
     if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
         viewMode = GL_POINT;
     }

@@ -81,7 +81,7 @@
     <ClCompile Include="cLightMover.cpp">
       <Filter>Lights</Filter>
     </ClCompile>
-    <ClCompile Include="cPhysics.cpp">
+    <ClCompile Include="cPhysicsUpdated.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -124,7 +124,7 @@
     <ClInclude Include="cLightMover.h">
       <Filter>Lights</Filter>
     </ClInclude>
-    <ClInclude Include="cPhysics.h">
+    <ClInclude Include="cPhysicsUpdated.h">
       <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>

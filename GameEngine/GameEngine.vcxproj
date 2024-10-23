@@ -144,7 +144,7 @@
     <ClCompile Include="cAiEnemy.cpp" />
     <ClCompile Include="cLightManager.cpp" />
     <ClCompile Include="cLightMover.cpp" />
-    <ClCompile Include="cPhysics.cpp" />
+    <ClCompile Include="cPhysicsUpdated.cpp" />
     <ClCompile Include="cPlayer.cpp" />
     <ClCompile Include="cScene.cpp" />
     <ClCompile Include="cShaderCompiler.cpp" />
@@ -161,7 +161,7 @@
     <ClInclude Include="cAiEnemy.h" />
     <ClInclude Include="cLightManager.h" />
     <ClInclude Include="cLightMover.h" />
-    <ClInclude Include="cPhysics.h" />
+    <ClInclude Include="cPhysicsUpdated.h" />
     <ClInclude Include="cPlayer.h" />
     <ClInclude Include="IPlayer.h" />
     <ClInclude Include="cScene.h" />
