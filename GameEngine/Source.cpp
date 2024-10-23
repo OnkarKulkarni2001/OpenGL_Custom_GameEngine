@@ -92,13 +92,8 @@ int main() {
         endTime = glfwGetTime();
         deltaTime = endTime - startTime;
         std::cout << deltaTime << " Time passed" << std::endl;
-
-        if (physicsEngine.CheckCollision(scene)) {
-            std::cout << "colliding" << std::endl;
-        }
-        else {
-            std::cout << "not colliding" << std::endl;
-        }
+        
+        physicsEngine.CheckCollision(scene);
 
         //flyCam.camControls(window);
         flyCam.cameraMatrix(45.0f, 0.1f, 1000.0f, shaderProgram, "camMatrix", window);
@@ -122,7 +117,10 @@ int main() {
         // You can create player objects here and make them move from here
         cPlayer bunny(scene.pModels[0]);
         bunny.SetSpeed(10.0f);
-        bunny.MoveBackward();
+        bunny.MoveForward();
+
+        cPlayer dragon(scene.pModels[2]);
+        dragon.MoveBackward();
         // ------------------------------------------------------------------------------------------------------------------------------
 
         glBindVertexArray(VAO);

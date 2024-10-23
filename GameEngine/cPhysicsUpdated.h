@@ -37,10 +37,11 @@ public:
 
 	cPhysicsUpdated(cScene& scene);
 	~cPhysicsUpdated();
+	void DrawDebugSphere(cScene& scene);
 	void CopyFacesTosTriangleInPhysics(cScene& scene);
 	void CalculateAABB(cScene& scene);
 	void CalculateBoundingSpheres(cScene& scene);
-	bool CheckBoundingSphereCollision(const sBoundingSphere& sphere1, const sBoundingSphere& sphere2);
+	bool CheckBoundingSphereCollision(cScene& scene);
 	bool CheckAABBCollision(const sAABB& aabb1, const sAABB& aabb2);
 	bool CheckCollision(cScene& scene);
 	bool CheckTriangleTriangleCollision(const sTriangleInPhysics& tri1, const sTriangleInPhysics& tri2, cScene& scene);

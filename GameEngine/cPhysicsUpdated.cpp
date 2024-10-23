@@ -12,6 +12,11 @@ cPhysicsUpdated::~cPhysicsUpdated()
 	delete[] pAABB;
 }
 
+void cPhysicsUpdated::DrawDebugSphere(cScene& scene)
+{
+
+}
+
 void cPhysicsUpdated::CopyFacesTosTriangleInPhysics(cScene& scene)
 {
 	pAllModelTriangles.resize(scene.numberOfMeshesToLoad);
@@ -55,33 +60,48 @@ void cPhysicsUpdated::CalculateBoundingSpheres(cScene& scene)
 	pBoundingSpheres = new sBoundingSphere[scene.pModels.size()];
 	glm::vec3 center(0.0f);
 	float distance(0.0f);
-	float avgDistance(0.0f);
+	float maxDistance(0.0f);
 	for (int modelIndex = 0; modelIndex != scene.numberOfMeshesToLoad; modelIndex++) {
 		for (int vertexIndex = 0; vertexIndex != scene.pModels[modelIndex].numberOfVertices; vertexIndex++) {
-			center.x += scene.pModels[modelIndex].pVertex[vertexIndex].x;
+			center.x += scene.pModels[modelIndex].pVertex[vertexIndex].x + scene.pModels[modelIndex].pMeshTransform.x;
 
-			center.y += scene.pModels[modelIndex].pVertex[vertexIndex].y;
+			center.y += scene.pModels[modelIndex].pVertex[vertexIndex].y + scene.pModels[modelIndex].pMeshTransform.y;
 			
-			center.z += scene.pModels[modelIndex].pVertex[vertexIndex].z;
+			center.z += scene.pModels[modelIndex].pVertex[vertexIndex].z + scene.pModels[modelIndex].pMeshTransform.z;
 		}
 		center.x /= scene.pModels[modelIndex].numberOfVertices;	
 		center.y /= scene.pModels[modelIndex].numberOfVertices;			
 		center.z /= scene.pModels[modelIndex].numberOfVertices;
 
 		for (int vertexIndex = 0; vertexIndex != scene.pModels[modelIndex].numberOfVertices; vertexIndex++) {
-			distance += glm::distance(center, glm::vec3(scene.pModels[modelIndex].pVertex[vertexIndex].x, scene.pModels[modelIndex].pVertex[vertexIndex].y, scene.pModels[modelIndex].pVertex[vertexIndex].z));
+			distance = glm::distance(center, glm::vec3(scene.pModels[modelIndex].pVertex[vertexIndex].x + scene.pModels[modelIndex].pMeshTransform.x,
+				scene.pModels[modelIndex].pVertex[vertexIndex].y + scene.pModels[modelIndex].pMeshTransform.y, 
+				scene.pModels[modelIndex].pVertex[vertexIndex].z + scene.pModels[modelIndex].pMeshTransform.z));
+
+			if (maxDistance < distance) {
+				maxDistance = distance;
+			}
 		}
-		avgDistance = distance / (float)scene.pModels[modelIndex].numberOfVertices;
 
 		pBoundingSpheres[modelIndex].center = center;
-		pBoundingSpheres[modelIndex].radius = avgDistance;
+		pBoundingSpheres[modelIndex].radius = maxDistance;
 	}
 }
 
-bool cPhysicsUpdated::CheckBoundingSphereCollision(const sBoundingSphere& sphere1, const sBoundingSphere& sphere2)
+bool cPhysicsUpdated::CheckBoundingSphereCollision(cScene& scene)
 {
-	float distance = glm::distance(sphere1.center, sphere2.center);
-	return distance <= (sphere1.radius + sphere2.radius);		// they will collide
+	float distance = 0.0f;
+	for (int model1Index = 0; model1Index != scene.numberOfMeshesToLoad; model1Index++) {
+		for (int model2Index = model1Index + 1; model2Index != scene.numberOfMeshesToLoad; model2Index++) {
+			distance = glm::distance(pBoundingSpheres[model1Index].center, pBoundingSpheres[model2Index].center);
+			if (distance <= (pBoundingSpheres[model1Index].radius + pBoundingSpheres[model2Index].radius)) {
+				std::cout << "Intersection point: (" << pBoundingSpheres[model1Index].center.x + (pBoundingSpheres[model1Index].radius / pBoundingSpheres[model1Index].radius + pBoundingSpheres[model2Index].radius) * (pBoundingSpheres[model2Index].center.x - pBoundingSpheres[model1Index].center.x) << ", "
+					<< pBoundingSpheres[model1Index].center.y + (pBoundingSpheres[model1Index].radius / pBoundingSpheres[model1Index].radius + pBoundingSpheres[model2Index].radius) * (pBoundingSpheres[model2Index].center.y - pBoundingSpheres[model1Index].center.y) << ", "
+					<< pBoundingSpheres[model1Index].center.z + (pBoundingSpheres[model1Index].radius / pBoundingSpheres[model1Index].radius + pBoundingSpheres[model2Index].radius) * (pBoundingSpheres[model2Index].center.z - pBoundingSpheres[model1Index].center.z) << ")" << std::endl;
+			}
+			return distance <= (pBoundingSpheres[model1Index].radius + pBoundingSpheres[model2Index].radius);		// they will collide
+		}
+	}
 }
 
 bool cPhysicsUpdated::CheckAABBCollision(const sAABB& aabb1, const sAABB& aabb2)
@@ -93,19 +113,23 @@ bool cPhysicsUpdated::CheckAABBCollision(const sAABB& aabb1, const sAABB& aabb2)
 
 bool cPhysicsUpdated::CheckCollision(cScene& scene)
 {
+	CalculateBoundingSpheres(scene);
 	for (int modelIndex = 0; modelIndex != scene.numberOfMeshesToLoad; modelIndex++) {
-		CalculateBoundingSpheres(scene);
-		std::cout << pBoundingSpheres[modelIndex].center.x << " " << pBoundingSpheres[modelIndex].center.y << " " << pBoundingSpheres[modelIndex].center.z << " center of 1st" << std::endl;
-		for (int secondModel = 1 + modelIndex; secondModel != scene.numberOfMeshesToLoad; secondModel++) {
+		for (int secondModel = modelIndex + 1; secondModel != scene.numberOfMeshesToLoad; secondModel++) {
 			
-			std::cout << pBoundingSpheres[secondModel].center.x << " " << pBoundingSpheres[secondModel].center.y << " " << pBoundingSpheres[secondModel].center.z << " center of 2nd" << std::endl;
-			if (CheckBoundingSphereCollision(pBoundingSpheres[modelIndex], pBoundingSpheres[secondModel])) {
-				std::cout << scene.pModels[modelIndex].numberOfVertices << " colliding with " << scene.pModels[secondModel].numberOfVertices << std::endl;
-				return true;
-			}
-			else {
-				std::cout << "not colliding" << std::endl;
-				return false;
+			// Print bounding sphere details for debugging
+			std::cout << "Model " << modelIndex << ": Center = ("
+				<< pBoundingSpheres[modelIndex].center.x << ", "
+				<< pBoundingSpheres[modelIndex].center.y << ", "
+				<< pBoundingSpheres[modelIndex].center.z << ")" << std::endl;
+
+			std::cout << "Model " << secondModel << ": Center = ("
+				<< pBoundingSpheres[secondModel].center.x << ", "
+				<< pBoundingSpheres[secondModel].center.y << ", "
+				<< pBoundingSpheres[secondModel].center.z << ")" << std::endl;
+
+			if (CheckBoundingSphereCollision(scene)) {
+				std::cout << "Collision detected: Model " << modelIndex << " is colliding with Model " << secondModel << std::endl;
 			}
 		}
 	}
