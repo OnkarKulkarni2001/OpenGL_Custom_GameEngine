@@ -96,13 +96,12 @@ void cLoadModels::LoadPlyModel(string ModelFileName) {
 	}	// copying over the vertex positions from triangle's(face's) vertices to pVerticesToRender and also setting the color of pVerticesToRender to white.
 }
 
-void cLoadModels::GenerateTransformedVertices()
+void cLoadModels::GenerateTransformedVertices(glm::mat4 model)
 {
-	transformedVertices = new sTransformedVertex[numberOfVertices];
 	for (int vertexIndex = 0; vertexIndex != numberOfVertices; vertexIndex++) {
-		transformedVertices[vertexIndex].transformedVertex.x = pVertex[vertexIndex].x * pMeshTransform.xScale + pMeshTransform.x;
-		transformedVertices[vertexIndex].transformedVertex.y = pVertex[vertexIndex].y * pMeshTransform.yScale + pMeshTransform.y;
-		transformedVertices[vertexIndex].transformedVertex.z = pVertex[vertexIndex].z * pMeshTransform.zScale + pMeshTransform.z;
+		glm::vec4 originalVertex = glm::vec4(pVertex[vertexIndex].x, pVertex[vertexIndex].y, pVertex[vertexIndex].z, 1.0f);
+		glm::vec4 tempTransformedVertex = model * originalVertex;
+		pTransformedVertices[vertexIndex].transformedVertex = glm::vec3(tempTransformedVertex);
 	}
 }
 

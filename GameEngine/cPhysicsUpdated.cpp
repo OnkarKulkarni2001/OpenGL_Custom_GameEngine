@@ -29,9 +29,9 @@ void cPhysicsUpdated::CopyFacesTosTriangleInPhysics(cScene& scene)
 			unsigned int v2 = scene.pModels[modelIndex].pFaces[faceIndex].vertexNumber2;
 			unsigned int v3 = scene.pModels[modelIndex].pFaces[faceIndex].vertexNumber3;
 
-			pTriangleInPhysics[faceIndex].vertex1 = glm::vec3(scene.pModels[modelIndex].pVertex[v1].x, scene.pModels[modelIndex].pVertex[v1].y, scene.pModels[modelIndex].pVertex[v1].z);
-			pTriangleInPhysics[faceIndex].vertex2 = glm::vec3(scene.pModels[modelIndex].pVertex[v2].x, scene.pModels[modelIndex].pVertex[v2].y, scene.pModels[modelIndex].pVertex[v2].z);
-			pTriangleInPhysics[faceIndex].vertex3 = glm::vec3(scene.pModels[modelIndex].pVertex[v3].x, scene.pModels[modelIndex].pVertex[v3].y, scene.pModels[modelIndex].pVertex[v3].z);
+			pTriangleInPhysics[faceIndex].vertex1 = scene.pModels[modelIndex].pTransformedVertices[v1].transformedVertex;
+			pTriangleInPhysics[faceIndex].vertex2 = scene.pModels[modelIndex].pTransformedVertices[v2].transformedVertex;
+			pTriangleInPhysics[faceIndex].vertex3 = scene.pModels[modelIndex].pTransformedVertices[v3].transformedVertex;
 
 			pAllModelTriangles[modelIndex].push_back(pTriangleInPhysics[faceIndex]);
 		}
@@ -42,13 +42,18 @@ void cPhysicsUpdated::CalculateAABB(cScene& scene)
 {
 	pAABB = new sAABB[scene.pModels.size()];
 	for (int modelIndex = 0; modelIndex != scene.numberOfMeshesToLoad; modelIndex++) {
-		glm::vec3 min = glm::vec3(scene.pModels[modelIndex].pVertex[0].x, scene.pModels[modelIndex].pVertex[0].y, scene.pModels[modelIndex].pVertex[0].z);
-		glm::vec3 max = glm::vec3(scene.pModels[modelIndex].pVertex[0].x, scene.pModels[modelIndex].pVertex[0].y, scene.pModels[modelIndex].pVertex[0].z);
+		glm::vec3 min = scene.pModels[modelIndex].pTransformedVertices[0].transformedVertex;
+		glm::vec3 max = scene.pModels[modelIndex].pTransformedVertices[0].transformedVertex;
 
 		for (int vertexIndex = 0; vertexIndex != scene.pModels[modelIndex].numberOfVertices; vertexIndex++) {
-			min = glm::min(min, glm::vec3(scene.pModels[modelIndex].pVertex[vertexIndex].x, scene.pModels[modelIndex].pVertex[vertexIndex].y, scene.pModels[modelIndex].pVertex[vertexIndex].z));
-			max = glm::max(max, glm::vec3(scene.pModels[modelIndex].pVertex[vertexIndex].x, scene.pModels[modelIndex].pVertex[vertexIndex].y, scene.pModels[modelIndex].pVertex[vertexIndex].z));
+			min = glm::min(min, scene.pModels[modelIndex].pTransformedVertices[vertexIndex].transformedVertex);
+			max = glm::max(max, scene.pModels[modelIndex].pTransformedVertices[vertexIndex].transformedVertex);
 		}
+
+		// Just for debug
+		//std::cout << "Model " << modelIndex << " AABB: min = ("
+		//	<< min.x << ", " << min.y << ", " << min.z
+		//	<< ") max = (" << max.x << ", " << max.y << ", " << max.z << ")\n";
 
 		pAABB[modelIndex].max = max;
 		pAABB[modelIndex].min = min;
@@ -69,20 +74,18 @@ void cPhysicsUpdated::CalculateBoundingSpheres(cScene& scene)
 	float maxDistance(0.0f);
 	for (int modelIndex = 0; modelIndex != scene.numberOfMeshesToLoad; modelIndex++) {
 		for (int vertexIndex = 0; vertexIndex != scene.pModels[modelIndex].numberOfVertices; vertexIndex++) {
-			center.x += scene.pModels[modelIndex].pVertex[vertexIndex].x + scene.pModels[modelIndex].pMeshTransform.x;
-
-			center.y += scene.pModels[modelIndex].pVertex[vertexIndex].y + scene.pModels[modelIndex].pMeshTransform.y;
-			
-			center.z += scene.pModels[modelIndex].pVertex[vertexIndex].z + scene.pModels[modelIndex].pMeshTransform.z;
+			center.x += scene.pModels[modelIndex].pTransformedVertices[vertexIndex].transformedVertex.x;
+			center.y += scene.pModels[modelIndex].pTransformedVertices[vertexIndex].transformedVertex.y;
+			center.z += scene.pModels[modelIndex].pTransformedVertices[vertexIndex].transformedVertex.z;
 		}
 		center.x /= scene.pModels[modelIndex].numberOfVertices;	
 		center.y /= scene.pModels[modelIndex].numberOfVertices;			
 		center.z /= scene.pModels[modelIndex].numberOfVertices;
 
 		for (int vertexIndex = 0; vertexIndex != scene.pModels[modelIndex].numberOfVertices; vertexIndex++) {
-			distance = glm::distance(center, glm::vec3(scene.pModels[modelIndex].pVertex[vertexIndex].x + scene.pModels[modelIndex].pMeshTransform.x,
-				scene.pModels[modelIndex].pVertex[vertexIndex].y + scene.pModels[modelIndex].pMeshTransform.y, 
-				scene.pModels[modelIndex].pVertex[vertexIndex].z + scene.pModels[modelIndex].pMeshTransform.z));
+			distance = glm::distance(center, glm::vec3(scene.pModels[modelIndex].pTransformedVertices[vertexIndex].transformedVertex.x,
+				scene.pModels[modelIndex].pTransformedVertices[vertexIndex].transformedVertex.y,
+				scene.pModels[modelIndex].pTransformedVertices[vertexIndex].transformedVertex.z));
 
 			if (maxDistance < distance) {
 				maxDistance = distance;
@@ -118,6 +121,12 @@ bool cPhysicsUpdated::CheckAABBCollision(cScene& scene)
 				pAABB[model1Index].max.y > pAABB[model2Index].min.y && pAABB[model1Index].min.y < pAABB[model2Index].max.y &&
 				pAABB[model1Index].max.z > pAABB[model2Index].min.z && pAABB[model1Index].min.z < pAABB[model2Index].max.z) {
 				
+				//std::cout << "X-axis overlap: " << (pAABB[model1Index].max.x > pAABB[model2Index].min.x &&
+				//	pAABB[model1Index].min.x < pAABB[model2Index].max.x) << "\n";
+				//std::cout << "Y-axis overlap: " << (pAABB[model1Index].max.y > pAABB[model2Index].min.y &&
+				//	pAABB[model1Index].min.y < pAABB[model2Index].max.y) << "\n";
+				//std::cout << "Z-axis overlap: " << (pAABB[model1Index].max.z > pAABB[model2Index].min.z &&
+				//	pAABB[model1Index].min.z < pAABB[model2Index].max.z) << "\n";
 				return true;
 			}
 		}
@@ -127,9 +136,11 @@ bool cPhysicsUpdated::CheckAABBCollision(cScene& scene)
 
 bool cPhysicsUpdated::CheckCollision(cScene& scene)
 {
+	CalculateAABB(scene);
+	CalculateBoundingSpheres(scene);
+
 	for (int modelIndex = 0; modelIndex != scene.numberOfMeshesToLoad; modelIndex++) {
 		for (int secondModel = modelIndex + 1; secondModel != scene.numberOfMeshesToLoad; secondModel++) {
-			CalculateBoundingSpheres(scene);
 			
 			//// Print bounding sphere details for debugging
 			//std::cout << "Model " << modelIndex << ": Center = ("
@@ -145,21 +156,30 @@ bool cPhysicsUpdated::CheckCollision(cScene& scene)
 			if (CheckBoundingSphereCollision(scene)) {
 				//std::cout << "Collision detected of spheres: Model " << modelIndex << " is colliding with Model " << secondModel << std::endl;
 
-				CalculateAABB(scene);
-
 				// Print aabb details for debugging
 				std::cout << "aabb Model " << modelIndex << ": Center = ("
 					<< pAABB[modelIndex].center.x << ", "
 					<< pAABB[modelIndex].center.y << ", "
-					<< pAABB[modelIndex].center.z << ")" << std::endl;
+					<< pAABB[modelIndex].center.z << ") Size: ("
+					<< pAABB[modelIndex].size.x << ", "
+					<< pAABB[modelIndex].size.y << ", "
+					<< pAABB[modelIndex].size.z << ")" << std::endl;
 
 				std::cout << "aabb Model " << secondModel << ": Center = ("
 					<< pAABB[secondModel].center.x << ", "
 					<< pAABB[secondModel].center.y << ", "
-					<< pAABB[secondModel].center.z << ")" << std::endl;
+					<< pAABB[secondModel].center.z << ") Size: ("
+					<< pAABB[secondModel].size.x << ", "
+					<< pAABB[secondModel].size.y << ", "
+					<< pAABB[secondModel].size.z << ")" << std::endl;
 
 				if (CheckAABBCollision(scene)) {
 					std::cout << "Collision detected of aabbs: Model " << modelIndex << " is colliding with Model " << secondModel << std::endl;
+					
+					if (CheckTriangleTriangleCollision(scene)) {
+
+						return true;
+					}
 				}
 			}
 		}
@@ -167,7 +187,7 @@ bool cPhysicsUpdated::CheckCollision(cScene& scene)
 	return false;
 }
 
-bool cPhysicsUpdated::CheckTriangleTriangleCollision(const sTriangleInPhysics& tri1, const sTriangleInPhysics& tri2, cScene& scene)
+bool cPhysicsUpdated::CheckTriangleTriangleCollision(cScene& scene)
 {
 	return false;
 }

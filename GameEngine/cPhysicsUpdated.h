@@ -46,6 +46,6 @@ public:
 	bool CheckBoundingSphereCollision(cScene& scene);
 	bool CheckAABBCollision(cScene& scene);
 	bool CheckCollision(cScene& scene);
-	bool CheckTriangleTriangleCollision(const sTriangleInPhysics& tri1, const sTriangleInPhysics& tri2, cScene& scene);
+	bool CheckTriangleTriangleCollision(cScene& scene);
 	void HandleColllision(cScene& scene);
 };
