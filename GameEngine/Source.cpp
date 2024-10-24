@@ -68,6 +68,8 @@ int main() {
     lightManager.LoadLights("D:/Graphics1/GameEngine/lightsFile.txt");
     // Camera Initialization
     FlyCam flyCam(800, 600, glm::vec3(0.0f, 0.0f, -4.0f), 180.0f);
+    flyCam.camSpeed = 1.0f;
+
     cLightMover lightMover(lightManager, flyCam, 5);
 
 
@@ -91,7 +93,7 @@ int main() {
 
         endTime = glfwGetTime();
         deltaTime = endTime - startTime;
-        std::cout << deltaTime << " Time passed" << std::endl;
+        //std::cout << deltaTime << " Time passed" << std::endl;
         
         physicsEngine.CheckCollision(scene);
 
@@ -116,11 +118,12 @@ int main() {
         // ------------------------------------------------------------------------------------------------------------------------------
         // You can create player objects here and make them move from here
         cPlayer bunny(scene.pModels[0]);
-        bunny.SetSpeed(10.0f);
-        bunny.MoveForward();
+        //bunny.MoveForward();
+        bunny.SetSpeed(1.0f);
 
         cPlayer dragon(scene.pModels[2]);
-        dragon.MoveBackward();
+        //dragon.MoveBackward();
+        dragon.SetSpeed(1.0f);
         // ------------------------------------------------------------------------------------------------------------------------------
 
         glBindVertexArray(VAO);

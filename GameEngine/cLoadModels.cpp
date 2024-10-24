@@ -96,6 +96,16 @@ void cLoadModels::LoadPlyModel(string ModelFileName) {
 	}	// copying over the vertex positions from triangle's(face's) vertices to pVerticesToRender and also setting the color of pVerticesToRender to white.
 }
 
+void cLoadModels::GenerateTransformedVertices()
+{
+	transformedVertices = new sTransformedVertex[numberOfVertices];
+	for (int vertexIndex = 0; vertexIndex != numberOfVertices; vertexIndex++) {
+		transformedVertices[vertexIndex].transformedVertex.x = pVertex[vertexIndex].x * pMeshTransform.xScale + pMeshTransform.x;
+		transformedVertices[vertexIndex].transformedVertex.y = pVertex[vertexIndex].y * pMeshTransform.yScale + pMeshTransform.y;
+		transformedVertices[vertexIndex].transformedVertex.z = pVertex[vertexIndex].z * pMeshTransform.zScale + pMeshTransform.z;
+	}
+}
+
 glm::mat4 cLoadModels::CreateModelMatrix(GLuint shaderProgram, cLoadModels plyModel) {
 	glm::mat4 model = glm::mat4(1.0f);
 	model = translate(model, glm::vec3(plyModel.pMeshTransform.x , plyModel.pMeshTransform.y, plyModel.pMeshTransform.z));

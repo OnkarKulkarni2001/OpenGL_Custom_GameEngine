@@ -40,18 +40,24 @@ void cPhysicsUpdated::CopyFacesTosTriangleInPhysics(cScene& scene)
 
 void cPhysicsUpdated::CalculateAABB(cScene& scene)
 {
-	pAABB = new sAABB();
+	pAABB = new sAABB[scene.pModels.size()];
 	for (int modelIndex = 0; modelIndex != scene.numberOfMeshesToLoad; modelIndex++) {
-		glm::vec3 min = scene.pModels[modelIndex].pVerticesToRender[0].vertexPosition;
-		glm::vec3 max = scene.pModels[modelIndex].pVerticesToRender[0].vertexPosition;
+		glm::vec3 min = glm::vec3(scene.pModels[modelIndex].pVertex[0].x, scene.pModels[modelIndex].pVertex[0].y, scene.pModels[modelIndex].pVertex[0].z);
+		glm::vec3 max = glm::vec3(scene.pModels[modelIndex].pVertex[0].x, scene.pModels[modelIndex].pVertex[0].y, scene.pModels[modelIndex].pVertex[0].z);
 
 		for (int vertexIndex = 0; vertexIndex != scene.pModels[modelIndex].numberOfVertices; vertexIndex++) {
-			min = glm::min(min, scene.pModels[modelIndex].pVerticesToRender->vertexPosition[vertexIndex]);
-			max = glm::max(max, scene.pModels[modelIndex].pVerticesToRender->vertexPosition[vertexIndex]);
+			min = glm::min(min, glm::vec3(scene.pModels[modelIndex].pVertex[vertexIndex].x, scene.pModels[modelIndex].pVertex[vertexIndex].y, scene.pModels[modelIndex].pVertex[vertexIndex].z));
+			max = glm::max(max, glm::vec3(scene.pModels[modelIndex].pVertex[vertexIndex].x, scene.pModels[modelIndex].pVertex[vertexIndex].y, scene.pModels[modelIndex].pVertex[vertexIndex].z));
 		}
 
 		pAABB[modelIndex].max = max;
 		pAABB[modelIndex].min = min;
+
+		// Calculate and store the size, height, and width of the AABB
+		pAABB[modelIndex].size.x = max.x - min.x;  // Width (X-axis)
+		pAABB[modelIndex].size.y = max.y - min.y;  // Height (Y-axis)
+		pAABB[modelIndex].size.z = max.z - min.z;  // Depth (Z-axis)
+		pAABB[modelIndex].center = (min + max) / 2.0f;
 	}
 }
 
@@ -95,41 +101,66 @@ bool cPhysicsUpdated::CheckBoundingSphereCollision(cScene& scene)
 		for (int model2Index = model1Index + 1; model2Index != scene.numberOfMeshesToLoad; model2Index++) {
 			distance = glm::distance(pBoundingSpheres[model1Index].center, pBoundingSpheres[model2Index].center);
 			if (distance <= (pBoundingSpheres[model1Index].radius + pBoundingSpheres[model2Index].radius)) {
-				std::cout << "Intersection point: (" << pBoundingSpheres[model1Index].center.x + (pBoundingSpheres[model1Index].radius / pBoundingSpheres[model1Index].radius + pBoundingSpheres[model2Index].radius) * (pBoundingSpheres[model2Index].center.x - pBoundingSpheres[model1Index].center.x) << ", "
+				/*std::cout << "Intersection point: (" << pBoundingSpheres[model1Index].center.x + (pBoundingSpheres[model1Index].radius / pBoundingSpheres[model1Index].radius + pBoundingSpheres[model2Index].radius) * (pBoundingSpheres[model2Index].center.x - pBoundingSpheres[model1Index].center.x) << ", "
 					<< pBoundingSpheres[model1Index].center.y + (pBoundingSpheres[model1Index].radius / pBoundingSpheres[model1Index].radius + pBoundingSpheres[model2Index].radius) * (pBoundingSpheres[model2Index].center.y - pBoundingSpheres[model1Index].center.y) << ", "
-					<< pBoundingSpheres[model1Index].center.z + (pBoundingSpheres[model1Index].radius / pBoundingSpheres[model1Index].radius + pBoundingSpheres[model2Index].radius) * (pBoundingSpheres[model2Index].center.z - pBoundingSpheres[model1Index].center.z) << ")" << std::endl;
+					<< pBoundingSpheres[model1Index].center.z + (pBoundingSpheres[model1Index].radius / pBoundingSpheres[model1Index].radius + pBoundingSpheres[model2Index].radius) * (pBoundingSpheres[model2Index].center.z - pBoundingSpheres[model1Index].center.z) << ")" << std::endl;*/
 			}
 			return distance <= (pBoundingSpheres[model1Index].radius + pBoundingSpheres[model2Index].radius);		// they will collide
 		}
 	}
 }
 
-bool cPhysicsUpdated::CheckAABBCollision(const sAABB& aabb1, const sAABB& aabb2)
+bool cPhysicsUpdated::CheckAABBCollision(cScene& scene)
 {
-	return (aabb1.max.x > aabb2.min.x && aabb1.min.x < aabb2.max.x &&
-		aabb1.max.y > aabb2.min.y && aabb1.min.y < aabb2.max.y &&
-		aabb1.max.z > aabb2.min.z && aabb1.min.z < aabb2.max.z);	// they will collide
+	for (int model1Index = 0; model1Index != scene.numberOfMeshesToLoad; model1Index++) {
+		for (int model2Index = model1Index + 1; model2Index != scene.numberOfMeshesToLoad; model2Index++) {
+			if (pAABB[model1Index].max.x > pAABB[model2Index].min.x && pAABB[model1Index].min.x < pAABB[model2Index].max.x &&
+				pAABB[model1Index].max.y > pAABB[model2Index].min.y && pAABB[model1Index].min.y < pAABB[model2Index].max.y &&
+				pAABB[model1Index].max.z > pAABB[model2Index].min.z && pAABB[model1Index].min.z < pAABB[model2Index].max.z) {
+				
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 bool cPhysicsUpdated::CheckCollision(cScene& scene)
 {
-	CalculateBoundingSpheres(scene);
 	for (int modelIndex = 0; modelIndex != scene.numberOfMeshesToLoad; modelIndex++) {
 		for (int secondModel = modelIndex + 1; secondModel != scene.numberOfMeshesToLoad; secondModel++) {
+			CalculateBoundingSpheres(scene);
 			
-			// Print bounding sphere details for debugging
-			std::cout << "Model " << modelIndex << ": Center = ("
-				<< pBoundingSpheres[modelIndex].center.x << ", "
-				<< pBoundingSpheres[modelIndex].center.y << ", "
-				<< pBoundingSpheres[modelIndex].center.z << ")" << std::endl;
+			//// Print bounding sphere details for debugging
+			//std::cout << "Model " << modelIndex << ": Center = ("
+			//	<< pBoundingSpheres[modelIndex].center.x << ", "
+			//	<< pBoundingSpheres[modelIndex].center.y << ", "
+			//	<< pBoundingSpheres[modelIndex].center.z << ")" << std::endl;
 
-			std::cout << "Model " << secondModel << ": Center = ("
-				<< pBoundingSpheres[secondModel].center.x << ", "
-				<< pBoundingSpheres[secondModel].center.y << ", "
-				<< pBoundingSpheres[secondModel].center.z << ")" << std::endl;
+			//std::cout << "Model " << secondModel << ": Center = ("
+			//	<< pBoundingSpheres[secondModel].center.x << ", "
+			//	<< pBoundingSpheres[secondModel].center.y << ", "
+			//	<< pBoundingSpheres[secondModel].center.z << ")" << std::endl;
 
 			if (CheckBoundingSphereCollision(scene)) {
-				std::cout << "Collision detected: Model " << modelIndex << " is colliding with Model " << secondModel << std::endl;
+				//std::cout << "Collision detected of spheres: Model " << modelIndex << " is colliding with Model " << secondModel << std::endl;
+
+				CalculateAABB(scene);
+
+				// Print aabb details for debugging
+				std::cout << "aabb Model " << modelIndex << ": Center = ("
+					<< pAABB[modelIndex].center.x << ", "
+					<< pAABB[modelIndex].center.y << ", "
+					<< pAABB[modelIndex].center.z << ")" << std::endl;
+
+				std::cout << "aabb Model " << secondModel << ": Center = ("
+					<< pAABB[secondModel].center.x << ", "
+					<< pAABB[secondModel].center.y << ", "
+					<< pAABB[secondModel].center.z << ")" << std::endl;
+
+				if (CheckAABBCollision(scene)) {
+					std::cout << "Collision detected of aabbs: Model " << modelIndex << " is colliding with Model " << secondModel << std::endl;
+				}
 			}
 		}
 	}

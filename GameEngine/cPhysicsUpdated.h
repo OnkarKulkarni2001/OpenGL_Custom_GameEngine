@@ -28,6 +28,8 @@ public:
 	struct sAABB {
 		glm::vec3 min;
 		glm::vec3 max;
+		glm::vec3 size;		// parameters (x = width, y = height, z = depth)
+		glm::vec3 center;
 	};
 
 	sBoundingSphere* pBoundingSpheres;
@@ -42,7 +44,7 @@ public:
 	void CalculateAABB(cScene& scene);
 	void CalculateBoundingSpheres(cScene& scene);
 	bool CheckBoundingSphereCollision(cScene& scene);
-	bool CheckAABBCollision(const sAABB& aabb1, const sAABB& aabb2);
+	bool CheckAABBCollision(cScene& scene);
 	bool CheckCollision(cScene& scene);
 	bool CheckTriangleTriangleCollision(const sTriangleInPhysics& tri1, const sTriangleInPhysics& tri2, cScene& scene);
 	void HandleColllision(cScene& scene);

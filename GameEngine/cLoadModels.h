@@ -43,6 +43,10 @@ public:
 		float x, y, z, xScale, yScale, zScale, xRotation, yRotation, zRotation;
 	};
 
+	struct sTransformedVertex {
+		glm::vec3 transformedVertex;
+	};
+
 	//struct sMaterial {
 	//	float shininess;
 	//	glm::vec3 diffuse;
@@ -50,6 +54,7 @@ public:
 	//};
 
 	//cPhysics::sPhysicsMesh physicsMesh;
+	sTransformedVertex* transformedVertices;
 	sMeshTransform pMeshTransform;
 	sVertex* pVertex;
 	sFaces* pFaces;
@@ -59,5 +64,6 @@ public:
 	sMaterial* vMaterial;*/		// this dynamic array is added just because I wanted to access index of materials from ExportMaterial function.
 
 	void LoadPlyModel(string ModelFileName);
+	void GenerateTransformedVertices();
 	glm::mat4 CreateModelMatrix(GLuint shaderProgram, cLoadModels plyModel);
 };

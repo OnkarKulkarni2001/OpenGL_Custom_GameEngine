@@ -65,6 +65,8 @@ void cScene::CreateScene(std::string sceneFileName) {
         sceneFile >> pModels[modelIndex].pMeshTransform.yRotation;
         sceneFile >> pModels[modelIndex].pMeshTransform.zRotation;
 
+        pModels[modelIndex].GenerateTransformedVertices();
+
         modelIndex++;
     }
 
