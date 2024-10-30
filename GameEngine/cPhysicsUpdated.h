@@ -32,10 +32,23 @@ public:
 		glm::vec3 center;
 	};
 
+	struct sSphereSphere_Collision {
+		cLoadModels* model;
+		sBoundingSphere* collidingSpheres[2];
+	};
+
+	struct sAABBAABB_Collision {
+		cLoadModels* model;
+		sAABB* collidingAABBs[2];
+	};
+
 	sBoundingSphere* pBoundingSpheres;
 	sAABB* pAABB;
 	sTriangleInPhysics* pTriangleInPhysics;
 	std::vector<std::vector<sTriangleInPhysics>> pAllModelTriangles;
+
+	std::vector<sSphereSphere_Collision> vecCollidingSpheres;
+	std::vector<sAABBAABB_Collision> vecCollidingAABBs;
 
 	cPhysicsUpdated(cScene& scene);
 	~cPhysicsUpdated();
@@ -43,9 +56,9 @@ public:
 	void CopyFacesTosTriangleInPhysics(cScene& scene);
 	void CalculateAABB(cScene& scene);
 	void CalculateBoundingSpheres(cScene& scene);
-	bool CheckBoundingSphereCollision(cScene& scene);
-	bool CheckAABBCollision(cScene& scene);
+	bool CheckBoundingSphereCollision(sBoundingSphere& sphere1, sBoundingSphere& sphere2);
+	bool CheckAABBCollision(sAABB& aabb1, sAABB& aabb2);
 	bool CheckCollision(cScene& scene);
-	bool CheckTriangleTriangleCollision(cScene& scene);
+	bool CheckTriangleTriangleCollision(sTriangleInPhysics& triA, sTriangleInPhysics& triB);
 	void HandleColllision(cScene& scene);
 };

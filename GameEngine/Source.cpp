@@ -67,7 +67,7 @@ int main() {
     cLightManager lightManager;
     lightManager.LoadLights("D:/Graphics1/GameEngine/lightsFile.txt");
     // Camera Initialization
-    FlyCam flyCam(800, 600, glm::vec3(-10.0f, 0.0f, -20.0f), 180.0f);
+    FlyCam flyCam(800, 600, glm::vec3(84.0f, 13.0f, 4.0f), 180.0f);
     flyCam.camSpeed = 1.0f;
 
     cLightMover lightMover(lightManager, flyCam, 5);
@@ -78,13 +78,21 @@ int main() {
 
     for (int modelIndex = 0; modelIndex != scene.numberOfMeshesToLoad; modelIndex++) {
         scene.pModels[modelIndex].pTransformedVertices = new cLoadModels::sTransformedVertex[scene.pModels[modelIndex].numberOfVertices];
+    
+        glm::mat4 model = scene.pModels[modelIndex].CreateModelMatrix(shaderProgram, scene.pModels[modelIndex]);      // Creation of model matrix with arguements passed in sceneFile.txt
+        scene.pModels[modelIndex].GenerateTransformedVertices(model);
     }   // Used for initializing the pTransformedVertices, Nothing new xD
 
     // Starting physics
     cPhysicsUpdated physicsEngine(scene);
     //physicsEngine.StartPhysics(scene);
-    
+
     startTime = glfwGetTime();
+    cPlayer bunny(scene.pModels[0]);
+    bunny.SetSpeed(0.06f);
+
+    cPlayer dragon(scene.pModels[2]);
+    dragon.SetSpeed(0.06f);
     
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -95,6 +103,9 @@ int main() {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, true);
         glfwGetWindowSize(window, &flyCam.camWidth, &flyCam.camHeight);
+
+        std::string cameraPositionInTitle = "Camera Location: (" + to_string(flyCam.camLocation.x) + ", " + to_string(flyCam.camLocation.y) + ", " + to_string(flyCam.camLocation.z) + ") Camera Speed: " + to_string(flyCam.camSpeed) + " Camera Roll: " + to_string(flyCam.camRoll) + " Cam yaw: " + to_string(flyCam.camYaw) + " Cam pitch: " + to_string(flyCam.camPitch);
+        glfwSetWindowTitle(window, cameraPositionInTitle.c_str());
 
         endTime = glfwGetTime();
         deltaTime = endTime - startTime;
@@ -121,13 +132,9 @@ int main() {
         lightManager.TurnOnLights(shaderProgram, 5);
         // ------------------------------------------------------------------------------------------------------------------------------
         // You can create player objects here and make them move from here
-        cPlayer bunny(scene.pModels[0]);
-        bunny.SetSpeed(0.2f);
-        bunny.MoveForward();
+        bunny.MoveBackward();
 
-        cPlayer dragon(scene.pModels[2]);
-        dragon.SetSpeed(0.2f);
-        dragon.MoveBackward();
+        dragon.MoveForward();
         // ------------------------------------------------------------------------------------------------------------------------------
 
         glBindVertexArray(VAO);
@@ -146,7 +153,10 @@ int main() {
             offset += scene.pModels[index].numberOfVerticesToRender;
         }
 
-        physicsEngine.CheckCollision(scene);
+        std::cout << deltaTime << ": ";
+        if (physicsEngine.CheckCollision(scene)) {
+            //dragon.SetSpeed(0.1f);
+        }
 
         // Swap buffers and poll IO events (keys pressed/released, mouse moved, etc.)
         glfwSwapBuffers(window);

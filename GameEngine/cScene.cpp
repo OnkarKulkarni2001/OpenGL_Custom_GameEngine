@@ -68,6 +68,8 @@ void cScene::CreateScene(std::string sceneFileName) {
         modelIndex++;
     }
 
+
+
     //while (token != "mesh_material") {
     //    sceneFile >> token;
     //}

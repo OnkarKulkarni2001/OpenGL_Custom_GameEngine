@@ -11,6 +11,8 @@
 #include <glm/gtc/matrix_transform.hpp> 
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include "cLoadModels.h"
+#include "cPhysicsUpdated.h"
+
 
 class cPlayer : public IPlayer {
 public:
