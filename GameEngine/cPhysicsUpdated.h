@@ -32,6 +32,12 @@ public:
 		glm::vec3 center;
 	};
 
+	struct sLine {
+		glm::vec3 start;
+		glm::vec3 end;
+		float length = glm::distance(end, start);
+	};
+
 	struct sSphereSphere_Collision {
 		cLoadModels* model;
 		sBoundingSphere* collidingSpheres[2];
@@ -42,6 +48,10 @@ public:
 		sAABB* collidingAABBs[2];
 	};
 
+	struct sTriangleTriangle_Collision {
+		sTriangleInPhysics* collidingTriangles[2];
+	};
+
 	sBoundingSphere* pBoundingSpheres;
 	sAABB* pAABB;
 	sTriangleInPhysics* pTriangleInPhysics;
@@ -49,6 +59,7 @@ public:
 
 	std::vector<sSphereSphere_Collision> vecCollidingSpheres;
 	std::vector<sAABBAABB_Collision> vecCollidingAABBs;
+	std::vector<sTriangleTriangle_Collision> vecCollidingTriangles;
 
 	cPhysicsUpdated(cScene& scene);
 	~cPhysicsUpdated();
@@ -59,6 +70,9 @@ public:
 	bool CheckBoundingSphereCollision(sBoundingSphere& sphere1, sBoundingSphere& sphere2);
 	bool CheckAABBCollision(sAABB& aabb1, sAABB& aabb2);
 	bool CheckCollision(cScene& scene);
+	bool CheckLineTriangleCollision(sLine& line, sTriangleInPhysics& triangle);
 	bool CheckTriangleTriangleCollision(sTriangleInPhysics& triA, sTriangleInPhysics& triB);
 	void HandleColllision(cScene& scene);
+	float ScalarTriple(const glm::vec3& a, const glm::vec3& b, const glm::vec3& c);
+	void ProjectionOnAxis(glm::vec3 axis, sTriangleInPhysics& triangle, float& minProj, float& maxProj);
 };

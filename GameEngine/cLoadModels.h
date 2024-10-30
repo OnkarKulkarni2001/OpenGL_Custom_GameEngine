@@ -10,7 +10,6 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp> 
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
-#include "cPhysicsUpdated.h"
 
 using namespace std;
 
