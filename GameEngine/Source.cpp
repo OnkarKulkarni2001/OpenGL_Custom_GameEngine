@@ -12,6 +12,7 @@
 #include "cLightManager.h"
 #include "cLightMover.h"
 #include "cPhysicsUpdated.h"
+#include "cRenderModel.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -55,14 +56,19 @@ int main() {
     scene.CreateScene("D:/Graphics1/GameEngine/sceneFileWithNormals.txt");
     //scene.ExportMaterial(shaderProgram, scene.numberOfMeshesToLoad);            // Considering number of materials = number of meshes to load
 
-    GLuint VAO, VBO;
+    //GLuint VAO, VBO;
     cVAOManager VAOManager;
-    VAO = VAOManager.BindVAOVBO(VBO, scene.numberOfMeshesToLoad, scene.pModels);
-    
-    int numberOfVerticesToRenderForAllModels = 0;
+    //VAO = VAOManager.BindVAOVBO(VBO, scene.numberOfMeshesToLoad, scene.pModels);
+    for (int i = 0; i != scene.pModels.size(); i++) {
+        VAOManager.GettingModelReadyToRender(scene.pModels[i]);         // This thing is new just because I created whole new VAO thing which creates several different VAOs and now I can render a single model multiple times
+    }
+
+    cRenderModel renderer;
+
+    /*int numberOfVerticesToRenderForAllModels = 0;
     for (int index = 0; index != scene.pModels.size(); index++) {
         numberOfVerticesToRenderForAllModels += scene.pModels[index].numberOfVerticesToRender;
-    }
+    }*/
 
     cLightManager lightManager;
     lightManager.LoadLights("D:/Graphics1/GameEngine/lightsFile.txt");
@@ -84,15 +90,15 @@ int main() {
     }   // Used for initializing the pTransformedVertices, Nothing new xD
 
     // Starting physics
-    cPhysicsUpdated physicsEngine(scene);
+    //cPhysicsUpdated physicsEngine(scene);
     //physicsEngine.StartPhysics(scene);
 
     startTime = glfwGetTime();
-    cPlayer bunny(scene.pModels[0]);
-    bunny.SetSpeed(0.06f);
-
-    cPlayer dragon(scene.pModels[2]);
-    dragon.SetSpeed(0.06f);
+    //cPlayer bunny(scene.pModels[0]);
+    //bunny.SetSpeed(0.06f);
+    //
+    //cPlayer dragon(scene.pModels[2]);
+    //dragon.SetSpeed(0.06f);
     
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -111,8 +117,6 @@ int main() {
         deltaTime = endTime - startTime;
         //std::cout << deltaTime << " Time passed" << std::endl;
         
-
-        //flyCam.camControls(window);
         flyCam.cameraMatrix(45.0f, 0.1f, 1000.0f, shaderProgram, "camMatrix", window);
 
         // Rendering commands here
@@ -132,31 +136,34 @@ int main() {
         lightManager.TurnOnLights(shaderProgram, 5);
         // ------------------------------------------------------------------------------------------------------------------------------
         // You can create player objects here and make them move from here
-        bunny.MoveBackward();
-
-        dragon.MoveForward();
+        //bunny.MoveBackward();
+        //
+        //dragon.MoveForward();
         // ------------------------------------------------------------------------------------------------------------------------------
 
-        glBindVertexArray(VAO);
         shader.SetSceneView(window);        // Press 1, 2 or 3 for different viewModes like wireframe, fill or point
 
-        int offset = 0;
-        for (int index = 0; index != scene.pModels.size(); index++) {
+        //glBindVertexArray(VAO);
+        //int offset = 0;
+        //for (int index = 0; index != scene.pModels.size(); index++) {
+        //
+        //    glm::mat4 model = scene.pModels[index].CreateModelMatrix(shaderProgram, scene.pModels[index]);      // Creation of model matrix with arguements passed in sceneFile.txt
+        //    scene.pModels[index].GenerateTransformedVertices(model);            // this is here because collisions want transformed vertices
+        //
+        //    unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
+        //    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        //
+        //    glDrawArrays(GL_TRIANGLES, offset, scene.pModels[index].numberOfVerticesToRender);
+        //    offset += scene.pModels[index].numberOfVerticesToRender;
+        //}
 
-            glm::mat4 model = scene.pModels[index].CreateModelMatrix(shaderProgram, scene.pModels[index]);      // Creation of model matrix with arguements passed in sceneFile.txt
-            scene.pModels[index].GenerateTransformedVertices(model);            // this is here because collisions want transformed vertices
-
-            unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
-            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-
-            glDrawArrays(GL_TRIANGLES, offset, scene.pModels[index].numberOfVerticesToRender);
-            offset += scene.pModels[index].numberOfVerticesToRender;
+        for (int i = 0; i != scene.pModels.size(); i++) {
+            renderer.Render(shaderProgram, &scene.pModels[i]);
         }
 
-        std::cout << deltaTime << ": ";
-        if (physicsEngine.CheckCollision(scene)) {
-            //dragon.SetSpeed(0.1f);
-        }
+        //if (physicsEngine.CheckCollision(scene)) {
+        //    //dragon.SetSpeed(0.1f);
+        //}
 
         // Swap buffers and poll IO events (keys pressed/released, mouse moved, etc.)
         glfwSwapBuffers(window);

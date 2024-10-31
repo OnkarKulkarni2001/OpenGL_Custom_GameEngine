@@ -42,6 +42,7 @@ void cScene::CreateScene(std::string sceneFileName) {
         //pathOfMeshesToLoad.push_back(meshPath);
         cLoadModels plyModel;
         plyModel.LoadPlyModel(meshPath);
+        plyModel.ModelFileName = meshPath;
         pModels.push_back(plyModel);
     }
 
@@ -56,19 +57,20 @@ void cScene::CreateScene(std::string sceneFileName) {
         sceneFile >> pModels[modelIndex].pMeshTransform.x;
         sceneFile >> pModels[modelIndex].pMeshTransform.y;
         sceneFile >> pModels[modelIndex].pMeshTransform.z;
+        pModels[modelIndex].position = glm::vec3(pModels[modelIndex].pMeshTransform.x, pModels[modelIndex].pMeshTransform.y, pModels[modelIndex].pMeshTransform.z);
 
         sceneFile >> pModels[modelIndex].pMeshTransform.xScale;
         sceneFile >> pModels[modelIndex].pMeshTransform.yScale;
         sceneFile >> pModels[modelIndex].pMeshTransform.zScale;
+        pModels[modelIndex].scale = glm::vec3(pModels[modelIndex].pMeshTransform.xScale, pModels[modelIndex].pMeshTransform.yScale, pModels[modelIndex].pMeshTransform.zScale);
 
         sceneFile >> pModels[modelIndex].pMeshTransform.xRotation;
         sceneFile >> pModels[modelIndex].pMeshTransform.yRotation;
         sceneFile >> pModels[modelIndex].pMeshTransform.zRotation;
+        pModels[modelIndex].rotation = glm::vec3(pModels[modelIndex].pMeshTransform.xRotation, pModels[modelIndex].pMeshTransform.yRotation, pModels[modelIndex].pMeshTransform.zRotation);
 
         modelIndex++;
     }
-
-
 
     //while (token != "mesh_material") {
     //    sceneFile >> token;

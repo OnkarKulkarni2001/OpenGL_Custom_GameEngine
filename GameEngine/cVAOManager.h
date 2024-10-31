@@ -10,7 +10,8 @@ public:
     GLuint shaderProgram;
     int size_of_VAO;
     
-    GLuint BindVAOVBO(GLuint &VBO, int numberOfMeshesToLoad, std::vector<cLoadModels> pModels);
+    //GLuint BindVAOVBO(GLuint& VBO, int numberOfMeshesToLoad, std::vector<cLoadModels> pModels);
+    void GettingModelReadyToRender(cLoadModels& model);
 
     void VAOVBOCleanup();
 };

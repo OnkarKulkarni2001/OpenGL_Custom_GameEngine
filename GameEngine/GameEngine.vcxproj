@@ -146,6 +146,7 @@
     <ClCompile Include="cLightMover.cpp" />
     <ClCompile Include="cPhysicsUpdated.cpp" />
     <ClCompile Include="cPlayer.cpp" />
+    <ClCompile Include="cRenderModel.cpp" />
     <ClCompile Include="cScene.cpp" />
     <ClCompile Include="cShaderCompiler.cpp" />
     <ClCompile Include="cVAOManager.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="cLightMover.h" />
     <ClInclude Include="cPhysicsUpdated.h" />
     <ClInclude Include="cPlayer.h" />
+    <ClInclude Include="cRenderModel.h" />
     <ClInclude Include="IPlayer.h" />
     <ClInclude Include="cScene.h" />
     <ClInclude Include="cShaderCompiler.h" />

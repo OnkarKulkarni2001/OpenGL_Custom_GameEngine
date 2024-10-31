@@ -16,9 +16,9 @@ using namespace std;
 class cLoadModels {
 public:
 	string ModelFileName;
-	int numberOfVertices;
-	int numberOfFaces;
-	unsigned int numberOfVerticesToRender;
+	unsigned int numberOfVertices;
+	unsigned int numberOfFaces;
+	//unsigned int numberOfVerticesToRender;
 	int discard;
 
 	struct sVertex {
@@ -33,11 +33,11 @@ public:
 		unsigned int vertexNumber3;
 	};
 
-	struct sVerticesToRender {
-		glm::vec3 vertexPosition;
-		glm::vec3 vertexNormal;
-		glm::vec4 vertexColor;
-	};
+	//struct sVerticesToRender {
+	//	glm::vec3 vertexPosition;
+	//	glm::vec3 vertexNormal;
+	//	glm::vec4 vertexColor;
+	//};
 
 	struct sMeshTransform {
 		float x, y, z, xScale, yScale, zScale, xRotation, yRotation, zRotation;
@@ -47,6 +47,24 @@ public:
 		glm::vec3 transformedVertex;
 	};
 
+	//struct sModelDrawingDetails {
+		//std::string modelName;
+		
+		unsigned int VAO_ID;
+		unsigned int VBO_ID;		// this one is normal buffer
+		unsigned int IBO_ID;		// IBO(Index Buffer Object): this one is specifically for loading single model but drawing it multiple times
+
+		unsigned int VBO_Offset;	// this is starting index of VBO
+		unsigned int IBO_Offset;	// this is starting index of IBO
+
+		unsigned int numberOfIndices;	// this is what I had earlier which was named as numberOfVerticesToRender on line 21, which is numberOfFaces * 3;
+
+		bool bIsWireframe = false;
+		bool bIsVisible = true;
+	//};
+
+	glm::vec3 position, scale, rotation;
+
 	//struct sMaterial {
 	//	float shininess;
 	//	glm::vec3 diffuse;
@@ -54,11 +72,13 @@ public:
 	//};
 
 	//cPhysics::sPhysicsMesh physicsMesh;
+	sMeshTransform pMeshTransform;			// This one is placed with a line space below because this is different and not a pointer
+
 	sTransformedVertex* pTransformedVertices;
-	sMeshTransform pMeshTransform;
 	sVertex* pVertex;
 	sFaces* pFaces;
-	sVerticesToRender* pVerticesToRender;
+	//sVerticesToRender* pVerticesToRender;
+	unsigned int* pIndices;					// This is new for IBO earlier I was using sVerticesToRender* pVerticesToRender;
 	
 /*	sMaterial pMaterial;
 

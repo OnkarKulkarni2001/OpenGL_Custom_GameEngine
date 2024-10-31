@@ -28,11 +28,13 @@ void cLoadModels::LoadPlyModel(string ModelFileName) {
 		plyModelFile >> token;
 	}
 
-	numberOfVerticesToRender = numberOfFaces * 3;
-
+	//numberOfVerticesToRender = numberOfFaces * 3;
+	numberOfIndices = numberOfFaces * 3;		// New for implementing separate VAO, VBO, IBO, earlier it was numberOfVertices = numberOfFaces * 3;
+	
 	pVertex = new sVertex[numberOfVertices];
 	pFaces = new sFaces[numberOfFaces];
-	pVerticesToRender = new sVerticesToRender[numberOfVerticesToRender];
+	//pVerticesToRender = new sVerticesToRender[numberOfVerticesToRender];
+	pIndices = new unsigned int[numberOfIndices];
 
 	for (unsigned int vertexIterator = 0; vertexIterator != numberOfVertices; vertexIterator++) {
 		plyModelFile >> pVertex[vertexIterator].x;
@@ -56,44 +58,55 @@ void cLoadModels::LoadPlyModel(string ModelFileName) {
 		plyModelFile >> pFaces[faceIterator].vertexNumber3;
 	}	// storing the vertices contributing to a face
 
-	unsigned int vertexIndex = 0;
 
-	for (unsigned int indexOfFace = 0; indexOfFace != numberOfFaces; indexOfFace++) {
-		pVerticesToRender[vertexIndex + 0].vertexPosition.x = pVertex[pFaces[indexOfFace].vertexNumber1].x;		// Vertex1 of face
-		pVerticesToRender[vertexIndex + 0].vertexPosition.y = pVertex[pFaces[indexOfFace].vertexNumber1].y;
-		pVerticesToRender[vertexIndex + 0].vertexPosition.z = pVertex[pFaces[indexOfFace].vertexNumber1].z;		
-		pVerticesToRender[vertexIndex + 0].vertexNormal.x = pVertex[pFaces[indexOfFace].vertexNumber1].nx;
-		pVerticesToRender[vertexIndex + 0].vertexNormal.y = pVertex[pFaces[indexOfFace].vertexNumber1].ny;
-		pVerticesToRender[vertexIndex + 0].vertexNormal.z = pVertex[pFaces[indexOfFace].vertexNumber1].nz;
-		pVerticesToRender[vertexIndex + 0].vertexColor.r = pVertex[pFaces[indexOfFace].vertexNumber1].r;
-		pVerticesToRender[vertexIndex + 0].vertexColor.g = pVertex[pFaces[indexOfFace].vertexNumber1].g;
-		pVerticesToRender[vertexIndex + 0].vertexColor.b = pVertex[pFaces[indexOfFace].vertexNumber1].b;
-		pVerticesToRender[vertexIndex + 0].vertexColor.a = pVertex[pFaces[indexOfFace].vertexNumber1].a;
+	//unsigned int vertexIndex = 0;
+	//for (unsigned int indexOfFace = 0; indexOfFace != numberOfFaces; indexOfFace++) {
+	//	pVerticesToRender[vertexIndex + 0].vertexPosition.x = pVertex[pFaces[indexOfFace].vertexNumber1].x;		// Vertex1 of face
+	//	pVerticesToRender[vertexIndex + 0].vertexPosition.y = pVertex[pFaces[indexOfFace].vertexNumber1].y;
+	//	pVerticesToRender[vertexIndex + 0].vertexPosition.z = pVertex[pFaces[indexOfFace].vertexNumber1].z;		
+	//	pVerticesToRender[vertexIndex + 0].vertexNormal.x = pVertex[pFaces[indexOfFace].vertexNumber1].nx;
+	//	pVerticesToRender[vertexIndex + 0].vertexNormal.y = pVertex[pFaces[indexOfFace].vertexNumber1].ny;
+	//	pVerticesToRender[vertexIndex + 0].vertexNormal.z = pVertex[pFaces[indexOfFace].vertexNumber1].nz;
+	//	pVerticesToRender[vertexIndex + 0].vertexColor.r = pVertex[pFaces[indexOfFace].vertexNumber1].r;
+	//	pVerticesToRender[vertexIndex + 0].vertexColor.g = pVertex[pFaces[indexOfFace].vertexNumber1].g;
+	//	pVerticesToRender[vertexIndex + 0].vertexColor.b = pVertex[pFaces[indexOfFace].vertexNumber1].b;
+	//	pVerticesToRender[vertexIndex + 0].vertexColor.a = pVertex[pFaces[indexOfFace].vertexNumber1].a;
+	//
+	//	pVerticesToRender[vertexIndex + 1].vertexPosition.x = pVertex[pFaces[indexOfFace].vertexNumber2].x;		// Vertex2 of face
+	//	pVerticesToRender[vertexIndex + 1].vertexPosition.y = pVertex[pFaces[indexOfFace].vertexNumber2].y;
+	//	pVerticesToRender[vertexIndex + 1].vertexPosition.z = pVertex[pFaces[indexOfFace].vertexNumber2].z;
+	//	pVerticesToRender[vertexIndex + 1].vertexNormal.x = pVertex[pFaces[indexOfFace].vertexNumber2].nx;
+	//	pVerticesToRender[vertexIndex + 1].vertexNormal.y = pVertex[pFaces[indexOfFace].vertexNumber2].ny;
+	//	pVerticesToRender[vertexIndex + 1].vertexNormal.z = pVertex[pFaces[indexOfFace].vertexNumber2].nz;
+	//	pVerticesToRender[vertexIndex + 1].vertexColor.r = pVertex[pFaces[indexOfFace].vertexNumber1].r;
+	//	pVerticesToRender[vertexIndex + 1].vertexColor.g = pVertex[pFaces[indexOfFace].vertexNumber1].g;
+	//	pVerticesToRender[vertexIndex + 1].vertexColor.b = pVertex[pFaces[indexOfFace].vertexNumber1].b;
+	//	pVerticesToRender[vertexIndex + 1].vertexColor.a = pVertex[pFaces[indexOfFace].vertexNumber1].a;
+	//	
+	//	pVerticesToRender[vertexIndex + 2].vertexPosition.x = pVertex[pFaces[indexOfFace].vertexNumber3].x;		// Vertex3 of face
+	//	pVerticesToRender[vertexIndex + 2].vertexPosition.y = pVertex[pFaces[indexOfFace].vertexNumber3].y;
+	//	pVerticesToRender[vertexIndex + 2].vertexPosition.z = pVertex[pFaces[indexOfFace].vertexNumber3].z;
+	//	pVerticesToRender[vertexIndex + 2].vertexNormal.x = pVertex[pFaces[indexOfFace].vertexNumber3].nx;
+	//	pVerticesToRender[vertexIndex + 2].vertexNormal.y = pVertex[pFaces[indexOfFace].vertexNumber3].ny;
+	//	pVerticesToRender[vertexIndex + 2].vertexNormal.z = pVertex[pFaces[indexOfFace].vertexNumber3].nz;
+	//	pVerticesToRender[vertexIndex + 2].vertexColor.r = pVertex[pFaces[indexOfFace].vertexNumber1].r;
+	//	pVerticesToRender[vertexIndex + 2].vertexColor.g = pVertex[pFaces[indexOfFace].vertexNumber1].g;
+	//	pVerticesToRender[vertexIndex + 2].vertexColor.b = pVertex[pFaces[indexOfFace].vertexNumber1].b;
+	//	pVerticesToRender[vertexIndex + 2].vertexColor.a = pVertex[pFaces[indexOfFace].vertexNumber1].a;
+	//
+	//	vertexIndex += 3;
+	//}	// copying over the vertex positions from triangle's(face's) vertices to pVerticesToRender and also setting the color of pVerticesToRender to white.	 // 
 
-		pVerticesToRender[vertexIndex + 1].vertexPosition.x = pVertex[pFaces[indexOfFace].vertexNumber2].x;		// Vertex2 of face
-		pVerticesToRender[vertexIndex + 1].vertexPosition.y = pVertex[pFaces[indexOfFace].vertexNumber2].y;
-		pVerticesToRender[vertexIndex + 1].vertexPosition.z = pVertex[pFaces[indexOfFace].vertexNumber2].z;
-		pVerticesToRender[vertexIndex + 1].vertexNormal.x = pVertex[pFaces[indexOfFace].vertexNumber2].nx;
-		pVerticesToRender[vertexIndex + 1].vertexNormal.y = pVertex[pFaces[indexOfFace].vertexNumber2].ny;
-		pVerticesToRender[vertexIndex + 1].vertexNormal.z = pVertex[pFaces[indexOfFace].vertexNumber2].nz;
-		pVerticesToRender[vertexIndex + 1].vertexColor.r = pVertex[pFaces[indexOfFace].vertexNumber1].r;
-		pVerticesToRender[vertexIndex + 1].vertexColor.g = pVertex[pFaces[indexOfFace].vertexNumber1].g;
-		pVerticesToRender[vertexIndex + 1].vertexColor.b = pVertex[pFaces[indexOfFace].vertexNumber1].b;
-		pVerticesToRender[vertexIndex + 1].vertexColor.a = pVertex[pFaces[indexOfFace].vertexNumber1].a;
-		
-		pVerticesToRender[vertexIndex + 2].vertexPosition.x = pVertex[pFaces[indexOfFace].vertexNumber3].x;		// Vertex3 of face
-		pVerticesToRender[vertexIndex + 2].vertexPosition.y = pVertex[pFaces[indexOfFace].vertexNumber3].y;
-		pVerticesToRender[vertexIndex + 2].vertexPosition.z = pVertex[pFaces[indexOfFace].vertexNumber3].z;
-		pVerticesToRender[vertexIndex + 2].vertexNormal.x = pVertex[pFaces[indexOfFace].vertexNumber3].nx;
-		pVerticesToRender[vertexIndex + 2].vertexNormal.y = pVertex[pFaces[indexOfFace].vertexNumber3].ny;
-		pVerticesToRender[vertexIndex + 2].vertexNormal.z = pVertex[pFaces[indexOfFace].vertexNumber3].nz;
-		pVerticesToRender[vertexIndex + 2].vertexColor.r = pVertex[pFaces[indexOfFace].vertexNumber1].r;
-		pVerticesToRender[vertexIndex + 2].vertexColor.g = pVertex[pFaces[indexOfFace].vertexNumber1].g;
-		pVerticesToRender[vertexIndex + 2].vertexColor.b = pVertex[pFaces[indexOfFace].vertexNumber1].b;
-		pVerticesToRender[vertexIndex + 2].vertexColor.a = pVertex[pFaces[indexOfFace].vertexNumber1].a;
+	// This is new for IBO
+	unsigned int index = 0;
+	for (unsigned int triIndex = 0; triIndex != numberOfFaces; triIndex++)
+	{
+		pIndices[index + 0] = pFaces[triIndex].vertexNumber1;
+		pIndices[index + 1] = pFaces[triIndex].vertexNumber2;
+		pIndices[index + 2] = pFaces[triIndex].vertexNumber3;
+		index += 3;
+	}
 
-		vertexIndex += 3;
-	}	// copying over the vertex positions from triangle's(face's) vertices to pVerticesToRender and also setting the color of pVerticesToRender to white.
 }
 
 void cLoadModels::GenerateTransformedVertices(glm::mat4 model)

@@ -46,6 +46,9 @@
     <Filter Include="Physics">
       <UniqueIdentifier>{d603f128-da6f-4fe0-ab54-31bf099aaed5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RenderTheCrap">
+      <UniqueIdentifier>{41f50547-15db-42af-b386-ea85bcb42640}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -83,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="cPhysicsUpdated.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="cRenderModel.cpp">
+      <Filter>RenderTheCrap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -126,6 +132,9 @@
     </ClInclude>
     <ClInclude Include="cPhysicsUpdated.h">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="cRenderModel.h">
+      <Filter>RenderTheCrap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
