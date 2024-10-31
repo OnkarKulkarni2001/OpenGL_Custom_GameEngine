@@ -4,16 +4,14 @@
 
 void cRenderModel::Render(GLuint shaderProgram, cLoadModels* model)
 {
-	if (model->bIsWireframe)
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	}
-	else
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
-
+	//if (model->bIsWireframe) {
+	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//}
+	//else {
+	//	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	//}
 	glBindVertexArray(model->VAO_ID);
+
 
 	glm::mat4 modelMat = model->CreateModelMatrix(shaderProgram, *model);      // Creation of model matrix with arguements passed in sceneFile.txt
 	model->GenerateTransformedVertices(modelMat);            // this is here because collisions want transformed vertices
@@ -23,4 +21,26 @@ void cRenderModel::Render(GLuint shaderProgram, cLoadModels* model)
 
 	glDrawElements(GL_TRIANGLES, model->numberOfIndices, GL_UNSIGNED_INT, (void*)0);
 	glBindVertexArray(0);
+}
+
+void cRenderModel::DrawDebugSphere(cLoadModels* sphereModel, glm::vec3 position, glm::vec4 RGBA, float scale, GLuint shaderProgram)
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	sphereModel->pMeshTransform.x = position.x;
+	sphereModel->pMeshTransform.y = position.y;
+	sphereModel->pMeshTransform.z = position.z;
+	
+	sphereModel->pVertex->r = RGBA.r;
+	sphereModel->pVertex->g = RGBA.g;
+	sphereModel->pVertex->b = RGBA.b;
+	sphereModel->pVertex->a = RGBA.a;
+
+	sphereModel->scale.x = scale;
+	sphereModel->scale.y = scale;
+	sphereModel->scale.z = scale;
+
+	sphereModel->bIsWireframe = true;
+
+    Render(shaderProgram, sphereModel);
 }

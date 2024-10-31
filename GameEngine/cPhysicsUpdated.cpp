@@ -14,11 +14,6 @@ cPhysicsUpdated::~cPhysicsUpdated()
 	delete[] pAABB;
 }
 
-void cPhysicsUpdated::DrawDebugSphere(cScene& scene)
-{
-
-}
-
 void cPhysicsUpdated::CopyFacesTosTriangleInPhysics(cScene& scene)
 {
 	pAllModelTriangles.resize(scene.numberOfMeshesToLoad);

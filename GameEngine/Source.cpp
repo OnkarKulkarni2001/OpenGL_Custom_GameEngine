@@ -141,7 +141,7 @@ int main() {
         //dragon.MoveForward();
         // ------------------------------------------------------------------------------------------------------------------------------
 
-        shader.SetSceneView(window);        // Press 1, 2 or 3 for different viewModes like wireframe, fill or point
+       
 
         //glBindVertexArray(VAO);
         //int offset = 0;
@@ -158,8 +158,17 @@ int main() {
         //}
 
         for (int i = 0; i != scene.pModels.size(); i++) {
+            if (scene.pModels[i].bIsWireframe) {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            }
+            else {
+                shader.SetSceneView(window);        // Press 1, 2 or 3 for different viewModes like wireframe, fill or point
+            }
             renderer.Render(shaderProgram, &scene.pModels[i]);
         }
+
+        renderer.DrawDebugSphere(&scene.pModels[0], glm::vec3(0, 0, 0), glm::vec4(0, 1, 0, 1), 1, shaderProgram);
+        
 
         //if (physicsEngine.CheckCollision(scene)) {
         //    //dragon.SetSpeed(0.1f);

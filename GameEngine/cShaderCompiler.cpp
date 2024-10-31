@@ -50,6 +50,7 @@ GLuint cShaderCompiler::CompileShader()
 
 void cShaderCompiler::SetSceneView(GLFWwindow* window)
 {
+
     if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
         viewMode = GL_POINT;
     }
@@ -59,5 +60,6 @@ void cShaderCompiler::SetSceneView(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) {
         viewMode = GL_FILL;
     }
+
     glPolygonMode(GL_FRONT_AND_BACK, viewMode);
 }

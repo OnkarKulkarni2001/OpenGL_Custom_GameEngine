@@ -1,5 +1,15 @@
 #include "cLoadModels.h"
 
+cLoadModels::cLoadModels()
+{
+	this->bIsVisible = true;
+	this->bIsWireframe = false;
+}
+
+cLoadModels::~cLoadModels()
+{
+}
+
 void cLoadModels::LoadPlyModel(string ModelFileName) {
 	ifstream plyModelFile(ModelFileName);
 

@@ -84,6 +84,9 @@ public:
 
 	sMaterial* vMaterial;*/		// this dynamic array is added just because I wanted to access index of materials from ExportMaterial function.
 
+	cLoadModels();
+	~cLoadModels();
+
 	void LoadPlyModel(string ModelFileName);
 	void GenerateTransformedVertices(glm::mat4 model);
 	glm::mat4 CreateModelMatrix(GLuint shaderProgram, cLoadModels plyModel);
