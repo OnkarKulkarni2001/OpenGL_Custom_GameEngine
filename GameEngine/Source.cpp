@@ -13,6 +13,8 @@
 #include "cLightMover.h"
 #include "cPhysicsUpdated.h"
 #include "cRenderModel.h"
+#include "cLua.h"
+
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -53,12 +55,10 @@ int main() {
 
     // Import Scene
     cScene scene;
-    scene.CreateScene("D:/Graphics1/GameEngine/sceneFileWithNormals.txt");
+    scene.CreateScene("../sceneFileWithNormals.txt");
     //scene.ExportMaterial(shaderProgram, scene.numberOfMeshesToLoad);            // Considering number of materials = number of meshes to load
 
-    //GLuint VAO, VBO;
     cVAOManager VAOManager;
-    //VAO = VAOManager.BindVAOVBO(VBO, scene.numberOfMeshesToLoad, scene.pModels);
     for (int i = 0; i != scene.pModels.size(); i++) {
         VAOManager.GettingModelReadyToRender(scene.pModels[i]);         // This thing is new just because I created whole new VAO thing which creates several different VAOs and now I can render a single model multiple times
     }
@@ -71,9 +71,9 @@ int main() {
     }*/
 
     cLightManager lightManager;
-    lightManager.LoadLights("D:/Graphics1/GameEngine/lightsFile.txt");
+    lightManager.LoadLights("../lightsFile.txt");
     // Camera Initialization
-    FlyCam flyCam(800, 600, glm::vec3(84.0f, 13.0f, 4.0f), 180.0f);
+    FlyCam flyCam(800, 600, glm::vec3(237.0f, 13.0f, 67.0f), 180.0f);
     flyCam.camSpeed = 1.0f;
 
     cLightMover lightMover(lightManager, flyCam, 5);
@@ -90,17 +90,27 @@ int main() {
     }   // Used for initializing the pTransformedVertices, Nothing new xD
 
     // Starting physics
-    //cPhysicsUpdated physicsEngine(scene);
-    //physicsEngine.StartPhysics(scene);
+    cPhysicsUpdated physicsEngine(scene);
 
     startTime = glfwGetTime();
-    //cPlayer bunny(scene.pModels[0]);
-    //bunny.SetSpeed(0.06f);
-    //
-    //cPlayer dragon(scene.pModels[2]);
-    //dragon.SetSpeed(0.06f);
+    cPlayer bunny(scene.pModels[0]);
+    bunny.SetSpeed(0.06f);
+    
+    cPlayer dragon(scene.pModels[2]);
+    dragon.SetSpeed(0.06f);
     
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+
+    // -----------------------------------------------LUA----------------------------------------------
+    
+    cLua lua;
+    lua_State* state = luaL_newstate();
+    lua.InitLua(state);
+    //lua.ExecuteLuaScript(state, "game_logic.lua");      // Need to implement this script game_logic.lua
+
+    // -----------------------------------------------LUA----------------------------------------------
+
 
     // Render loop
     while (!glfwWindowShouldClose(window)) {
@@ -136,12 +146,10 @@ int main() {
         lightManager.TurnOnLights(shaderProgram, 5);
         // ------------------------------------------------------------------------------------------------------------------------------
         // You can create player objects here and make them move from here
-        //bunny.MoveBackward();
-        //
-        //dragon.MoveForward();
+        bunny.MoveBackward();
+        
+        dragon.MoveForward();
         // ------------------------------------------------------------------------------------------------------------------------------
-
-       
 
         //glBindVertexArray(VAO);
         //int offset = 0;
@@ -167,18 +175,33 @@ int main() {
             renderer.Render(shaderProgram, &scene.pModels[i]);
         }
 
-        renderer.DrawDebugSphere(&scene.pModels[0], glm::vec3(0, 0, 0), glm::vec4(0, 1, 0, 1), 1, shaderProgram);
+        //renderer.DrawDebugSphere(&scene.pModels[0], glm::vec3(0, 0, 0), glm::vec4(0, 1, 0, 1), 1, shaderProgram);
         
-
-        //if (physicsEngine.CheckCollision(scene)) {
-        //    //dragon.SetSpeed(0.1f);
+        //if (deltaTime >= 10) {
+            /*if (physicsEngine.CheckCollision(scene)) {
+                std::cout << "Colliding" << std::endl;
+            }
+            else {
+                std::cout << "Not colliding" << std::endl;
+            }*/
+            //startTime = endTime;
         //}
+            //dragon.SetSpeed(0.1f);
+        
 
         // Swap buffers and poll IO events (keys pressed/released, mouse moved, etc.)
         glfwSwapBuffers(window);
         glfwPollEvents();
 
     }
+
+    // -----------------------------------------------LUA----------------------------------------------
+    
+    lua_close(state);   // Lua cleanup
+
+    // -----------------------------------------------LUA----------------------------------------------
+
+
 
     // Cleanup
     VAOManager.VAOVBOCleanup();

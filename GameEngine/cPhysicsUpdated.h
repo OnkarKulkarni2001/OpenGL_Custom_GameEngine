@@ -15,9 +15,8 @@ class cPhysicsUpdated
 {
 public:
 	struct sTriangleInPhysics {
-		glm::vec3 vertex1;
-		glm::vec3 vertex2;
-		glm::vec3 vertex3;
+		glm::vec3 vertices[3];
+		//glm::vec3 intersectionPoint;
 	};
 
 	struct sBoundingSphere {
@@ -49,13 +48,17 @@ public:
 	};
 
 	struct sTriangleTriangle_Collision {
-		sTriangleInPhysics* collidingTriangles[2];
+		cLoadModels* collidingModels[2];
+	};
+
+	struct sPhysicsMesh {
+		std::vector<sTriangleInPhysics> vecTriangleInPhysicsModel;				// this is for storing triangles of single model
 	};
 
 	sBoundingSphere* pBoundingSpheres;
 	sAABB* pAABB;
-	sTriangleInPhysics* pTriangleInPhysics;
-	std::vector<std::vector<sTriangleInPhysics>> pAllModelTriangles;
+
+	std::vector<sPhysicsMesh*> vecPhysicsMeshes;			// this is for storing all physics meshes containing physics triangles
 
 	std::vector<sSphereSphere_Collision> vecCollidingSpheres;
 	std::vector<sAABBAABB_Collision> vecCollidingAABBs;

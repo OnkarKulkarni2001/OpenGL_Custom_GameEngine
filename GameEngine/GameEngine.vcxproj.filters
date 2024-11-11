@@ -49,6 +49,9 @@
     <Filter Include="RenderTheCrap">
       <UniqueIdentifier>{41f50547-15db-42af-b386-ea85bcb42640}</UniqueIdentifier>
     </Filter>
+    <Filter Include="LUA">
+      <UniqueIdentifier>{1d40c95f-bcaa-406b-9d3f-17a75a471cd3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -89,6 +92,9 @@
     </ClCompile>
     <ClCompile Include="cRenderModel.cpp">
       <Filter>RenderTheCrap</Filter>
+    </ClCompile>
+    <ClCompile Include="cLua.cpp">
+      <Filter>LUA</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +141,9 @@
     </ClInclude>
     <ClInclude Include="cRenderModel.h">
       <Filter>RenderTheCrap</Filter>
+    </ClInclude>
+    <ClInclude Include="cLua.h">
+      <Filter>LUA</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

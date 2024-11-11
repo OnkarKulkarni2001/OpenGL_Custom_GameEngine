@@ -4,14 +4,7 @@
 
 void cRenderModel::Render(GLuint shaderProgram, cLoadModels* model)
 {
-	//if (model->bIsWireframe) {
-	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	//}
-	//else {
-	//	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	//}
 	glBindVertexArray(model->VAO_ID);
-
 
 	glm::mat4 modelMat = model->CreateModelMatrix(shaderProgram, *model);      // Creation of model matrix with arguements passed in sceneFile.txt
 	model->GenerateTransformedVertices(modelMat);            // this is here because collisions want transformed vertices

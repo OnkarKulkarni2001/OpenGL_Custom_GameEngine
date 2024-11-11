@@ -131,14 +131,11 @@ void cLoadModels::GenerateTransformedVertices(glm::mat4 model)
 glm::mat4 cLoadModels::CreateModelMatrix(GLuint shaderProgram, cLoadModels plyModel) {
 	glm::mat4 model = glm::mat4(1.0f);
 	model = translate(model, glm::vec3(plyModel.pMeshTransform.x , plyModel.pMeshTransform.y, plyModel.pMeshTransform.z));
-	
-	// Step 2: Apply rotations (Z, Y, X order)
-	// Rotations are applied in the reverse order (Z -> Y -> X)
+
 	model = glm::rotate(model, glm::radians(plyModel.pMeshTransform.zRotation), glm::vec3(0.0f, 0.0f, 1.0f)); // Rotate around Z-axis
 	model = glm::rotate(model, glm::radians(plyModel.pMeshTransform.yRotation), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotate around Y-axis
 	model = glm::rotate(model, glm::radians(plyModel.pMeshTransform.xRotation), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotate around X-axis
 
-	// Step 3: Apply scaling
 	model = glm::scale(model, glm::vec3(
 		plyModel.pMeshTransform.xScale,
 		plyModel.pMeshTransform.yScale,

@@ -9,18 +9,21 @@ cPhysicsUpdated::cPhysicsUpdated(cScene& scene)
 
 cPhysicsUpdated::~cPhysicsUpdated()
 {
-	delete[] pTriangleInPhysics;
 	delete[] pBoundingSpheres;
 	delete[] pAABB;
 }
 
 void cPhysicsUpdated::CopyFacesTosTriangleInPhysics(cScene& scene)
 {
-	pAllModelTriangles.resize(scene.numberOfMeshesToLoad);
+	vecPhysicsMeshes.clear();
+	vecPhysicsMeshes.resize(scene.pModels.size());
+	//vecModelTriangles.resize(scene.numberOfMeshesToLoad);
 	for (int modelIndex = 0; modelIndex != scene.numberOfMeshesToLoad; modelIndex++) {
 		//pTriangleInPhysics = new sTriangleInPhysics[scene.pModels[modelIndex].numberOfFaces];
-		pAllModelTriangles[modelIndex].resize(scene.pModels[modelIndex].numberOfFaces);
-		pTriangleInPhysics = new sTriangleInPhysics[pAllModelTriangles[modelIndex].size()];
+		//vecPhysicsMeshes[modelIndex] = new sPhysicsMesh[scene.numberOfMeshesToLoad];
+		//vecPhysicsMeshes[modelIndex].vecTriangleInPhysicsModel.resize(scene.pModels[modelIndex].numberOfFaces);
+		//vecTriangleInPhysicsModel[modelIndex].resize(vecModelTriangles[modelIndex].size());
+		sPhysicsMesh* physicsMesh = new sPhysicsMesh();
 
 		for (int faceIndex = 0; faceIndex != scene.pModels[modelIndex].numberOfFaces; faceIndex++) {
 			unsigned int v1 = scene.pModels[modelIndex].pFaces[faceIndex].vertexNumber1;
@@ -29,16 +32,19 @@ void cPhysicsUpdated::CopyFacesTosTriangleInPhysics(cScene& scene)
 
 			sTriangleInPhysics triangle;
 
-			triangle.vertex1 = scene.pModels[modelIndex].pTransformedVertices[v1].transformedVertex;
-			triangle.vertex2 = scene.pModels[modelIndex].pTransformedVertices[v2].transformedVertex;
-			triangle.vertex3 = scene.pModels[modelIndex].pTransformedVertices[v3].transformedVertex;
+			triangle.vertices[0] = scene.pModels[modelIndex].pTransformedVertices[v1].transformedVertex;
+			triangle.vertices[1] = scene.pModels[modelIndex].pTransformedVertices[v2].transformedVertex;
+			triangle.vertices[2] = scene.pModels[modelIndex].pTransformedVertices[v3].transformedVertex;
 			//pTriangleInPhysics[faceIndex].vertex1 = scene.pModels[modelIndex].pTransformedVertices[v1].transformedVertex;
 			//pTriangleInPhysics[faceIndex].vertex2 = scene.pModels[modelIndex].pTransformedVertices[v2].transformedVertex;
 			//pTriangleInPhysics[faceIndex].vertex3 = scene.pModels[modelIndex].pTransformedVertices[v3].transformedVertex;
-			pAllModelTriangles[modelIndex].push_back(triangle);
+			
+			physicsMesh->vecTriangleInPhysicsModel.push_back(triangle);
 
-			pTriangleInPhysics = &triangle;
+
+			//pTriangleInPhysics = &triangle;
 		}
+		vecPhysicsMeshes[modelIndex] = physicsMesh;
 		//pAllModelTriangles[modelIndex].push_back(pTriangleInPhysics);
 	}
 }
@@ -148,89 +154,145 @@ bool cPhysicsUpdated::CheckAABBCollision(sAABB& aabb1, sAABB& aabb2)
 	return false;
 }
 
+//bool cPhysicsUpdated::CheckCollision(cScene& scene)
+//{
+//	CalculateBoundingSpheres(scene);
+//	CalculateAABB(scene);
+//
+//	vecCollidingSpheres.clear();
+//	vecCollidingAABBs.clear();
+//	vecCollidingTriangles.clear();
+//
+//	//vecModelTriangles.resize(scene.numberOfMeshesToLoad);
+//	//pTriangleInPhysics = new sTriangleInPhysics[scene.numberOfMeshesToLoad];
+//
+//	for (int modelIndex = 0; modelIndex != scene.numberOfMeshesToLoad; modelIndex++) {
+//		for (int secondModel = modelIndex + 1; secondModel != scene.numberOfMeshesToLoad; secondModel++) {
+//			
+//			//// Print bounding sphere details for debugging
+//			//std::cout << "Model " << modelIndex << ": Center = ("
+//			//	<< pBoundingSpheres[modelIndex].center.x << ", "
+//			//	<< pBoundingSpheres[modelIndex].center.y << ", "
+//			//	<< pBoundingSpheres[modelIndex].center.z << ")" << std::endl;
+//
+//			//std::cout << "Model " << secondModel << ": Center = ("
+//			//	<< pBoundingSpheres[secondModel].center.x << ", "
+//			//	<< pBoundingSpheres[secondModel].center.y << ", "
+//			//	<< pBoundingSpheres[secondModel].center.z << ")" << std::endl;
+//			sSphereSphere_Collision collidingSpheresInfo;
+//
+//			if (CheckBoundingSphereCollision(pBoundingSpheres[modelIndex], pBoundingSpheres[secondModel])) {
+//				
+//				collidingSpheresInfo.collidingSpheres[0] = &pBoundingSpheres[modelIndex];
+//				collidingSpheresInfo.collidingSpheres[1] = &pBoundingSpheres[secondModel];
+//				//collidingSpheresInfo.model[0] = scene.pModels[modelIndex];
+//				//collidingSpheresInfo.model[1] = scene.pModels[secondModel];
+//
+//				vecCollidingSpheres.push_back(collidingSpheresInfo);
+//				//std::cout << "Collision detected of spheres: Model " << modelIndex << " is colliding with Model " << secondModel << std::endl;
+//
+//				 //Print aabb details for debugging
+//				//std::cout << "aabb Model " << modelIndex << ": Center = ("
+//				//	<< pAABB[modelIndex].center.x << ", "
+//				//	<< pAABB[modelIndex].center.y << ", "
+//				//	<< pAABB[modelIndex].center.z << ") Size: ("
+//				//	<< pAABB[modelIndex].size.x << ", "
+//				//	<< pAABB[modelIndex].size.y << ", "
+//				//	<< pAABB[modelIndex].size.z << ")" << std::endl;
+//				//
+//				//std::cout << "aabb Model " << secondModel << ": Center = ("
+//				//	<< pAABB[secondModel].center.x << ", "
+//				//	<< pAABB[secondModel].center.y << ", "
+//				//	<< pAABB[secondModel].center.z << ") Size: ("
+//				//	<< pAABB[secondModel].size.x << ", "
+//				//	<< pAABB[secondModel].size.y << ", "
+//				//	<< pAABB[secondModel].size.z << ")" << std::endl;
+//				sAABBAABB_Collision collidingAABBsInfo;
+//
+//				if (CheckAABBCollision(pAABB[modelIndex], pAABB[secondModel])) {
+//
+//					collidingAABBsInfo.collidingAABBs[0] = &pAABB[modelIndex];
+//					collidingAABBsInfo.collidingAABBs[1] = &pAABB[secondModel];
+//					//collidingAABBsInfo.model[0] = scene.pModels[modelIndex];
+//					//collidingAABBsInfo.model[1] = scene.pModels[secondModel];
+//
+//					vecCollidingAABBs.push_back(collidingAABBsInfo);
+//
+//					//std::cout << "Collision detected of aabbs: Model " << modelIndex << " is colliding with Model " << secondModel << std::endl;
+//					sTriangleTriangle_Collision collidingTrianglesInfo;
+//
+//					//std::cout << "Checking collision between triangles:\n";
+//					//std::cout << "Triangle A: ("
+//					//	<< pTriangleInPhysics[modelIndex].vertex1.x << ", "
+//					//	<< pTriangleInPhysics[modelIndex].vertex1.y << ", "
+//					//	<< pTriangleInPhysics[modelIndex].vertex1.z << ")\n";
+//					//std::cout << "Triangle B: ("
+//					//	<< pTriangleInPhysics[secondModel].vertex1.x << ", "
+//					//	<< pTriangleInPhysics[secondModel].vertex1.y << ", "
+//					//	<< pTriangleInPhysics[secondModel].vertex1.z << ")\n";
+//					
+//					//vecModelTriangles[modelIndex].resize(scene.pModels[modelIndex].numberOfFaces);
+//					//for (int model1FaceIndex = 0; model1FaceIndex != vecPhysicsMeshes[modelIndex]->vecTriangleInPhysicsModel.size(); model1FaceIndex++) {
+//					//	for (int model2FaceIndex = 0; model2FaceIndex != vecPhysicsMeshes[secondModel]->vecTriangleInPhysicsModel.size(); model2FaceIndex++) {
+//					//		if (CheckTriangleTriangleCollision(vecPhysicsMeshes[modelIndex]->vecTriangleInPhysicsModel[model1FaceIndex], vecPhysicsMeshes[secondModel]->vecTriangleInPhysicsModel[model2FaceIndex])) {
+//					//			collidingTrianglesInfo.collidingTriangles[0] = &vecPhysicsMeshes[modelIndex]->vecTriangleInPhysicsModel[model1FaceIndex];
+//					//			collidingTrianglesInfo.collidingTriangles[1] = &vecPhysicsMeshes[secondModel]->vecTriangleInPhysicsModel[model2FaceIndex];
+//
+//					//			vecCollidingTriangles.push_back(collidingTrianglesInfo);
+//					//			//std::cout << "Boom! Models collide!" << std::endl;
+//					//			return true;
+//					//		}	
+//					//	}
+//					//}
+//
+//					for (int triAIndex = 0; triAIndex != vecPhysicsMeshes[modelIndex]->vecTriangleInPhysicsModel.size(); triAIndex++) {
+//						for (int triBIndex = 0; triBIndex != vecPhysicsMeshes[secondModel]->vecTriangleInPhysicsModel.size(); triBIndex++) {
+//							if (CheckTriangleTriangleCollision(vecPhysicsMeshes[modelIndex]->vecTriangleInPhysicsModel[triAIndex], vecPhysicsMeshes[secondModel]->vecTriangleInPhysicsModel[triBIndex])) {
+//								collidingTrianglesInfo.collidingTriangles[0] = &vecPhysicsMeshes[modelIndex]->vecTriangleInPhysicsModel[triAIndex];
+//								collidingTrianglesInfo.collidingTriangles[1] = &vecPhysicsMeshes[secondModel]->vecTriangleInPhysicsModel[triBIndex];
+//								vecCollidingTriangles.push_back(collidingTrianglesInfo);
+//								//std::cout << "Boom! Models collide!" << std::endl;
+//								return true;
+//							}
+//							//CheckTriangleTriangleCollision(vecPhysicsMeshes[modelIndex]->vecTriangleInPhysicsModel[triAIndex], vecPhysicsMeshes[secondModel]->vecTriangleInPhysicsModel[triBIndex]);
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
+//	return false;
+//}
+
 bool cPhysicsUpdated::CheckCollision(cScene& scene)
 {
 	CalculateBoundingSpheres(scene);
 	CalculateAABB(scene);
 
-	vecCollidingSpheres.clear();
-	vecCollidingAABBs.clear();
-	vecCollidingTriangles.clear();
+	for (int modelIndex = 0; modelIndex < scene.numberOfMeshesToLoad; modelIndex++) {
+		for (int secondModel = modelIndex + 1; secondModel < scene.numberOfMeshesToLoad; secondModel++) {
+			if (CheckBoundingSphereCollision(pBoundingSpheres[modelIndex], pBoundingSpheres[secondModel]) &&
+				CheckAABBCollision(pAABB[modelIndex], pAABB[secondModel])) {
 
-	pTriangleInPhysics = new sTriangleInPhysics[scene.numberOfMeshesToLoad];
+				for (int triAIndex = 0; triAIndex < vecPhysicsMeshes[modelIndex]->vecTriangleInPhysicsModel.size(); triAIndex++) {
+					for (int triBIndex = 0; triBIndex < vecPhysicsMeshes[secondModel]->vecTriangleInPhysicsModel.size(); triBIndex++) {
 
-	for (int modelIndex = 0; modelIndex != scene.numberOfMeshesToLoad; modelIndex++) {
-		for (int secondModel = modelIndex + 1; secondModel != scene.numberOfMeshesToLoad; secondModel++) {
-			
-			//// Print bounding sphere details for debugging
-			//std::cout << "Model " << modelIndex << ": Center = ("
-			//	<< pBoundingSpheres[modelIndex].center.x << ", "
-			//	<< pBoundingSpheres[modelIndex].center.y << ", "
-			//	<< pBoundingSpheres[modelIndex].center.z << ")" << std::endl;
-
-			//std::cout << "Model " << secondModel << ": Center = ("
-			//	<< pBoundingSpheres[secondModel].center.x << ", "
-			//	<< pBoundingSpheres[secondModel].center.y << ", "
-			//	<< pBoundingSpheres[secondModel].center.z << ")" << std::endl;
-			sSphereSphere_Collision collidingSpheresInfo;
-
-			if (CheckBoundingSphereCollision(pBoundingSpheres[modelIndex], pBoundingSpheres[secondModel])) {
-				
-				collidingSpheresInfo.collidingSpheres[0] = &pBoundingSpheres[modelIndex];
-				collidingSpheresInfo.collidingSpheres[1] = &pBoundingSpheres[secondModel];
-				//collidingSpheresInfo.model[0] = scene.pModels[modelIndex];
-				//collidingSpheresInfo.model[1] = scene.pModels[secondModel];
-
-				vecCollidingSpheres.push_back(collidingSpheresInfo);
-				//std::cout << "Collision detected of spheres: Model " << modelIndex << " is colliding with Model " << secondModel << std::endl;
-
-				 //Print aabb details for debugging
-				//std::cout << "aabb Model " << modelIndex << ": Center = ("
-				//	<< pAABB[modelIndex].center.x << ", "
-				//	<< pAABB[modelIndex].center.y << ", "
-				//	<< pAABB[modelIndex].center.z << ") Size: ("
-				//	<< pAABB[modelIndex].size.x << ", "
-				//	<< pAABB[modelIndex].size.y << ", "
-				//	<< pAABB[modelIndex].size.z << ")" << std::endl;
-				//
-				//std::cout << "aabb Model " << secondModel << ": Center = ("
-				//	<< pAABB[secondModel].center.x << ", "
-				//	<< pAABB[secondModel].center.y << ", "
-				//	<< pAABB[secondModel].center.z << ") Size: ("
-				//	<< pAABB[secondModel].size.x << ", "
-				//	<< pAABB[secondModel].size.y << ", "
-				//	<< pAABB[secondModel].size.z << ")" << std::endl;
-				sAABBAABB_Collision collidingAABBsInfo;
-
-				if (CheckAABBCollision(pAABB[modelIndex], pAABB[secondModel])) {
-
-					collidingAABBsInfo.collidingAABBs[0] = &pAABB[modelIndex];
-					collidingAABBsInfo.collidingAABBs[1] = &pAABB[secondModel];
-					//collidingAABBsInfo.model[0] = scene.pModels[modelIndex];
-					//collidingAABBsInfo.model[1] = scene.pModels[secondModel];
-
-					vecCollidingAABBs.push_back(collidingAABBsInfo);
-
-					//std::cout << "Collision detected of aabbs: Model " << modelIndex << " is colliding with Model " << secondModel << std::endl;
-					sTriangleTriangle_Collision collidingTrianglesInfo;
-
-					//std::cout << "Checking collision between triangles:\n";
-					//std::cout << "Triangle A: ("
-					//	<< pTriangleInPhysics[modelIndex].vertex1.x << ", "
-					//	<< pTriangleInPhysics[modelIndex].vertex1.y << ", "
-					//	<< pTriangleInPhysics[modelIndex].vertex1.z << ")\n";
-					//std::cout << "Triangle B: ("
-					//	<< pTriangleInPhysics[secondModel].vertex1.x << ", "
-					//	<< pTriangleInPhysics[secondModel].vertex1.y << ", "
-					//	<< pTriangleInPhysics[secondModel].vertex1.z << ")\n";
-
-					if (CheckTriangleTriangleCollision(pTriangleInPhysics[modelIndex], pTriangleInPhysics[secondModel])) {
-						collidingTrianglesInfo.collidingTriangles[0] = &pTriangleInPhysics[modelIndex];
-						collidingTrianglesInfo.collidingTriangles[1] = &pTriangleInPhysics[secondModel];
-
-						vecCollidingTriangles.push_back(collidingTrianglesInfo);
-						std::cout << "Boom! Models collide!" << std::endl;
-						return true;
+						if (CheckTriangleTriangleCollision(vecPhysicsMeshes[modelIndex]->vecTriangleInPhysicsModel[triAIndex],
+							vecPhysicsMeshes[secondModel]->vecTriangleInPhysicsModel[triBIndex])) {
+							// Handle collision
+							for (sTriangleTriangle_Collision collision : vecCollidingTriangles) {
+								if (collision.collidingModels[0] == &scene.pModels[modelIndex] && collision.collidingModels[1] == &scene.pModels[secondModel]) {
+									break;
+								}
+								else {
+									sTriangleTriangle_Collision triangleCollisionInfo;
+									triangleCollisionInfo.collidingModels[0] = &scene.pModels[modelIndex];
+									triangleCollisionInfo.collidingModels[1] = &scene.pModels[secondModel];
+									vecCollidingTriangles.push_back(triangleCollisionInfo);
+									return true;
+								}
+							}
+						}
 					}
 				}
 			}
@@ -242,9 +304,9 @@ bool cPhysicsUpdated::CheckCollision(cScene& scene)
 bool cPhysicsUpdated::CheckLineTriangleCollision(sLine& line, sTriangleInPhysics& triangle)
 {
 	glm::vec3 pq = line.end - line.start;		//	Vector pq = q - p;
-	glm::vec3 pa = triangle.vertex1 - line.start;	//	Vector pa = a - p;
-	glm::vec3 pb = triangle.vertex2 - line.start;	//	Vector pb = b - p;
-	glm::vec3 pc = triangle.vertex3 - line.start;	//	Vector pc = c - p;
+	glm::vec3 pa = triangle.vertices[0] - line.start;	//	Vector pa = a - p;
+	glm::vec3 pb = triangle.vertices[1] - line.start;	//	Vector pb = b - p;
+	glm::vec3 pc = triangle.vertices[2] - line.start;	//	Vector pc = c - p;
 
 	float u = ScalarTriple(pq, pc, pb);		//	u = ScalarTriple(pq, pc, pb);
 	if (u < 0.0f) {
@@ -274,9 +336,9 @@ float cPhysicsUpdated::ScalarTriple(const glm::vec3& a, const glm::vec3& b, cons
 
 void cPhysicsUpdated::ProjectionOnAxis(glm::vec3 axis, sTriangleInPhysics& triangle, float& minProj, float& maxProj)
 {
-	float Proj1 = glm::dot(axis, triangle.vertex1);
-	float Proj2 = glm::dot(axis, triangle.vertex2);
-	float Proj3 = glm::dot(axis, triangle.vertex3);
+	float Proj1 = glm::dot(axis, triangle.vertices[0]);
+	float Proj2 = glm::dot(axis, triangle.vertices[1]);
+	float Proj3 = glm::dot(axis, triangle.vertices[2]);
 
 	minProj = std::min({ Proj1, Proj2, Proj3 });
 	maxProj = std::max({ Proj1, Proj2, Proj3 });
@@ -284,8 +346,8 @@ void cPhysicsUpdated::ProjectionOnAxis(glm::vec3 axis, sTriangleInPhysics& trian
 
 bool cPhysicsUpdated::CheckTriangleTriangleCollision(sTriangleInPhysics& triA, sTriangleInPhysics& triB)
 {
-	glm::vec3 triAEdges[3] = { triA.vertex2 - triA.vertex1, triA.vertex3 - triA.vertex2, triA.vertex1 - triA.vertex3 };
-	glm::vec3 triBEdges[3] = { triB.vertex2 - triB.vertex1, triB.vertex3 - triB.vertex2, triB.vertex1 - triB.vertex3 };
+	glm::vec3 triAEdges[3] = { triA.vertices[1] - triA.vertices[0], triA.vertices[2] - triA.vertices[1], triA.vertices[0] - triA.vertices[2]};
+	glm::vec3 triBEdges[3] = { triB.vertices[1] - triB.vertices[0], triB.vertices[2] - triB.vertices[1], triB.vertices[0] - triB.vertices[2] };
 
 	glm::vec3 triANormal = glm::cross(triAEdges[0], triAEdges[1]);
 	glm::vec3 triBNormal = glm::cross(triBEdges[0], triBEdges[1]);
