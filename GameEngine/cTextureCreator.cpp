@@ -74,9 +74,7 @@ void cTextureCreator::FillImage24Bit(cBMPImage* image24Bit)
 	p24BitImage = new sColor24Bit[image24Bit->GetImageWidth() * image24Bit->GetImageHeight() * 3];
 	for (int x = 0; x != image24Bit->GetImageWidth(); x++) {
 		for (int y = 0; y != image24Bit->GetImageHeight(); y++) {
-			p24BitImage[pixelCount].r = image24Bit->GetColor24Bit(x, y).r * 255.0f;
-			p24BitImage[pixelCount].g = image24Bit->GetColor24Bit(x, y).g * 255.0f;
-			p24BitImage[pixelCount].b = image24Bit->GetColor24Bit(x, y).b * 255.0f;
+			p24BitImage[pixelCount] = image24Bit->GetColor24Bit(x, y);
 			pixelCount++;
 		}
 	}
@@ -84,17 +82,45 @@ void cTextureCreator::FillImage24Bit(cBMPImage* image24Bit)
 
 void cTextureCreator::FillImage32Bit(cBMPImage* image32Bit)
 {
+	int pixelCount = 0;
+	p32BitImage = new sColor32Bit[image32Bit->GetImageWidth() * image32Bit->GetImageHeight() * 4];
+	for (int x = 0; x != image32Bit->GetImageWidth(); x++) {
+		for (int y = 0; y != image32Bit->GetImageHeight(); y++) {
+			p32BitImage[pixelCount] = image32Bit->GetColor32Bit(x, y);
+			pixelCount++;
+		}
+	}
 }
 
 void cTextureCreator::CreateTextureFrom32BitBMP(std::string filePath, GLuint& textureID)
 {
+	int clearAnyErrors = glGetError(); // Clearing any old errors
+
 	cBMPImage newTexture(800, 800);		// Initialized with random value of 800,800 as we just want to read data from the bmp image, this newTexture will automatically
-										// get the data of bmp image it reads
-	newTexture.ReadBMP24Bit(filePath.c_str());
+	// get the data of bmp image it reads
+	newTexture.ReadBMP32Bit(filePath.c_str());
 
 	glGenTextures(1, &textureID);		// this textureID is output param
 
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR) {
+		std::cerr << "OpenGL Error: " << error << std::endl;
+	}
+
 	glBindTexture(GL_TEXTURE_2D, textureID);
+
+	error = glGetError();
+	if (error != GL_NO_ERROR) {
+		std::cerr << "OpenGL Error: " << error << std::endl;
+	}
+
+	// In case texture is oddly aligned, set the client alignment to 1 byte (default is 4)
+	GLint GL_UNPACK_ALIGNMENT_old = 0;
+	glGetIntegerv(GL_UNPACK_ALIGNMENT, &GL_UNPACK_ALIGNMENT_old);
+	// Set alignment to 1 byte
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	FillImage32Bit(&newTexture);
 
 	glTexImage2D(
 		GL_TEXTURE_2D,
@@ -104,9 +130,16 @@ void cTextureCreator::CreateTextureFrom32BitBMP(std::string filePath, GLuint& te
 		newTexture.GetImageHeight(),
 		0,
 		GL_RGBA,
-		GL_UNSIGNED_BYTE,
+		GL_FLOAT,
 		this->p32BitImage
 	);
+
+	error = glGetError();
+	if (error != GL_NO_ERROR) {
+		std::cerr << "OpenGL Error: " << error << std::endl;
+	}
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, GL_UNPACK_ALIGNMENT_old);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 

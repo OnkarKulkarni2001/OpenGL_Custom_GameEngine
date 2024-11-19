@@ -74,7 +74,7 @@ int main() {
     lightManager.LoadLights("../lightsFile.txt");
     // Camera Initialization
     FlyCam flyCam(800, 600, glm::vec3(0.0, 0.0, 0.0), 180.0f);
-    flyCam.camSpeed = 1.0f;
+    //flyCam.camSpeed = 1.0f;
 
     cLightMover lightMover(lightManager, flyCam, 1);
 
@@ -104,7 +104,7 @@ int main() {
     glActiveTexture(GL_TEXTURE0);   // 0 is texture unit
     glBindTexture(GL_TEXTURE_2D, textureID);
     glUniform1i(glGetUniformLocation(shaderProgram, "diffuseTexture"), 0);  // 0 is texture unit
-    glUniform1i(glGetUniformLocation(shaderProgram, "bUseTexture"), 1);     // 1 means bUseTexture is true
+    glUniform1i(glGetUniformLocation(shaderProgram, "bUseTexture"), 0);     // 1 means bUseTexture is true
 
     // ------------------------------------------Texture Testing---------------------------------------
 
