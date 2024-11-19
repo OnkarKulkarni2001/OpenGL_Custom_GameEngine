@@ -118,7 +118,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\Debug;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>lua.lib;glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>BMP_ReaderWriter.lib;lua.lib;glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -136,7 +136,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\Release;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>lua.lib;glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>BMP_ReaderWriter.lib;lua.lib;glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -150,6 +150,7 @@
     <ClCompile Include="cRenderModel.cpp" />
     <ClCompile Include="cScene.cpp" />
     <ClCompile Include="cShaderCompiler.cpp" />
+    <ClCompile Include="cTextureCreator.cpp" />
     <ClCompile Include="cVAOManager.cpp" />
     <ClCompile Include="FlyCam.cpp" />
     <ClCompile Include="cLoadModels.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="cPhysicsUpdated.h" />
     <ClInclude Include="cPlayer.h" />
     <ClInclude Include="cRenderModel.h" />
+    <ClInclude Include="cTextureCreator.h" />
     <ClInclude Include="IPlayer.h" />
     <ClInclude Include="cScene.h" />
     <ClInclude Include="cShaderCompiler.h" />

@@ -24,7 +24,8 @@ public:
 	struct sVertex {
 		float x, y, z;
 		float nx, ny, nz;
-		float r, g, b, a; // Colors (RGBA)
+		float r, g, b, a;	// Colors (RGBA)
+		float u, v;			// UV coords
 	};
 
 	struct sFaces {

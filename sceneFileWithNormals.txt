@@ -1,10 +1,7 @@
-number_of_meshes 4
+number_of_meshes 1
 
 mesh_paths 
-"D:\Graphics1\GameEngine\assets\models\redSphere.ply"
-"D:\Graphics1\GameEngine\assets\models\bun_zipper_xyz_n_rgba.ply"
-"D:\Graphics1\GameEngine\assets\models\Cheese_xyz_n_rgba.ply"
-"D:\Graphics1\GameEngine\assets\models\Dragon_2.5Edited_xyz_n_rgba.ply"
+"..\assets\models\Warehouse_xyz_n_rgba_uv.ply"
 
 
 // meshTransform layout
@@ -13,12 +10,3 @@ mesh_paths
 
 mesh_transforms
 0.0 0.0 0.0  1 1 1  0 0 0 
-0.0 0.0 0.0  10 10 10  90.0 90.0 90.0
-0.0 0.0 0.0  0.8 1.0 0.9  0.0 0.0 0.0
-0.0 0.0 0.0  0.5 0.5 0.5  0.0 0.0 0.0
-
-// firstValue is shininess, second is x, y, z values of diffuse and third is x, y, z values of specular
-mesh_material
-0.5  0.8 0.3 0.3  0.2 0.2 0.2  // First material
-0.5  0.9 0.7 0.3  0.5 0.5 0.5  // Second material
-0.5  0.5 0.5 0.5  0.9 0.9 0.9  // Third material

@@ -14,7 +14,7 @@
 #include "cPhysicsUpdated.h"
 #include "cRenderModel.h"
 #include "cLua.h"
-
+#include "cTextureCreator.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -73,10 +73,10 @@ int main() {
     cLightManager lightManager;
     lightManager.LoadLights("../lightsFile.txt");
     // Camera Initialization
-    FlyCam flyCam(800, 600, glm::vec3(237.0f, 13.0f, 67.0f), 180.0f);
+    FlyCam flyCam(800, 600, glm::vec3(0.0, 0.0, 0.0), 180.0f);
     flyCam.camSpeed = 1.0f;
 
-    cLightMover lightMover(lightManager, flyCam, 5);
+    cLightMover lightMover(lightManager, flyCam, 1);
 
 
     float deltaTime = 0;
@@ -93,13 +93,21 @@ int main() {
     cPhysicsUpdated physicsEngine(scene);
 
     startTime = glfwGetTime();
-    cPlayer bunny(scene.pModels[0]);
-    bunny.SetSpeed(0.06f);
-    
-    cPlayer dragon(scene.pModels[2]);
-    dragon.SetSpeed(0.06f);
     
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    // ------------------------------------------Texture Testing---------------------------------------
+    GLuint textureID;
+    cTextureCreator textureCreator;
+    textureCreator.CreateTextureFrom24BitBMP("D:/Graphics1/GameEngine/Puzzle_parts.bmp", textureID);
+
+    glActiveTexture(GL_TEXTURE0);   // 0 is texture unit
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    glUniform1i(glGetUniformLocation(shaderProgram, "diffuseTexture"), 0);  // 0 is texture unit
+    glUniform1i(glGetUniformLocation(shaderProgram, "bUseTexture"), 1);     // 1 means bUseTexture is true
+
+    // ------------------------------------------Texture Testing---------------------------------------
+
 
 
     // -----------------------------------------------LUA----------------------------------------------
@@ -143,12 +151,9 @@ int main() {
 
         // ------------------------------------------------------------------------------------------------------------------------------
         // You can call movement functions from light mover class for lights here now and then call turn on lights function of light manager
-        lightManager.TurnOnLights(shaderProgram, 5);
+        lightManager.TurnOnLights(shaderProgram, 1);
         // ------------------------------------------------------------------------------------------------------------------------------
         // You can create player objects here and make them move from here
-        bunny.MoveBackward();
-        
-        dragon.MoveForward();
         // ------------------------------------------------------------------------------------------------------------------------------
 
         //glBindVertexArray(VAO);

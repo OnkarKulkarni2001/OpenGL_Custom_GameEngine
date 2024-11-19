@@ -27,6 +27,7 @@ void cVAOManager::GettingModelReadyToRender(cLoadModels& model)
     GLint vpos_location = glGetAttribLocation(shaderProgram, "aPos");
     GLint vnorm_location = glGetAttribLocation(shaderProgram, "vNormal");
     GLint vcol_location = glGetAttribLocation(shaderProgram, "aCol");
+    GLint vUV_location = glGetAttribLocation(shaderProgram, "aUV");
 
     glEnableVertexAttribArray(vpos_location);
     glVertexAttribPointer(vpos_location,
@@ -49,6 +50,13 @@ void cVAOManager::GettingModelReadyToRender(cLoadModels& model)
         sizeof(cLoadModels::sVertex),
         (void*)offsetof(cLoadModels::sVertex, r));
 
+    glEnableVertexAttribArray(vUV_location);
+    glVertexAttribPointer(vUV_location,
+        2,
+        GL_FLOAT, GL_FALSE,
+        sizeof(cLoadModels::sVertex),
+        (void*)offsetof(cLoadModels::sVertex, u));
+
     glBindVertexArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -57,6 +65,7 @@ void cVAOManager::GettingModelReadyToRender(cLoadModels& model)
     glDisableVertexAttribArray(vpos_location);
     glDisableVertexAttribArray(vnorm_location);
     glDisableVertexAttribArray(vcol_location);
+    glDisableVertexAttribArray(vUV_location);
 
 }
 

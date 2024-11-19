@@ -57,7 +57,8 @@ void cLoadModels::LoadPlyModel(string ModelFileName) {
 		plyModelFile >> pVertex[vertexIterator].g;
 		plyModelFile >> pVertex[vertexIterator].b;
 		plyModelFile >> pVertex[vertexIterator].a;
-
+		plyModelFile >> pVertex[vertexIterator].u;
+		plyModelFile >> pVertex[vertexIterator].v;
 	}	// storing the vertex co-ordinates
 
 	for (unsigned int faceIterator = 0; faceIterator != numberOfFaces; faceIterator++) {

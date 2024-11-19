@@ -52,6 +52,9 @@
     <Filter Include="LUA">
       <UniqueIdentifier>{1d40c95f-bcaa-406b-9d3f-17a75a471cd3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Textures">
+      <UniqueIdentifier>{b4decc8d-5285-40c0-a45f-f6b9030bda93}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -95,6 +98,9 @@
     </ClCompile>
     <ClCompile Include="cLua.cpp">
       <Filter>LUA</Filter>
+    </ClCompile>
+    <ClCompile Include="cTextureCreator.cpp">
+      <Filter>Textures</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +150,9 @@
     </ClInclude>
     <ClInclude Include="cLua.h">
       <Filter>LUA</Filter>
+    </ClInclude>
+    <ClInclude Include="cTextureCreator.h">
+      <Filter>Textures</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

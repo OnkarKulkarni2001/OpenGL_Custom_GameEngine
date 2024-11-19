@@ -4,6 +4,7 @@ const char* vertexShaderSource = R"(
     in vec3 aPos;
     in vec3 vNormal;
     in vec3 aCol;
+    in vec2 aUV;
 
     uniform mat4 model; // Model matrix
     uniform mat4 camMatrix;
@@ -11,8 +12,10 @@ const char* vertexShaderSource = R"(
     out vec3 FragPos; // Pass the position to the fragment shader
     out vec3 FragNormal;
     out vec3 FragCol;
+    out vec2 FragUV;
 
     void main() {
+       FragUV = aUV;
        FragCol = aCol;
        FragPos = vec3(model * vec4(aPos, 1.0));         // Transform position to world space
        FragNormal = mat3(transpose(inverse(model))) * vNormal;  // Transform normal to world space

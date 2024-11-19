@@ -37,3 +37,12 @@ void cRenderModel::DrawDebugSphere(cLoadModels* sphereModel, glm::vec3 position,
 
     Render(shaderProgram, sphereModel);
 }
+
+void cRenderModel::DrawModelAtLocation(cLoadModels* model, glm::vec3 position, GLuint shaderProgram)
+{
+	model->pMeshTransform.x = position.x;
+	model->pMeshTransform.y = position.y;
+	model->pMeshTransform.z = position.z;
+
+	Render(shaderProgram, model);
+}

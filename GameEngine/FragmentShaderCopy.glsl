@@ -18,10 +18,13 @@ const char* fragmentShaderSource = R"(
     in vec3 FragPos;    // Incoming fragment position from vertex shader
     in vec3 FragNormal; // Incoming fragment normal from vertex shader
     in vec3 FragCol;
+    in vec2 FragUV;
 
     uniform int numberOfLights; // Pass the number of active lights
     uniform sLights pLights[MAX_LIGHTS];  // Assuming you have a maximum of 10 lights
     uniform vec3 camLocation;   // Camera position
+    uniform sampler2D diffuseTexture;       // Sampler for diffuse texture
+    uniform bool bUseTexture;
 
     out vec4 FragColor;
 
@@ -71,7 +74,12 @@ const char* fragmentShaderSource = R"(
 
         }
 
-        FragColor = vec4(result * FragCol, 1.0);
+        vec4 textureColor = texture(diffuseTexture, FragUV);
+
+        vec3 finalColor = bUseTexture ? result * textureColor.rgb : result * FragCol;
+
+        //FragColor = vec4(result * FragCol, 1.0);
+        FragColor = vec4(finalColor, 1.0);
 
     }
 )";
