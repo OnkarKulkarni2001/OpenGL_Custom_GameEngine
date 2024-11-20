@@ -151,14 +151,31 @@ void cTextureCreator::CreateTextureFrom32BitBMP(std::string filePath, GLuint& te
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void cTextureCreator::LoadTextures(GLuint shaderProgram, std::string filePath, bool bUseTexture)
-{
-	GLuint textureID;
-	cTextureCreator textureCreator;
-	textureCreator.CreateTextureFrom24BitBMP(filePath, textureID);
+void cTextureCreator::LoadTextures24Bit(GLuint shaderProgram, cLoadModels& model, bool bUseTexture)
+{	
+	for (int textureIndex = 0; textureIndex != model.numberOfTextures; textureIndex++) {
+		//GLuint textureID;
+		CreateTextureFrom24BitBMP(model.textureFilePaths[textureIndex], model.textures[textureIndex]);
 
-	glActiveTexture(GL_TEXTURE0);   // 0 is texture unit
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	glUniform1i(glGetUniformLocation(shaderProgram, "diffuseTexture"), 0);  // 0 is texture unit
-	glUniform1i(glGetUniformLocation(shaderProgram, "bUseTexture"), bUseTexture);     // 1 means bUseTexture is true
+		glActiveTexture(GL_TEXTURE + textureIndex);   // 0 is texture unit
+		glBindTexture(GL_TEXTURE_2D, model.textures[textureIndex]);
+		std::string textureString = "textureSamplers[" + to_string(textureIndex) + "]";		// done this as I have array of texture units in shader
+		glUniform1i(glGetUniformLocation(shaderProgram, textureString.c_str()), textureIndex);  // textureIndex is texture unit
+		glUniform1i(glGetUniformLocation(shaderProgram, "bUseTexture"), bUseTexture);
+	}
+	glUniform1i(glGetUniformLocation(shaderProgram, "numberOfTextures"), model.numberOfTextures);
+}
+
+void cTextureCreator::LoadTextures32Bit(GLuint shaderProgram, cLoadModels& model, bool bUseTexture)
+{
+	for (int textureIndex = 0; textureIndex != model.numberOfTextures; textureIndex++) {
+		//GLuint textureID;
+		CreateTextureFrom32BitBMP(model.textureFilePaths[textureIndex], model.textures[textureIndex]);
+
+		glActiveTexture(GL_TEXTURE + textureIndex);   // 0 is texture unit
+		glBindTexture(GL_TEXTURE_2D, model.textures[textureIndex]);
+		glUniform1i(glGetUniformLocation(shaderProgram, "diffuseTexture"), textureIndex);  // 0 is texture unit
+		glUniform1i(glGetUniformLocation(shaderProgram, "bUseTexture"), bUseTexture);     // 1 means bUseTexture is true
+	}
+	glUniform1i(glGetUniformLocation(shaderProgram, "numberOfTextures"), model.numberOfTextures);     // 1 means bUseTexture is true
 }

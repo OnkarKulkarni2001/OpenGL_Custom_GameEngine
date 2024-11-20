@@ -1,8 +1,8 @@
-number_of_meshes 1
+number_of_meshes 2
 
 mesh_paths 
-"..\assets\models\Warehouse_xyz_n_rgba_uv.ply"
-
+"..\assets\models\Warehouse_xyz_n_rgba_uv.ply" 1
+"..\assets\models\SM_Env_PlantWall_02_xyz_n_rgba_uv.ply" 1
 
 // meshTransform layout
 // x y z xScale yScale zScale xRotation yRotation zRotation
@@ -10,3 +10,8 @@ mesh_paths
 
 mesh_transforms
 0.0 0.0 0.0  1 1 1  0 0 0 
+0.0 0.0 0.0  1 1 1  -90 0 0 
+
+mesh_textures
+"..\SpaceInteriors_Texture.bmp"
+"..\dua-lipa-promo.bmp"

@@ -4,6 +4,9 @@
 
 void cRenderModel::Render(GLuint shaderProgram, cLoadModels* model)
 {
+	for (int textureIndex = 0; textureIndex != model->numberOfTextures; textureIndex++) {		// Needed this otherwise every model will have same last loaded texture
+		glBindTexture(GL_TEXTURE_2D, model->textures[textureIndex]);
+	}		
 	glBindVertexArray(model->VAO_ID);
 
 	glm::mat4 modelMat = model->CreateModelMatrix(shaderProgram, *model);      // Creation of model matrix with arguements passed in sceneFile.txt

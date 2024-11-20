@@ -29,7 +29,7 @@ int main() {
 
     // Set OpenGL version (3.3 core profile)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);                  // glTexStorage2D is not supported on version 3, need to use 4!!!
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Create a window
@@ -99,7 +99,10 @@ int main() {
 
     // ------------------------------------------Texture Testing---------------------------------------
     cTextureCreator textureCreator;
-    textureCreator.LoadTextures(shaderProgram, "../SpaceInteriors_Texture.bmp", true);
+
+    for (int modelIndex = 0; modelIndex != scene.numberOfMeshesToLoad; modelIndex++) {
+        textureCreator.LoadTextures24Bit(shaderProgram, scene.pModels[modelIndex], true);
+    }
     // ------------------------------------------Texture Testing---------------------------------------
 
 

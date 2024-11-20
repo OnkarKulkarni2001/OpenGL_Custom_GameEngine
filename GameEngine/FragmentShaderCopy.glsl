@@ -23,8 +23,11 @@ const char* fragmentShaderSource = R"(
     uniform int numberOfLights; // Pass the number of active lights
     uniform sLights pLights[MAX_LIGHTS];  // Assuming you have a maximum of 10 lights
     uniform vec3 camLocation;   // Camera position
-    uniform sampler2D diffuseTexture;       // Sampler for diffuse texture
+    //uniform sampler2D diffuseTexture;       // Sampler for diffuse texture
     uniform bool bUseTexture;
+
+    uniform int numberOfTextures;
+    uniform sampler2D textureSamplers[192];    // Max number of texture units is 192
 
     out vec4 FragColor;
 
@@ -73,12 +76,17 @@ const char* fragmentShaderSource = R"(
             result += (diffuse + specular) * attenuation;
 
         }
+       //vec4 textureColor = texture(diffuseTexture, FragUV);
+       //vec3 finalColor = bUseTexture ? result * textureColor.rgb : result * FragCol;
+       
+       vec4 textureColor;
+       vec3 finalColor;
 
-        vec4 textureColor = texture(diffuseTexture, FragUV);
-
-       vec3 finalColor = bUseTexture ? result * textureColor.rgb : result * FragCol;
+       for(int i = 0; i < numberOfTextures; i++) {
+            textureColor = texture(textureSamplers[i], FragUV);
+            finalColor += bUseTexture ? result * textureColor.rgb : result * FragCol;
+       }
 
        FragColor = vec4(finalColor, 1.0);
-
     }
 )";

@@ -41,6 +41,9 @@ void cScene::CreateScene(std::string sceneFileName) {
         }
         //pathOfMeshesToLoad.push_back(meshPath);
         cLoadModels plyModel;
+        
+        sceneFile >> plyModel.numberOfTextures;     // Directly loading number of textures to the model
+
         plyModel.LoadPlyModel(meshPath);
         plyModel.ModelFileName = meshPath;
         pModels.push_back(plyModel);
@@ -72,10 +75,31 @@ void cScene::CreateScene(std::string sceneFileName) {
         modelIndex++;
     }
 
+    while (token != "mesh_textures") {
+        sceneFile >> token;
+    }
+
+    for (unsigned int modelIndex = 0; modelIndex != numberOfMeshesToLoad; modelIndex++) {       // And here we goooooooooo! Now we can Import max 192 textures for single model!
+        for (unsigned int indexOfMeshTextures = 0; indexOfMeshTextures != pModels[modelIndex].numberOfTextures; indexOfMeshTextures++) {
+            //std::vector<std::string> textureFilePaths(pModels[modelIndex].numberOfTextures);
+
+            pModels[modelIndex].textureFilePaths.resize(pModels[modelIndex].numberOfTextures);
+            pModels[modelIndex].textures.resize(pModels[modelIndex].numberOfTextures);
+
+            sceneFile >> pModels[modelIndex].textureFilePaths[indexOfMeshTextures];
+
+            pModels[modelIndex].textureFilePaths[indexOfMeshTextures].erase(std::remove(pModels[modelIndex].textureFilePaths[indexOfMeshTextures].begin(), pModels[modelIndex].textureFilePaths[indexOfMeshTextures].end(), '"'), pModels[modelIndex].textureFilePaths[indexOfMeshTextures].end());
+            for (char& ch : pModels[modelIndex].textureFilePaths[indexOfMeshTextures]) {
+                if (ch == '\\') {
+                    ch = '/';
+                }
+            }
+        }
+    }
     //while (token != "mesh_material") {
     //    sceneFile >> token;
     //}
-
+        
     //int materialModelIndex = 0;
     //for (unsigned int indexOfMaterial = 0; indexOfMaterial != numberOfMeshesToLoad; indexOfMaterial++) {
     //    sceneFile >> pModels[indexOfMaterial].pMaterial.shininess;

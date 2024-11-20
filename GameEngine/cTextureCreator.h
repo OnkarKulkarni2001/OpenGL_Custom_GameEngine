@@ -9,6 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp> 
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include <string>
+#include "cLoadModels.h"
 
 class cTextureCreator {
 public:
@@ -23,5 +24,6 @@ public:
 	void CreateTextureFrom24BitBMP(std::string filePath, GLuint& textureID);
 	void CreateTextureFrom32BitBMP(std::string filePath, GLuint& textureID);
 	
-	void LoadTextures(GLuint shaderProgram, std::string filePath, bool bUseTexture);
+	void LoadTextures24Bit(GLuint shaderProgram, cLoadModels& model, bool bUseTexture);
+	void LoadTextures32Bit(GLuint shaderProgram, cLoadModels& model, bool bUseTexture);
 };

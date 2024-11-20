@@ -10,6 +10,7 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp> 
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
+#include <vector>
 
 using namespace std;
 
@@ -18,8 +19,12 @@ public:
 	string ModelFileName;
 	unsigned int numberOfVertices;
 	unsigned int numberOfFaces;
-	//unsigned int numberOfVerticesToRender;
 	int discard;
+
+	// Textures
+	vector<string> textureFilePaths;
+	unsigned int numberOfTextures;
+	vector<GLuint> textures;		// this will store different textureIDs for single model (Will get populated when we load textures)
 
 	struct sVertex {
 		float x, y, z;
