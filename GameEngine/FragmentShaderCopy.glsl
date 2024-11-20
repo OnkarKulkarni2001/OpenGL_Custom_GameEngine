@@ -76,11 +76,9 @@ const char* fragmentShaderSource = R"(
 
         vec4 textureColor = texture(diffuseTexture, FragUV);
 
-        //vec3 finalColor = bUseTexture ? result * textureColor.rgb : result * FragCol;
-        vec3 finalColor = result * textureColor.rgb * 100;
+       vec3 finalColor = bUseTexture ? result * textureColor.rgb : result * FragCol;
 
-        //FragColor = vec4(result * FragCol, 1.0);
-        FragColor = vec4(finalColor, 1.0);
+       FragColor = vec4(finalColor, 1.0);
 
     }
 )";

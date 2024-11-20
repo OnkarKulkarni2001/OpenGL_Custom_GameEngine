@@ -150,3 +150,15 @@ void cTextureCreator::CreateTextureFrom32BitBMP(std::string filePath, GLuint& te
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
+
+void cTextureCreator::LoadTextures(GLuint shaderProgram, std::string filePath, bool bUseTexture)
+{
+	GLuint textureID;
+	cTextureCreator textureCreator;
+	textureCreator.CreateTextureFrom24BitBMP(filePath, textureID);
+
+	glActiveTexture(GL_TEXTURE0);   // 0 is texture unit
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	glUniform1i(glGetUniformLocation(shaderProgram, "diffuseTexture"), 0);  // 0 is texture unit
+	glUniform1i(glGetUniformLocation(shaderProgram, "bUseTexture"), bUseTexture);     // 1 means bUseTexture is true
+}

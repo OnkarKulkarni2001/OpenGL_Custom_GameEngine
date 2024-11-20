@@ -54,9 +54,13 @@ void cLoadModels::LoadPlyModel(string ModelFileName) {
 		plyModelFile >> pVertex[vertexIterator].ny;
 		plyModelFile >> pVertex[vertexIterator].nz;
 		plyModelFile >> pVertex[vertexIterator].r;
+		pVertex[vertexIterator].r /= 255.0f;
 		plyModelFile >> pVertex[vertexIterator].g;
+		pVertex[vertexIterator].g /= 255.0f;
 		plyModelFile >> pVertex[vertexIterator].b;
+		pVertex[vertexIterator].b /= 255.0f;
 		plyModelFile >> pVertex[vertexIterator].a;
+		pVertex[vertexIterator].a /= 255.0f;
 		plyModelFile >> pVertex[vertexIterator].u;
 		plyModelFile >> pVertex[vertexIterator].v;
 	}	// storing the vertex co-ordinates

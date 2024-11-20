@@ -52,6 +52,7 @@ int main() {
     // Refer cShaderCompiler class for more info.
     cShaderCompiler shader;
     GLuint shaderProgram = shader.CompileShader();
+    glUseProgram(shaderProgram);
 
     // Import Scene
     cScene scene;
@@ -97,15 +98,8 @@ int main() {
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // ------------------------------------------Texture Testing---------------------------------------
-    GLuint textureID;
     cTextureCreator textureCreator;
-    textureCreator.CreateTextureFrom24BitBMP("D:/Graphics1/GameEngine/Puzzle_parts.bmp", textureID);
-
-    glActiveTexture(GL_TEXTURE0);   // 0 is texture unit
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    glUniform1i(glGetUniformLocation(shaderProgram, "diffuseTexture"), 0);  // 0 is texture unit
-    glUniform1i(glGetUniformLocation(shaderProgram, "bUseTexture"), 0);     // 1 means bUseTexture is true
-
+    textureCreator.LoadTextures(shaderProgram, "../SpaceInteriors_Texture.bmp", true);
     // ------------------------------------------Texture Testing---------------------------------------
 
 

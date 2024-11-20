@@ -22,4 +22,6 @@ public:
 	void FillImage32Bit(cBMPImage* image32Bit);		// fills the p32BitImage
 	void CreateTextureFrom24BitBMP(std::string filePath, GLuint& textureID);
 	void CreateTextureFrom32BitBMP(std::string filePath, GLuint& textureID);
+	
+	void LoadTextures(GLuint shaderProgram, std::string filePath, bool bUseTexture);
 };

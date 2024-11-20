@@ -14,7 +14,10 @@ void FlyCam::cameraMatrix(float FOVdeg, float nearPlane, float farPlane, GLuint 
 	GLuint uniformLocation = glGetUniformLocation(shaderProgram, uniform);
 	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(projection * view));
     glUniform3fv(glGetUniformLocation(shaderProgram, "camLocation"), 1, glm::value_ptr(camLocation));
-    camControls(window);
+    
+    if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS) {
+        camControls(window);
+    }
 }
 
 void FlyCam::camControls(GLFWwindow* window) {
