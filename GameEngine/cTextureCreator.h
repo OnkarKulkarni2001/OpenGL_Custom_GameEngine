@@ -23,7 +23,24 @@ public:
 	void FillImage32Bit(cBMPImage* image32Bit);		// fills the p32BitImage
 	void CreateTextureFrom24BitBMP(std::string filePath, GLuint& textureID);
 	void CreateTextureFrom32BitBMP(std::string filePath, GLuint& textureID);
+
+	void CreateCubeTextureFrom24BitBMP(std::string posX_filePath, std::string negX_filePath,
+									   std::string posY_filePath, std::string negY_filePath,
+									   std::string posZ_filePath, std::string negZ_filePath, GLuint& cubeTextureID);
+
+	void CreateCubeTextureFrom32BitBMP(std::string posX_filePath, std::string negX_filePath,
+									   std::string posY_filePath, std::string negY_filePath,
+									   std::string posZ_filePath, std::string negZ_filePath, GLuint& cubeTextureID);
 	
 	void LoadTextures24Bit(GLuint shaderProgram, cLoadModels& model, bool bUseTexture);
 	void LoadTextures32Bit(GLuint shaderProgram, cLoadModels& model, bool bUseTexture);
+
+	void LoadCubeMap24Bit(GLuint shaderProgram, bool bUseCubeMap, GLuint& cubeTextureID,
+						  std::string posX_filePath, std::string negX_filePath,
+						  std::string posY_filePath, std::string negY_filePath,
+						  std::string posZ_filePath, std::string negZ_filePath);
+	void LoadCubeMap32Bit(GLuint shaderProgram, bool bUseCubeMap, GLuint& cubeTextureID,
+						  std::string posX_filePath, std::string negX_filePath,
+						  std::string posY_filePath, std::string negY_filePath,
+						  std::string posZ_filePath, std::string negZ_filePath);
 };

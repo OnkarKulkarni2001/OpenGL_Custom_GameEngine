@@ -1,17 +1,22 @@
-number_of_meshes 2
+number_of_meshes 1
 
 mesh_paths 
-"..\assets\models\Warehouse_xyz_n_rgba_uv.ply" 1
-"..\assets\models\SM_Env_PlantWall_02_xyz_n_rgba_uv.ply" 1
+
+"..\assets\models\cubeMapObject.ply" 6
 
 // meshTransform layout
 // x y z xScale yScale zScale xRotation yRotation zRotation
 // where rotations are angles.
 
 mesh_transforms
-0.0 0.0 0.0  1 1 1  0 0 0 
-0.0 0.0 0.0  1 1 1  -90 0 0 
+0.0 0.0 0.0  1000.0 1000.0 1000.0  0 180 0 
+0.0 0.0 0.0  100.0 100.0 100.0  0 0 0 
 
 mesh_textures
-"..\SpaceInteriors_Texture.bmp"
-"..\dua-lipa-promo.bmp"
+
+"D:\Graphics1\GameEngine\assets\CubeMaps\TropicalSunnyDayRight2048.bmp"
+"D:\Graphics1\GameEngine\assets\CubeMaps\TropicalSunnyDayLeft2048.bmp"
+"D:\Graphics1\GameEngine\assets\CubeMaps\TropicalSunnyDayUp2048.bmp"
+"D:\Graphics1\GameEngine\assets\CubeMaps\TropicalSunnyDayDown2048.bmp"
+"D:\Graphics1\GameEngine\assets\CubeMaps\TropicalSunnyDayFront2048.bmp"
+"D:\Graphics1\GameEngine\assets\CubeMaps\TropicalSunnyDayBack2048.bmp"

@@ -5,7 +5,10 @@
 void cRenderModel::Render(GLuint shaderProgram, cLoadModels* model)
 {
 	for (int textureIndex = 0; textureIndex != model->numberOfTextures; textureIndex++) {		// Needed this otherwise every model will have same last loaded texture
-		glBindTexture(GL_TEXTURE_2D, model->textures[textureIndex]);
+		if (!model->bIsCubeMap)
+			glBindTexture(GL_TEXTURE_2D, model->textures[textureIndex]);
+		else
+			glBindTexture(GL_TEXTURE_CUBE_MAP, model->cubeMapTextureID);
 	}		
 	glBindVertexArray(model->VAO_ID);
 

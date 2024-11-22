@@ -22,6 +22,7 @@ public:
 	int discard;
 
 	// Textures
+	GLuint cubeMapTextureID;
 	vector<string> textureFilePaths;
 	unsigned int numberOfTextures;
 	vector<GLuint> textures;		// this will store different textureIDs for single model (Will get populated when we load textures)
@@ -56,18 +57,18 @@ public:
 	//struct sModelDrawingDetails {
 		//std::string modelName;
 		
-		unsigned int VAO_ID;
-		unsigned int VBO_ID;		// this one is normal buffer
-		unsigned int IBO_ID;		// IBO(Index Buffer Object): this one is specifically for loading single model but drawing it multiple times
+	unsigned int VAO_ID;
+	unsigned int VBO_ID;		// this one is normal buffer
+	unsigned int IBO_ID;		// IBO(Index Buffer Object): this one is specifically for loading single model but drawing it multiple times
 
-		unsigned int VBO_Offset;	// this is starting index of VBO
-		unsigned int IBO_Offset;	// this is starting index of IBO
+	unsigned int VBO_Offset;	// this is starting index of VBO
+	unsigned int IBO_Offset;	// this is starting index of IBO
 
-		unsigned int numberOfIndices;	// this is what I had earlier which was named as numberOfVerticesToRender on line 21, which is numberOfFaces * 3;
+	unsigned int numberOfIndices;	// this is what I had earlier which was named as numberOfVerticesToRender on line 21, which is numberOfFaces * 3;
 
-		bool bIsWireframe = false;
-		bool bIsVisible = true;
-	//};
+	bool bIsWireframe = false;
+	bool bIsVisible = true;
+	bool bIsCubeMap = false;
 
 	glm::vec3 position, scale, rotation;
 

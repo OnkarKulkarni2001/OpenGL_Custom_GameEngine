@@ -28,8 +28,8 @@ int main() {
     }
 
     // Set OpenGL version (3.3 core profile)
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);                  // glTexStorage2D is not supported on version 3, need to use 4!!!
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);                  // glTexStorage2D is not supported on version 3, need to use 4!!!
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Create a window
@@ -75,7 +75,7 @@ int main() {
     lightManager.LoadLights("../lightsFile.txt");
     // Camera Initialization
     FlyCam flyCam(800, 600, glm::vec3(0.0, 0.0, 0.0), 180.0f);
-    //flyCam.camSpeed = 1.0f;
+    flyCam.camSpeed = 1.0f;
 
     cLightMover lightMover(lightManager, flyCam, 1);
 
@@ -91,19 +91,29 @@ int main() {
     }   // Used for initializing the pTransformedVertices, Nothing new xD
 
     // Starting physics
-    cPhysicsUpdated physicsEngine(scene);
+   // cPhysicsUpdated physicsEngine(scene);
 
     startTime = glfwGetTime();
     
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    // ------------------------------------------Texture Testing---------------------------------------
+    // ------------------------------------------Texture---------------------------------------
+
     cTextureCreator textureCreator;
 
     for (int modelIndex = 0; modelIndex != scene.numberOfMeshesToLoad; modelIndex++) {
-        textureCreator.LoadTextures24Bit(shaderProgram, scene.pModels[modelIndex], true);
+        if (scene.pModels[modelIndex].bIsCubeMap == false) {
+            textureCreator.LoadTextures24Bit(shaderProgram, scene.pModels[modelIndex], true);
+        }
+        else {
+            textureCreator.LoadCubeMap24Bit(shaderProgram, true, scene.pModels[modelIndex].cubeMapTextureID,
+                scene.pModels[modelIndex].textureFilePaths[0], scene.pModels[modelIndex].textureFilePaths[1],
+                scene.pModels[modelIndex].textureFilePaths[2], scene.pModels[modelIndex].textureFilePaths[3],
+                scene.pModels[modelIndex].textureFilePaths[4], scene.pModels[modelIndex].textureFilePaths[5]);
+        }
     }
-    // ------------------------------------------Texture Testing---------------------------------------
+    
+    // ------------------------------------------Texture---------------------------------------
 
 
 
@@ -176,20 +186,6 @@ int main() {
             }
             renderer.Render(shaderProgram, &scene.pModels[i]);
         }
-
-        //renderer.DrawDebugSphere(&scene.pModels[0], glm::vec3(0, 0, 0), glm::vec4(0, 1, 0, 1), 1, shaderProgram);
-        
-        //if (deltaTime >= 10) {
-            /*if (physicsEngine.CheckCollision(scene)) {
-                std::cout << "Colliding" << std::endl;
-            }
-            else {
-                std::cout << "Not colliding" << std::endl;
-            }*/
-            //startTime = endTime;
-        //}
-            //dragon.SetSpeed(0.1f);
-        
 
         // Swap buffers and poll IO events (keys pressed/released, mouse moved, etc.)
         glfwSwapBuffers(window);

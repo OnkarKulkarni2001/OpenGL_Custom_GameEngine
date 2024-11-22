@@ -151,13 +151,80 @@ void cTextureCreator::CreateTextureFrom32BitBMP(std::string filePath, GLuint& te
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void cTextureCreator::CreateCubeTextureFrom24BitBMP(std::string posX_filePath, std::string negX_filePath,
+													std::string posY_filePath, std::string negY_filePath,
+													std::string posZ_filePath, std::string negZ_filePath,
+													GLuint& cubeTextureID)
+{
+	int clearAnyErrors = glGetError(); // Clearing any old errors
+
+	glGenTextures(1, &cubeTextureID);		// this textureID is output param
+
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR) {
+		std::cerr << "OpenGL Error: " << error << std::endl;
+	}
+
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTextureID);
+
+	error = glGetError();
+	if (error != GL_NO_ERROR) {
+		std::cerr << "OpenGL Error: " << error << std::endl;
+	}
+
+	cBMPImage newCubePosXTexture(800, 800);	
+	cBMPImage newCubeNegXTexture(800, 800);	
+	cBMPImage newCubePosYTexture(800, 800);	
+	cBMPImage newCubeNegYTexture(800, 800);	
+	cBMPImage newCubePosZTexture(800, 800);	
+	cBMPImage newCubeNegZTexture(800, 800);	
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+
+	newCubePosXTexture.ReadBMP24Bit(posX_filePath.c_str());
+	FillImage24Bit(&newCubePosXTexture);
+	glTexStorage2D(GL_TEXTURE_CUBE_MAP, 10, GL_RGBA8, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight());
+	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, 0, 0, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight(), GL_RGB, GL_FLOAT, this->p24BitImage);
+	
+	error = glGetError();
+	if (error != GL_NO_ERROR) {
+		std::cerr << "OpenGL Error: " << error << std::endl;
+	}
+
+	newCubeNegXTexture.ReadBMP24Bit(negX_filePath.c_str());
+	FillImage24Bit(&newCubeNegXTexture);
+	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, 0, 0, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight(), GL_RGB, GL_FLOAT, this->p24BitImage);
+
+	newCubePosYTexture.ReadBMP24Bit(posY_filePath.c_str());
+	FillImage24Bit(&newCubePosYTexture);
+	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, 0, 0, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight(), GL_RGB, GL_FLOAT, this->p24BitImage);
+
+	newCubeNegYTexture.ReadBMP24Bit(negY_filePath.c_str());
+	FillImage24Bit(&newCubeNegYTexture);
+	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, 0, 0, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight(), GL_RGB, GL_FLOAT, this->p24BitImage);
+
+	newCubePosZTexture.ReadBMP24Bit(posZ_filePath.c_str());
+	FillImage24Bit(&newCubePosZTexture);
+	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, 0, 0, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight(), GL_RGB, GL_FLOAT, this->p24BitImage);
+
+	newCubeNegZTexture.ReadBMP24Bit(negZ_filePath.c_str());
+	FillImage24Bit(&newCubeNegZTexture);
+	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, 0, 0, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight(), GL_RGB, GL_FLOAT, this->p24BitImage);
+}
+
 void cTextureCreator::LoadTextures24Bit(GLuint shaderProgram, cLoadModels& model, bool bUseTexture)
 {	
 	for (int textureIndex = 0; textureIndex != model.numberOfTextures; textureIndex++) {
 		//GLuint textureID;
 		CreateTextureFrom24BitBMP(model.textureFilePaths[textureIndex], model.textures[textureIndex]);
 
-		glActiveTexture(GL_TEXTURE + textureIndex);   // 0 is texture unit
+		glActiveTexture(GL_TEXTURE0 + textureIndex);   // 0 is texture unit
 		glBindTexture(GL_TEXTURE_2D, model.textures[textureIndex]);
 		std::string textureString = "textureSamplers[" + to_string(textureIndex) + "]";		// done this as I have array of texture units in shader
 		glUniform1i(glGetUniformLocation(shaderProgram, textureString.c_str()), textureIndex);  // textureIndex is texture unit
@@ -166,16 +233,86 @@ void cTextureCreator::LoadTextures24Bit(GLuint shaderProgram, cLoadModels& model
 	glUniform1i(glGetUniformLocation(shaderProgram, "numberOfTextures"), model.numberOfTextures);
 }
 
+void cTextureCreator::CreateCubeTextureFrom32BitBMP(std::string posX_filePath, std::string negX_filePath,
+													std::string posY_filePath, std::string negY_filePath,
+													std::string posZ_filePath, std::string negZ_filePath,
+													GLuint& cubeTextureID)
+{
+	int clearAnyErrors = glGetError(); // Clearing any old errors
+
+	glGenTextures(1, &cubeTextureID);		// this textureID is output param
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTextureID);
+
+	cBMPImage newCubePosXTexture(800, 800);
+	cBMPImage newCubeNegXTexture(800, 800);
+	cBMPImage newCubePosYTexture(800, 800);
+	cBMPImage newCubeNegYTexture(800, 800);
+	cBMPImage newCubePosZTexture(800, 800);
+	cBMPImage newCubeNegZTexture(800, 800);
+
+	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+
+	FillImage32Bit(&newCubePosXTexture);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 10, GL_RGBA, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight(), 0, GL_RGB, GL_FLOAT, this->p32BitImage);
+
+	FillImage32Bit(&newCubeNegXTexture);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 10, GL_RGBA, newCubeNegXTexture.GetImageWidth(), newCubeNegXTexture.GetImageHeight(), 0, GL_RGB, GL_FLOAT, this->p32BitImage);
+
+	FillImage32Bit(&newCubePosYTexture);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 10, GL_RGBA, newCubePosYTexture.GetImageWidth(), newCubePosYTexture.GetImageHeight(), 0, GL_RGB, GL_FLOAT, this->p32BitImage);
+
+	FillImage32Bit(&newCubeNegYTexture);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 10, GL_RGBA, newCubeNegYTexture.GetImageWidth(), newCubeNegYTexture.GetImageHeight(), 0, GL_RGB, GL_FLOAT, this->p32BitImage);
+
+	FillImage32Bit(&newCubePosZTexture);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 10, GL_RGBA, newCubePosZTexture.GetImageWidth(), newCubePosZTexture.GetImageHeight(), 0, GL_RGB, GL_FLOAT, this->p32BitImage);
+
+	FillImage32Bit(&newCubeNegZTexture);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 10, GL_RGBA, newCubeNegZTexture.GetImageWidth(), newCubeNegZTexture.GetImageHeight(), 0, GL_RGB, GL_FLOAT, this->p32BitImage);
+
+	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+}
+
 void cTextureCreator::LoadTextures32Bit(GLuint shaderProgram, cLoadModels& model, bool bUseTexture)
 {
 	for (int textureIndex = 0; textureIndex != model.numberOfTextures; textureIndex++) {
 		//GLuint textureID;
 		CreateTextureFrom32BitBMP(model.textureFilePaths[textureIndex], model.textures[textureIndex]);
 
-		glActiveTexture(GL_TEXTURE + textureIndex);   // 0 is texture unit
+		glActiveTexture(GL_TEXTURE0 + textureIndex);   // 0 is texture unit
 		glBindTexture(GL_TEXTURE_2D, model.textures[textureIndex]);
 		glUniform1i(glGetUniformLocation(shaderProgram, "diffuseTexture"), textureIndex);  // 0 is texture unit
 		glUniform1i(glGetUniformLocation(shaderProgram, "bUseTexture"), bUseTexture);     // 1 means bUseTexture is true
 	}
 	glUniform1i(glGetUniformLocation(shaderProgram, "numberOfTextures"), model.numberOfTextures);     // 1 means bUseTexture is true
+}
+
+void cTextureCreator::LoadCubeMap24Bit(GLuint shaderProgram, bool bUseCubeMap, GLuint& cubeTextureID, std::string posX_filePath, std::string negX_filePath, std::string posY_filePath, std::string negY_filePath, std::string posZ_filePath, std::string negZ_filePath)
+{
+	CreateCubeTextureFrom24BitBMP(posX_filePath, negX_filePath,
+								  posY_filePath, negY_filePath,
+								  posZ_filePath, negZ_filePath, cubeTextureID);
+
+	glActiveTexture(GL_TEXTURE0 + 40);			// texture unit 40 is used for skybox
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTextureID);
+	glUniform1i(glGetUniformLocation(shaderProgram, "cubeMap"), 40);
+	glUniform1i(glGetUniformLocation(shaderProgram, "bUseCubeMap"), bUseCubeMap);     // 1 means bUseTexture is true
+}
+
+void cTextureCreator::LoadCubeMap32Bit(GLuint shaderProgram, bool bUseCubeMap, GLuint& cubeTextureID, std::string posX_filePath, std::string negX_filePath, std::string posY_filePath, std::string negY_filePath, std::string posZ_filePath, std::string negZ_filePath)
+{
+	CreateCubeTextureFrom32BitBMP(posX_filePath, negX_filePath,
+								  posY_filePath, negY_filePath,
+								  posZ_filePath, negZ_filePath, cubeTextureID);
+
+	glActiveTexture(GL_TEXTURE0 + 40);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTextureID);
+	glUniform1i(glGetUniformLocation(shaderProgram, "cubeMap"), cubeTextureID);
+	glUniform1i(glGetUniformLocation(shaderProgram, "bUseCubeMap"), bUseCubeMap);     // 1 means bUseTexture is true
 }

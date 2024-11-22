@@ -44,6 +44,17 @@ void cScene::CreateScene(std::string sceneFileName) {
         
         sceneFile >> plyModel.numberOfTextures;     // Directly loading number of textures to the model
 
+        // Checking if it is cubeMapObject
+        size_t position = meshPath.find("cubeMapObject.ply");
+
+        // Check if the cubeMapObject.ply is found
+        if (position != std::string::npos) {
+            plyModel.bIsCubeMap = true;
+        }
+        else {
+            plyModel.bIsCubeMap = false;
+        }
+
         plyModel.LoadPlyModel(meshPath);
         plyModel.ModelFileName = meshPath;
         pModels.push_back(plyModel);
@@ -94,6 +105,8 @@ void cScene::CreateScene(std::string sceneFileName) {
                     ch = '/';
                 }
             }
+
+            std::cout << "Texture file read successful!: " << pModels[modelIndex].textureFilePaths[indexOfMeshTextures] << std::endl;
         }
     }
     //while (token != "mesh_material") {
