@@ -26,6 +26,9 @@ public:
 	vector<string> textureFilePaths;
 	unsigned int numberOfTextures;
 	vector<GLuint> textures;		// this will store different textureIDs for single model (Will get populated when we load textures)
+	float transparencyIndex;		// for transparent objects
+	float refractiveIndex;
+	float reflectiveIndex;
 
 	struct sVertex {
 		float x, y, z;
@@ -69,6 +72,7 @@ public:
 	bool bIsWireframe = false;
 	bool bIsVisible = true;
 	bool bIsCubeMap = false;
+	bool bIsTransparent = false;
 
 	glm::vec3 position, scale, rotation;
 

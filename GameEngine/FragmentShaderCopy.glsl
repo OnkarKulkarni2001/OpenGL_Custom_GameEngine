@@ -1,7 +1,7 @@
 // Fragment Shader source code
 const char* fragmentShaderSource = R"(
     #version 330 core
-    #define MAX_LIGHTS 10
+    #define MAX_LIGHTS 30
 
     struct sLights {
         vec3 position;      // position for point lights
@@ -26,6 +26,11 @@ const char* fragmentShaderSource = R"(
     
     uniform samplerCube cubeMap;
     uniform bool bUseCubeMap;
+
+    uniform bool bIsStensil;
+
+    uniform bool bIsTransparent;
+    uniform float transparencyIndex;
 
     uniform bool bUseTexture;
     uniform int numberOfTextures;
@@ -83,13 +88,27 @@ const char* fragmentShaderSource = R"(
        vec3 finalColor;
 
        for(int i = 0; i < numberOfTextures; i++) {
-            textureColor = texture(textureSamplers[i], FragUV);
-            finalColor += bUseTexture ? result * textureColor.rgb : result * FragCol;
+            if(bIsStensil) {
+                float stencilColour = texture( textureSamplers[i], FragUV ).r;
+		        if ( stencilColour < 0.5f )
+		        {
+			        discard;
+		        }
+            }
+            else {
+                textureColor = texture(textureSamplers[i], FragUV);
+                finalColor += bUseTexture ? result * textureColor.rgb : result * FragCol;
+            }
        }
 
        if(bUseCubeMap) {
             FragColor.rgb = texture(cubeMap, FragNormal.xyz).rgb;
             FragColor.a = 1.0f;
+            return;
+       }
+
+       if(bIsTransparent) {
+            FragColor = vec4(finalColor, transparencyIndex);
             return;
        }
 

@@ -241,7 +241,18 @@ void cTextureCreator::CreateCubeTextureFrom32BitBMP(std::string posX_filePath, s
 	int clearAnyErrors = glGetError(); // Clearing any old errors
 
 	glGenTextures(1, &cubeTextureID);		// this textureID is output param
+
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR) {
+		std::cerr << "OpenGL Error: " << error << std::endl;
+	}
+
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTextureID);
+
+	error = glGetError();
+	if (error != GL_NO_ERROR) {
+		std::cerr << "OpenGL Error: " << error << std::endl;
+	}
 
 	cBMPImage newCubePosXTexture(800, 800);
 	cBMPImage newCubeNegXTexture(800, 800);
@@ -250,33 +261,43 @@ void cTextureCreator::CreateCubeTextureFrom32BitBMP(std::string posX_filePath, s
 	cBMPImage newCubePosZTexture(800, 800);
 	cBMPImage newCubeNegZTexture(800, 800);
 
-	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
-
-	FillImage32Bit(&newCubePosXTexture);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 10, GL_RGBA, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight(), 0, GL_RGB, GL_FLOAT, this->p32BitImage);
-
-	FillImage32Bit(&newCubeNegXTexture);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 10, GL_RGBA, newCubeNegXTexture.GetImageWidth(), newCubeNegXTexture.GetImageHeight(), 0, GL_RGB, GL_FLOAT, this->p32BitImage);
-
-	FillImage32Bit(&newCubePosYTexture);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 10, GL_RGBA, newCubePosYTexture.GetImageWidth(), newCubePosYTexture.GetImageHeight(), 0, GL_RGB, GL_FLOAT, this->p32BitImage);
-
-	FillImage32Bit(&newCubeNegYTexture);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 10, GL_RGBA, newCubeNegYTexture.GetImageWidth(), newCubeNegYTexture.GetImageHeight(), 0, GL_RGB, GL_FLOAT, this->p32BitImage);
-
-	FillImage32Bit(&newCubePosZTexture);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 10, GL_RGBA, newCubePosZTexture.GetImageWidth(), newCubePosZTexture.GetImageHeight(), 0, GL_RGB, GL_FLOAT, this->p32BitImage);
-
-	FillImage32Bit(&newCubeNegZTexture);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 10, GL_RGBA, newCubeNegZTexture.GetImageWidth(), newCubeNegZTexture.GetImageHeight(), 0, GL_RGB, GL_FLOAT, this->p32BitImage);
-
-	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
-
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+
+	newCubePosXTexture.ReadBMP32Bit(posX_filePath.c_str());
+	FillImage32Bit(&newCubePosXTexture);
+	glTexStorage2D(GL_TEXTURE_CUBE_MAP, 10, GL_RGBA8, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight());
+	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, 0, 0, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight(), GL_RGB, GL_FLOAT, this->p32BitImage);
+
+	error = glGetError();
+	if (error != GL_NO_ERROR) {
+		std::cerr << "OpenGL Error: " << error << std::endl;
+	}
+
+	newCubeNegXTexture.ReadBMP32Bit(negX_filePath.c_str());
+	FillImage32Bit(&newCubeNegXTexture);
+	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, 0, 0, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight(), GL_RGB, GL_FLOAT, this->p32BitImage);
+
+	newCubePosYTexture.ReadBMP32Bit(posY_filePath.c_str());
+	FillImage32Bit(&newCubePosYTexture);
+	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, 0, 0, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight(), GL_RGB, GL_FLOAT, this->p32BitImage);
+
+	newCubeNegYTexture.ReadBMP32Bit(negY_filePath.c_str());
+	FillImage32Bit(&newCubeNegYTexture);
+	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, 0, 0, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight(), GL_RGB, GL_FLOAT, this->p32BitImage);
+
+	newCubePosZTexture.ReadBMP32Bit(posZ_filePath.c_str());
+	FillImage32Bit(&newCubePosZTexture);
+	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, 0, 0, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight(), GL_RGB, GL_FLOAT, this->p32BitImage);
+
+	newCubeNegZTexture.ReadBMP32Bit(negZ_filePath.c_str());
+	FillImage32Bit(&newCubeNegZTexture);
+	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, 0, 0, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight(), GL_RGB, GL_FLOAT, this->p32BitImage);
 }
 
 void cTextureCreator::LoadTextures32Bit(GLuint shaderProgram, cLoadModels& model, bool bUseTexture)

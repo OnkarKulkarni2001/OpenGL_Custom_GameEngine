@@ -15,9 +15,32 @@
 #include "cRenderModel.h"
 #include "cLua.h"
 #include "cTextureCreator.h"
+#include <sstream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
+}
+
+float getRandomFloat(float a, float b) {
+    float random = ((float)rand()) / (float)RAND_MAX;
+    float diff = b - a;
+    float r = random * diff;
+    return a + r;
+}
+
+glm::vec3 getRandom_vec3(glm::vec3 min, glm::vec3 max)
+{
+    return glm::vec3(
+        getRandomFloat(min.x, max.x),
+        getRandomFloat(min.y, max.y),
+        getRandomFloat(min.z, max.z));
+}
+
+std::string getStringVec3(glm::vec3 theVec3)
+{
+    std::stringstream ssVec;
+    ssVec << "(" << theVec3.x << ", " << theVec3.y << ", " << theVec3.z << ")";
+    return ssVec.str();
 }
 
 int main() {
@@ -74,7 +97,7 @@ int main() {
     cLightManager lightManager;
     lightManager.LoadLights("../lightsFile.txt");
     // Camera Initialization
-    FlyCam flyCam(800, 600, glm::vec3(0.0, 0.0, 0.0), 180.0f);
+    FlyCam flyCam(800, 600, glm::vec3(0.0, 0.0, 0.0), 90.0f);
     flyCam.camSpeed = 1.0f;
 
     cLightMover lightMover(lightManager, flyCam, 1);
@@ -99,10 +122,16 @@ int main() {
 
     // ------------------------------------------Texture---------------------------------------
 
+
+
     cTextureCreator textureCreator;
 
     for (int modelIndex = 0; modelIndex != scene.numberOfMeshesToLoad; modelIndex++) {
         if (scene.pModels[modelIndex].bIsCubeMap == false) {
+            if (modelIndex == 1) {
+                scene.pModels[1].transparencyIndex = 0.5f;
+                scene.pModels[1].bIsTransparent = true;
+            }
             textureCreator.LoadTextures24Bit(shaderProgram, scene.pModels[modelIndex], true);
         }
         else {
@@ -112,7 +141,10 @@ int main() {
                 scene.pModels[modelIndex].textureFilePaths[4], scene.pModels[modelIndex].textureFilePaths[5]);
         }
     }
-    
+
+    glEnable(GL_BLEND);                                 // For transparency
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     // ------------------------------------------Texture---------------------------------------
 
 
@@ -125,6 +157,31 @@ int main() {
     //lua.ExecuteLuaScript(state, "game_logic.lua");      // Need to implement this script game_logic.lua
 
     // -----------------------------------------------LUA----------------------------------------------
+
+
+    // ------------------------------Multiple Bunnies----------------------------------------------------
+    float boxLimit = 100.0f;
+    float boxStep = 20.0f;
+    unsigned int ID_count = 0;
+    for (float x = -boxLimit; x <= boxLimit; x += boxStep)
+    {
+        for (float z = -(2.0f * boxLimit); z <= boxLimit; z += boxStep)
+        {
+            cLoadModels* pBunny = new cLoadModels();
+            //            pBunny->modelFileName = "assets/models/bun_zipper_res2_10x_size_xyz_only.ply";
+            //            pBunny->modelFileName = "assets/models/bun_zipper_res2_10x_size_xyz_N_only.ply";
+            pBunny = &scene.pModels[1];
+            pBunny->pMeshTransform.x = x;
+            pBunny->pMeshTransform.y = 30.0f;
+            pBunny->pMeshTransform.z = z;
+
+            // Set some transparency
+            pBunny->transparencyIndex = getRandomFloat(0.25f, 1.0f);
+
+            scene.pModels.push_back(*pBunny);
+        }
+    }//for (float x = -boxLimit...
+    // ------------------------------Multiple Bunnies----------------------------------------------------
 
 
     // Render loop
