@@ -175,11 +175,11 @@ int main() {
             // Set some transparency
             pBunny->transparencyIndex = getRandomFloat(0.25f, 1.0f);
             pBunny->bIsTransparent = true;
+
             scene.pModels.push_back(*pBunny);
         }
     }//for (float x = -boxLimit...
     // ------------------------------Multiple Bunnies----------------------------------------------------
-
 
     // -----------------------------------------------LUA----------------------------------------------
     
@@ -242,16 +242,14 @@ int main() {
         //}
 
         // Cube map object position should go with camera (scene.pModels[2] is cubeMapObject)
-        if (scene.pModels[2].bIsCubeMap) {
-            scene.pModels[2].pMeshTransform.x = flyCam.camLocation.x;
-            scene.pModels[2].pMeshTransform.y = flyCam.camLocation.y;
-            scene.pModels[2].pMeshTransform.z = flyCam.camLocation.z;
+        for (int i = 0; i != scene.pModels.size(); i++) {
+            if (scene.pModels[i].bIsCubeMap) {
+                scene.pModels[i].pMeshTransform.x = flyCam.camLocation.x;
+                scene.pModels[i].pMeshTransform.y = flyCam.camLocation.y;
+                scene.pModels[i].pMeshTransform.z = flyCam.camLocation.z;
+            }
         }
-
-        std::cout << "ground texture: " << scene.pModels[0].textures[0] << " texture name: " << scene.pModels[0].textureFilePaths[0] << std::endl;
-
-        std::cout << "bunny 10 texture: " << scene.pModels[10].textures[0] << " texture name: " << scene.pModels[10].textureFilePaths[0] << std::endl;
-
+        
         for (int i = 0; i != scene.pModels.size()-1; i++) {
             if (scene.pModels[i].bIsWireframe) {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

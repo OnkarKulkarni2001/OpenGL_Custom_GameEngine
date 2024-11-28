@@ -4,7 +4,13 @@
 
 void cRenderModel::Render(GLuint shaderProgram, cLoadModels* model)
 {
+	glUniform1i(glGetUniformLocation(shaderProgram, "bIsReflective"), model->bIsReflective);
+	glUniform1i(glGetUniformLocation(shaderProgram, "bIsRefractive"), model->bIsRefractive);
 	glUniform1i(glGetUniformLocation(shaderProgram, "bIsCubeMap"), model->bIsCubeMap);
+
+	if (model->bIsRefractive) {
+		glUniform1f(glGetUniformLocation(shaderProgram, "refractiveIndex"), model->refractiveIndex);
+	}
 
 	for (int textureIndex = 0; textureIndex != model->numberOfTextures; textureIndex++) {		// Needed this otherwise every model will have same last loaded texture
 		if (!model->bIsCubeMap) {

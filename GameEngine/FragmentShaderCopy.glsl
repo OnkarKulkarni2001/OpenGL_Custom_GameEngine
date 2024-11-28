@@ -32,6 +32,11 @@ const char* fragmentShaderSource = R"(
     uniform bool bIsTransparent;
     uniform float transparencyIndex;
 
+    uniform bool bIsRefractive;
+    uniform float refractiveIndex;
+    uniform bool bIsReflective;
+    uniform float reflectiveIndex;
+
     uniform bool bIsCubeMap;
 
     uniform bool bUseTexture;
@@ -113,6 +118,29 @@ const char* fragmentShaderSource = R"(
        if(bIsTransparent) {
             FragColor = vec4(finalColor, transparencyIndex);
             return;
+       }
+
+       // Reflection and refraction
+	   vec3 eyeToVertexRay = normalize(camLocation.xyz - FragPos.xyz);
+       vec3 reflectRay;
+       vec3 reflectColour;
+       vec3 refractRay;
+       vec3 refractColour;
+
+       if(bIsReflective) {
+	        reflectRay = reflect(eyeToVertexRay, FragNormal.xyz);	
+	        reflectColour = texture( cubeMap, reflectRay.xyz ).rgb;
+            finalColor.rgb += reflectColour.rgb * 0.9;
+       }
+
+       if(bIsRefractive) {
+	        refractRay = refract(eyeToVertexRay, FragNormal.xyz, refractiveIndex);
+	        refractColour = texture(cubeMap, refractRay.xyz ).rgb;
+            finalColor.rgb += refractColour.rgb;
+       }
+
+       if(bIsReflective && bIsRefractive) {
+	        finalColor.rgb += reflectColour.rgb * reflectiveIndex + refractColour.rgb * (1.0 - reflectiveIndex);
        }
 
        FragColor = vec4(finalColor, 1.0);

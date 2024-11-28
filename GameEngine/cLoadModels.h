@@ -73,6 +73,8 @@ public:
 	bool bIsVisible = true;
 	bool bIsCubeMap = false;
 	bool bIsTransparent = false;
+	bool bIsRefractive = false;
+	bool bIsReflective = false;
 
 	glm::vec3 position, scale, rotation;
 
