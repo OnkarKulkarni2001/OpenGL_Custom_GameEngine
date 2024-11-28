@@ -97,8 +97,9 @@ int main() {
     cLightManager lightManager;
     lightManager.LoadLights("../lightsFile.txt");
     // Camera Initialization
-    FlyCam flyCam(800, 600, glm::vec3(0.0, 0.0, 0.0), 90.0f);
-    flyCam.camSpeed = 1.0f;
+    FlyCam flyCam(800, 600, glm::vec3(347.0, 174.0, -19.0), 180.0f);
+    flyCam.camSpeed = 10.0f;
+    flyCam.camPitch = -22.0f;
 
     cLightMover lightMover(lightManager, flyCam, 1);
 
@@ -120,18 +121,15 @@ int main() {
     
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+
+
+
     // ------------------------------------------Texture---------------------------------------
-
-
 
     cTextureCreator textureCreator;
 
     for (int modelIndex = 0; modelIndex != scene.numberOfMeshesToLoad; modelIndex++) {
         if (scene.pModels[modelIndex].bIsCubeMap == false) {
-            if (modelIndex == 1) {
-                scene.pModels[1].transparencyIndex = 0.5f;
-                scene.pModels[1].bIsTransparent = true;
-            }
             textureCreator.LoadTextures24Bit(shaderProgram, scene.pModels[modelIndex], true);
         }
         else {
@@ -139,6 +137,13 @@ int main() {
                 scene.pModels[modelIndex].textureFilePaths[0], scene.pModels[modelIndex].textureFilePaths[1],
                 scene.pModels[modelIndex].textureFilePaths[2], scene.pModels[modelIndex].textureFilePaths[3],
                 scene.pModels[modelIndex].textureFilePaths[4], scene.pModels[modelIndex].textureFilePaths[5]);
+            //textureCreator.LoadCubeMap24Bit(shaderProgram, true, scene.pModels[modelIndex].cubeMapTextureID,
+            //    "../assets/CubeMaps/TropicalSunnyDayUp2048.bmp",
+            //    "../assets/CubeMaps/TropicalSunnyDayBack2048.bmp",
+            //    "../assets/CubeMaps/TropicalSunnyDayDown2048.bmp",
+            //    "../assets/CubeMaps/TropicalSunnyDayFront2048.bmp",
+            //    "../assets/CubeMaps/TropicalSunnyDayLeft2048.bmp",
+            //    "../assets/CubeMaps/TropicalSunnyDayRight2048.bmp");
         }
     }
 
@@ -147,19 +152,7 @@ int main() {
 
     // ------------------------------------------Texture---------------------------------------
 
-
-
-    // -----------------------------------------------LUA----------------------------------------------
-    
-    cLua lua;
-    lua_State* state = luaL_newstate();
-    lua.InitLua(state);
-    //lua.ExecuteLuaScript(state, "game_logic.lua");      // Need to implement this script game_logic.lua
-
-    // -----------------------------------------------LUA----------------------------------------------
-
-
-    // ------------------------------Multiple Bunnies----------------------------------------------------
+        // ------------------------------Multiple Bunnies----------------------------------------------------
     float boxLimit = 100.0f;
     float boxStep = 20.0f;
     unsigned int ID_count = 0;
@@ -175,13 +168,27 @@ int main() {
             pBunny->pMeshTransform.y = 30.0f;
             pBunny->pMeshTransform.z = z;
 
+            pBunny->numberOfTextures = 1;
+            pBunny->textureFilePaths = scene.pModels[1].textureFilePaths;
+            pBunny->textures.resize(scene.pModels[1].numberOfTextures);
+            pBunny->textures = scene.pModels[1].textures;
             // Set some transparency
             pBunny->transparencyIndex = getRandomFloat(0.25f, 1.0f);
-
+            pBunny->bIsTransparent = true;
             scene.pModels.push_back(*pBunny);
         }
     }//for (float x = -boxLimit...
     // ------------------------------Multiple Bunnies----------------------------------------------------
+
+
+    // -----------------------------------------------LUA----------------------------------------------
+    
+    cLua lua;
+    lua_State* state = luaL_newstate();
+    lua.InitLua(state);
+    //lua.ExecuteLuaScript(state, "game_logic.lua");      // Need to implement this script game_logic.lua
+
+    // -----------------------------------------------LUA----------------------------------------------
 
 
     // Render loop
@@ -199,7 +206,7 @@ int main() {
         deltaTime = endTime - startTime;
         //std::cout << deltaTime << " Time passed" << std::endl;
         
-        flyCam.cameraMatrix(45.0f, 0.1f, 1000.0f, shaderProgram, "camMatrix", window);
+        flyCam.cameraMatrix(45.0f, 0.1f, 10000.0f, shaderProgram, "camMatrix", window);
 
         // Rendering commands here
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -234,7 +241,18 @@ int main() {
         //    offset += scene.pModels[index].numberOfVerticesToRender;
         //}
 
-        for (int i = 0; i != scene.pModels.size(); i++) {
+        // Cube map object position should go with camera (scene.pModels[2] is cubeMapObject)
+        if (scene.pModels[2].bIsCubeMap) {
+            scene.pModels[2].pMeshTransform.x = flyCam.camLocation.x;
+            scene.pModels[2].pMeshTransform.y = flyCam.camLocation.y;
+            scene.pModels[2].pMeshTransform.z = flyCam.camLocation.z;
+        }
+
+        std::cout << "ground texture: " << scene.pModels[0].textures[0] << " texture name: " << scene.pModels[0].textureFilePaths[0] << std::endl;
+
+        std::cout << "bunny 10 texture: " << scene.pModels[10].textures[0] << " texture name: " << scene.pModels[10].textureFilePaths[0] << std::endl;
+
+        for (int i = 0; i != scene.pModels.size()-1; i++) {
             if (scene.pModels[i].bIsWireframe) {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             }

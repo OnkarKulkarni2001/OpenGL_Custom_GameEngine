@@ -216,6 +216,8 @@ void cTextureCreator::CreateCubeTextureFrom24BitBMP(std::string posX_filePath, s
 	newCubeNegZTexture.ReadBMP24Bit(negZ_filePath.c_str());
 	FillImage24Bit(&newCubeNegZTexture);
 	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, 0, 0, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight(), GL_RGB, GL_FLOAT, this->p24BitImage);
+
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
 void cTextureCreator::LoadTextures24Bit(GLuint shaderProgram, cLoadModels& model, bool bUseTexture)
@@ -298,6 +300,8 @@ void cTextureCreator::CreateCubeTextureFrom32BitBMP(std::string posX_filePath, s
 	newCubeNegZTexture.ReadBMP32Bit(negZ_filePath.c_str());
 	FillImage32Bit(&newCubeNegZTexture);
 	glTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, 0, 0, newCubePosXTexture.GetImageWidth(), newCubePosXTexture.GetImageHeight(), GL_RGB, GL_FLOAT, this->p32BitImage);
+
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
 void cTextureCreator::LoadTextures32Bit(GLuint shaderProgram, cLoadModels& model, bool bUseTexture)
@@ -311,7 +315,7 @@ void cTextureCreator::LoadTextures32Bit(GLuint shaderProgram, cLoadModels& model
 		glUniform1i(glGetUniformLocation(shaderProgram, "diffuseTexture"), textureIndex);  // 0 is texture unit
 		glUniform1i(glGetUniformLocation(shaderProgram, "bUseTexture"), bUseTexture);     // 1 means bUseTexture is true
 	}
-	glUniform1i(glGetUniformLocation(shaderProgram, "numberOfTextures"), model.numberOfTextures);     // 1 means bUseTexture is true
+	glUniform1i(glGetUniformLocation(shaderProgram, "numberOfTextures"), model.numberOfTextures);
 }
 
 void cTextureCreator::LoadCubeMap24Bit(GLuint shaderProgram, bool bUseCubeMap, GLuint& cubeTextureID, std::string posX_filePath, std::string negX_filePath, std::string posY_filePath, std::string negY_filePath, std::string posZ_filePath, std::string negZ_filePath)
@@ -334,6 +338,6 @@ void cTextureCreator::LoadCubeMap32Bit(GLuint shaderProgram, bool bUseCubeMap, G
 
 	glActiveTexture(GL_TEXTURE0 + 40);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTextureID);
-	glUniform1i(glGetUniformLocation(shaderProgram, "cubeMap"), cubeTextureID);
+	glUniform1i(glGetUniformLocation(shaderProgram, "cubeMap"), 40);
 	glUniform1i(glGetUniformLocation(shaderProgram, "bUseCubeMap"), bUseCubeMap);     // 1 means bUseTexture is true
 }

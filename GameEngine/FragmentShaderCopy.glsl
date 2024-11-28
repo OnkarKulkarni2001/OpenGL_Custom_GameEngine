@@ -32,6 +32,8 @@ const char* fragmentShaderSource = R"(
     uniform bool bIsTransparent;
     uniform float transparencyIndex;
 
+    uniform bool bIsCubeMap;
+
     uniform bool bUseTexture;
     uniform int numberOfTextures;
     uniform sampler2D textureSamplers[192];    // Max number of texture units is 192
@@ -63,6 +65,7 @@ const char* fragmentShaderSource = R"(
         vec3 lightDir;
         vec3 norm = normalize(FragNormal);
         vec3 result = vec3(0.0);
+
 
         // Loop over all the lights
         for (int i = 0; i < numberOfLights; i++) {
@@ -101,10 +104,10 @@ const char* fragmentShaderSource = R"(
             }
        }
 
-       if(bUseCubeMap) {
-            FragColor.rgb = texture(cubeMap, FragNormal.xyz).rgb;
-            FragColor.a = 1.0f;
-            return;
+       if(bIsCubeMap) {
+           if(bUseCubeMap) {
+                finalColor = texture(cubeMap, FragNormal.xyz).rgb;
+           }
        }
 
        if(bIsTransparent) {

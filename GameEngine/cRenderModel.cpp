@@ -4,20 +4,23 @@
 
 void cRenderModel::Render(GLuint shaderProgram, cLoadModels* model)
 {
+	glUniform1i(glGetUniformLocation(shaderProgram, "bIsCubeMap"), model->bIsCubeMap);
+
 	for (int textureIndex = 0; textureIndex != model->numberOfTextures; textureIndex++) {		// Needed this otherwise every model will have same last loaded texture
 		if (!model->bIsCubeMap) {
 			if (model->bIsTransparent) {
-				glUniform1f(glGetUniformLocation(shaderProgram, "transparencyIndex"), model->transparencyIndex);
 				glUniform1i(glGetUniformLocation(shaderProgram, "bIsTransparent"), true);
+				glUniform1f(glGetUniformLocation(shaderProgram, "transparencyIndex"), model->transparencyIndex);
 			}
 			else {
 				glUniform1i(glGetUniformLocation(shaderProgram, "bIsTransparent"), false);
 			}
 			glBindTexture(GL_TEXTURE_2D, model->textures[textureIndex]);
 		}
-		else
+		else if (model->bIsCubeMap) {
 			glBindTexture(GL_TEXTURE_CUBE_MAP, model->cubeMapTextureID);
-	}		
+		}
+	}
 	glBindVertexArray(model->VAO_ID);
 
 	glm::mat4 modelMat = model->CreateModelMatrix(shaderProgram, *model);      // Creation of model matrix with arguements passed in sceneFile.txt
@@ -28,6 +31,13 @@ void cRenderModel::Render(GLuint shaderProgram, cLoadModels* model)
 
 	glDrawElements(GL_TRIANGLES, model->numberOfIndices, GL_UNSIGNED_INT, (void*)0);
 	glBindVertexArray(0);
+	//for (int textureIndex = 0; textureIndex != model->numberOfTextures; textureIndex++) {		// Needed this otherwise every model will have same last loaded texture
+	//	if (!model->bIsCubeMap) {
+	//		glBindTexture(GL_TEXTURE_2D, 0);
+	//	}
+	//	else
+	//		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	//}
 }
 
 void cRenderModel::DrawDebugSphere(cLoadModels* sphereModel, glm::vec3 position, glm::vec4 RGBA, float scale, GLuint shaderProgram)

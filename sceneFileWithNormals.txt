@@ -1,24 +1,31 @@
-number_of_meshes 2
+number_of_meshes 5
 
 mesh_paths 
-"..\assets\models\Warehouse_xyz_n_rgba_uv.ply" 1
+"..\assets\models\Flat_Plane_xyz_N__rgba_uv.ply" 1
 "..\assets\models\bun_zipper_res2_10x_size_xyz_N_RGBA_uv.ply" 1
+"..\assets\models\cubeMapObject.ply" 6
+"..\assets\models\Warehouse_xyz_n_rgba_uv.ply" 1
+"..\assets\models\Utah_Teapot_xyz_n_rgba_uv.ply" 1
 
 // meshTransform layout
 // x y z xScale yScale zScale xRotation yRotation zRotation
 // where rotations are angles.
 
 mesh_transforms
-0.0 0.0 0.0  1.0 1.0 1.0  0 0 0 
 0.0 0.0 0.0  10.0 10.0 10.0  0 0 0 
-0.0 0.0 0.0  1000.0 1000.0 1000.0  0 0 0 
+0.0 0.0 0.0  10.0 10.0 10.0  0 0 0 
+0.0 0.0 0.0  10000.0 10000.0 10000.0  0 0 0 
+0.0 0.0 0.0  10.0 10.0 10.0  0 0 0 
+0.0 -100.0 0.0  1.0 1.0 1.0  0 0 0 
 
 mesh_textures
-"D:\Graphics1\GameEngine\SpaceInteriors_Texture.bmp"
-"D:\Graphics1\GameEngine\dua-lipa-promo.bmp"
-"D:\Graphics1\GameEngine\assets\CubeMaps\SpaceBox_front5_posZ.bmp"
-"D:\Graphics1\GameEngine\assets\CubeMaps\SpaceBox_left2_negX.bmp"
-"D:\Graphics1\GameEngine\assets\CubeMaps\SpaceBox_right1_posX.bmp"
-"D:\Graphics1\GameEngine\assets\CubeMaps\SpaceBox_back6_negZ.bmp"
-"D:\Graphics1\GameEngine\assets\CubeMaps\SpaceBox_top3_posY.bmp"
-"D:\Graphics1\GameEngine\assets\CubeMaps\SpaceBox_bottom4_negY.bmp"
+"..\SpaceInteriors_Texture.bmp"
+"..\Texture_buildings1_256.bmp"
+"..\assets\CubeMaps\TropicalSunnyDayUp2048.bmp"
+"..\assets\CubeMaps\TropicalSunnyDayBack2048.bmp"
+"..\assets\CubeMaps\TropicalSunnyDayDown2048.bmp"
+"..\assets\CubeMaps\TropicalSunnyDayFront2048.bmp"
+"..\assets\CubeMaps\TropicalSunnyDayLeft2048.bmp"
+"..\assets\CubeMaps\TropicalSunnyDayRight2048.bmp"
+"..\SpaceInteriors_Texture.bmp"
+"..\Puzzle_parts.bmp"
