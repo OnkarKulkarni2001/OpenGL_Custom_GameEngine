@@ -1,0 +1,7 @@
+AddSerialCommand('New_Viper_Player',  50.0,   0.0, 0.0, 8.0)
+AddSerialCommand('New_Viper_Player',  50.0,   0.0, 25.0, 5.0)
+AddMeshToScene('assets/models/Cheese_xyz_n_uv.ply', 'theCheese', 10.0, 0.0, 10.0, 'Puzzle_parts.bmp', 1.0);
+AddSerialCommand('New_Viper_Player', -50.0,   0.0, 25.0, 15.0)
+AddSerialCommand('New_Viper_Player', -50.0,   0.0, 0.0, 2.0)
+AddMeshToScene('plyname.ply', 'UniqueName', x, y, z, 'texturename'
+~AddSerialCommand('theCheese', -50.0, 0.0, 0.0, 2.0)

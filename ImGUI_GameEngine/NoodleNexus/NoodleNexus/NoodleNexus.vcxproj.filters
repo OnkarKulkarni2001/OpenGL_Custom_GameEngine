@@ -1,0 +1,352 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Basic Shader Manager">
+      <UniqueIdentifier>{520673ef-3672-4d15-bb1b-adab8add79bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{b440479f-ec7e-48cc-9e27-1ee18139ccd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Meshes, etc.">
+      <UniqueIdentifier>{ddd01867-c616-4681-aa72-e7ff5b4b1098}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mouse, Keyboard, FlyCamera">
+      <UniqueIdentifier>{184a305d-7e4d-47ca-bfc6-6c2064ef481a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Global things">
+      <UniqueIdentifier>{78450d70-4cd5-41ff-ad02-690efd0d05be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Phsyics_Stuff">
+      <UniqueIdentifier>{b50e5ed1-0d30-423d-8675-9d288d42b19b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LIghts">
+      <UniqueIdentifier>{0479b598-aa46-49da-ac91-afc112109a35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderStuff">
+      <UniqueIdentifier>{9cdea607-512f-4c0a-9b61-159d8362c1d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TankGameFiles">
+      <UniqueIdentifier>{a25051bd-cb9f-411f-9376-465f7bf07f7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TankGameFiles\Weapons, etc.">
+      <UniqueIdentifier>{cbe55fce-e2c9-461c-ab1d-76ad87d122a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TankGameFiles\Cyclical_Depend">
+      <UniqueIdentifier>{6dc8aff9-71c0-4938-b1cc-b6aacc77d9c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Textures">
+      <UniqueIdentifier>{6d89f04c-612e-47be-bc69-8198f8d61d8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TankGameFiles\Mediator">
+      <UniqueIdentifier>{ae1ea03c-7722-4bbe-b4c6-8ea103529977}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands_Lua">
+      <UniqueIdentifier>{af26309b-2955-4be9-a898-42165798e9bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands_Lua\Lua_Brain">
+      <UniqueIdentifier>{6526b839-a309-4c96-9bee-ad15f01e8ec4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FBO">
+      <UniqueIdentifier>{6c221408-e8d3-455b-895a-e051c54c9323}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Containers_Tree">
+      <UniqueIdentifier>{badb2a26-89b4-4f5e-9de1-18cdc2a248db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Phsyics_Stuff\Verlet_SoftBody">
+      <UniqueIdentifier>{a98460ca-a653-49c3-82f5-4dcf01527014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IMGUI">
+      <UniqueIdentifier>{da5407ab-6196-4001-a1bf-7d74cb6fb27f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="theMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlyFileLoaders.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Basic_Shader_Manager\cShader.cpp">
+      <Filter>Basic Shader Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Basic_Shader_Manager\cShaderManager.cpp">
+      <Filter>Basic Shader Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="cVAOManager\cVAOManager.cpp">
+      <Filter>Meshes, etc.</Filter>
+    </ClCompile>
+    <ClCompile Include="cBasicFlyCamera\cBasicFlyCamera.cpp">
+      <Filter>Mouse, Keyboard, FlyCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="mouse_keyboard.cpp">
+      <Filter>Mouse, Keyboard, FlyCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="sharedThings.cpp">
+      <Filter>Global things</Filter>
+    </ClCompile>
+    <ClCompile Include="cPhysics.cpp">
+      <Filter>Phsyics_Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="cLightManager.cpp">
+      <Filter>LIghts</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderCall.cpp">
+      <Filter>RenderStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="cLightHelper\cLightHelper.cpp">
+      <Filter>LIghts</Filter>
+    </ClCompile>
+    <ClCompile Include="cSuperTank.cpp">
+      <Filter>TankGameFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="cTank.cpp">
+      <Filter>TankGameFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="cTankFactory.cpp">
+      <Filter>TankGameFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="cHoverTank.cpp">
+      <Filter>TankGameFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="cSheild.cpp">
+      <Filter>TankGameFiles\Weapons, etc.</Filter>
+    </ClCompile>
+    <ClCompile Include="cRailGun.cpp">
+      <Filter>TankGameFiles\Weapons, etc.</Filter>
+    </ClCompile>
+    <ClCompile Include="cJetPack.cpp">
+      <Filter>TankGameFiles\Weapons, etc.</Filter>
+    </ClCompile>
+    <ClCompile Include="cTankBuilder.cpp">
+      <Filter>TankGameFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="cMonster.cpp">
+      <Filter>TankGameFiles\Cyclical_Depend</Filter>
+    </ClCompile>
+    <ClCompile Include="cSword.cpp">
+      <Filter>TankGameFiles\Cyclical_Depend</Filter>
+    </ClCompile>
+    <ClCompile Include="cBasicTextureManager\C24BitBMPpixel.cpp">
+      <Filter>Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="cBasicTextureManager\cBasicTextureManager.cpp">
+      <Filter>Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="cBasicTextureManager\CTextureFromBMP.cpp">
+      <Filter>Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="cArena.cpp">
+      <Filter>TankGameFiles\Mediator</Filter>
+    </ClCompile>
+    <ClCompile Include="sMesh.cpp">
+      <Filter>Meshes, etc.</Filter>
+    </ClCompile>
+    <ClCompile Include="cPhysics_BroadPhase.cpp">
+      <Filter>Phsyics_Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="cLowPassFilter.cpp">
+      <Filter>Phsyics_Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="cFollowObject_A.cpp">
+      <Filter>Commands_Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="cMoveRelativeTime.cpp">
+      <Filter>Commands_Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="cCommandGroup.cpp">
+      <Filter>Commands_Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="cCommandFactory.cpp">
+      <Filter>Commands_Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="cLuaBrain\cLuaBrain.cpp">
+      <Filter>Commands_Lua\Lua_Brain</Filter>
+    </ClCompile>
+    <ClCompile Include="cVAOManager\cVAOManager_DynamicMesh.cpp">
+      <Filter>Meshes, etc.</Filter>
+    </ClCompile>
+    <ClCompile Include="cFBO\cFBO_RGB_depth.cpp">
+      <Filter>FBO</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderScene.cpp">
+      <Filter>RenderStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="AddModelsToScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cTerrainPathChooser.cpp">
+      <Filter>Containers_Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="cSoftBodyVerlet.cpp">
+      <Filter>Phsyics_Stuff\Verlet_SoftBody</Filter>
+    </ClCompile>
+    <ClCompile Include="cViperFlagConnector.cpp">
+      <Filter>Phsyics_Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="cPhysics_cSoftBody_Verlet.cpp">
+      <Filter>Phsyics_Stuff\Verlet_SoftBody</Filter>
+    </ClCompile>
+    <ClCompile Include="cPhysics_cSoftBody_Verlet_Threaded.cpp">
+      <Filter>Phsyics_Stuff\Verlet_SoftBody</Filter>
+    </ClCompile>
+    <ClCompile Include="cVAOManager\cVAOManager_Async_Loader.cpp">
+      <Filter>Meshes, etc.</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUIOwn.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_demo.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_draw.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_tables.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_widgets.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\backends\imgui_impl_glfw.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\backends\imgui_impl_opengl3.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PlyFileLoaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Basic_Shader_Manager\cShaderManager.h">
+      <Filter>Basic Shader Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="sMesh.h">
+      <Filter>Meshes, etc.</Filter>
+    </ClInclude>
+    <ClInclude Include="cVAOManager\cVAOManager.h">
+      <Filter>Meshes, etc.</Filter>
+    </ClInclude>
+    <ClInclude Include="cBasicFlyCamera\cBasicFlyCamera.h">
+      <Filter>Mouse, Keyboard, FlyCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="GLCommon.h">
+      <Filter>Global things</Filter>
+    </ClInclude>
+    <ClInclude Include="sharedThings.h">
+      <Filter>Global things</Filter>
+    </ClInclude>
+    <ClInclude Include="cPhysics.h">
+      <Filter>Phsyics_Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="cLightManager.h">
+      <Filter>LIghts</Filter>
+    </ClInclude>
+    <ClInclude Include="cLightHelper\cLightHelper.h">
+      <Filter>LIghts</Filter>
+    </ClInclude>
+    <ClInclude Include="cTank.h">
+      <Filter>TankGameFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="cSuperTank.h">
+      <Filter>TankGameFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="iTank.h">
+      <Filter>TankGameFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="cTankFactory.h">
+      <Filter>TankGameFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="cHoverTank.h">
+      <Filter>TankGameFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="cRailGun.h">
+      <Filter>TankGameFiles\Weapons, etc.</Filter>
+    </ClInclude>
+    <ClInclude Include="cJetPack.h">
+      <Filter>TankGameFiles\Weapons, etc.</Filter>
+    </ClInclude>
+    <ClInclude Include="cSheild.h">
+      <Filter>TankGameFiles\Weapons, etc.</Filter>
+    </ClInclude>
+    <ClInclude Include="cTankBuilder.h">
+      <Filter>TankGameFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="cMonster.h">
+      <Filter>TankGameFiles\Cyclical_Depend</Filter>
+    </ClInclude>
+    <ClInclude Include="cSword.h">
+      <Filter>TankGameFiles\Cyclical_Depend</Filter>
+    </ClInclude>
+    <ClInclude Include="cBasicTextureManager\C24BitBMPpixel.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="cBasicTextureManager\cBasicTextureManager.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="cBasicTextureManager\CTextureFromBMP.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="cArena.h">
+      <Filter>TankGameFiles\Mediator</Filter>
+    </ClInclude>
+    <ClInclude Include="iMessaging.h">
+      <Filter>TankGameFiles\Mediator</Filter>
+    </ClInclude>
+    <ClInclude Include="cLowPassFilter.h">
+      <Filter>Phsyics_Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="iCommand.h">
+      <Filter>Commands_Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="cMoveRelativeTime.h">
+      <Filter>Commands_Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="cFollowObject_A.h">
+      <Filter>Commands_Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="cCommandGroup.h">
+      <Filter>Commands_Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="cCommandFactory.h">
+      <Filter>Commands_Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="cLuaBrain\cLuaBrain.h">
+      <Filter>Commands_Lua\Lua_Brain</Filter>
+    </ClInclude>
+    <ClInclude Include="cFBO\cFBO_RGB_depth.h">
+      <Filter>FBO</Filter>
+    </ClInclude>
+    <ClInclude Include="cTerrainPathChooser.h">
+      <Filter>Containers_Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="cSoftBodyVerlet.h">
+      <Filter>Phsyics_Stuff\Verlet_SoftBody</Filter>
+    </ClInclude>
+    <ClInclude Include="cViperFlagConnector.h">
+      <Filter>Phsyics_Stuff</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\fragment01.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="assets\shaders\vertex01.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+c = 100
+for x=-100, 100, 25 do 
+	for y=-100, 100, 25 do
+		for z=-100, 100, 25 do
+			meshName = 'theCheese' .. tostring(c) 
+			c = c + 1
+			AddMeshToScene('assets/models/Cheese_xyz_n_uv.ply', meshName, x, y, z, 'Puzzle_parts.bmp', 1.0);
+		end
+	end
+end

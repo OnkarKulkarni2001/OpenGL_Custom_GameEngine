@@ -1,20 +1,20 @@
 #include "FlyCam.h"
 
 FlyCam::FlyCam(int camWidth, int camHeight, glm::vec3 camLocation, float yawAngle) {
-	this->camWidth = camWidth;
-	this->camHeight = camHeight;
-	this->camLocation = camLocation;
-	this->camYaw = yawAngle;
+    this->camWidth = camWidth;
+    this->camHeight = camHeight;
+    this->camLocation = camLocation;
+    this->camYaw = yawAngle;
 }
 
 void FlyCam::cameraMatrix(float FOVdeg, float nearPlane, float farPlane, GLuint shaderProgram, const char* uniform, GLFWwindow* window) {
-	glm::mat4 view = glm::lookAt(camLocation, camLocation + camForwardVector, camUpVector);
-	glm::mat4 projection = glm::perspective(glm::radians(FOVdeg), (float)camWidth / camHeight, nearPlane, farPlane);
-	// Send the camera matrix (view * projection) to the shader
-	GLuint uniformLocation = glGetUniformLocation(shaderProgram, uniform);
-	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(projection * view));
+    glm::mat4 view = glm::lookAt(camLocation, camLocation + camForwardVector, camUpVector);
+    glm::mat4 projection = glm::perspective(glm::radians(FOVdeg), (float)camWidth / camHeight, nearPlane, farPlane);
+    // Send the camera matrix (view * projection) to the shader
+    GLuint uniformLocation = glGetUniformLocation(shaderProgram, uniform);
+    glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(projection * view));
     glUniform3fv(glGetUniformLocation(shaderProgram, "camLocation"), 1, glm::value_ptr(camLocation));
-    
+
     if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS) {
         camControls(window);
     }
@@ -51,8 +51,8 @@ void FlyCam::camControls(GLFWwindow* window) {
         firstClick = false;
     }
 
-    float rotX = camSensi * (float)(mouseY - camHeight / 2) / camHeight;
-    float rotY = camSensi * (float)(mouseX - camWidth / 2) / camWidth;
+    float rotX = camSensi * (float)(mouseX - camWidth / 2) / camWidth;
+    float rotY = camSensi * (float)(mouseY - camHeight / 2) / camHeight;
 
     // Update pitch and yaw
     camPitch += rotY;

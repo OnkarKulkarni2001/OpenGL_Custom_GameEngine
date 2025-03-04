@@ -42,7 +42,7 @@ public:
 	bool firstClick = true;
 
 	float camSpeed = 0.1f;
-	float camSensi = 1.0f;
+	float camSensi = 10.0f;
 
 	float camYaw = 0.0f;
 	float camPitch = 0.0f;

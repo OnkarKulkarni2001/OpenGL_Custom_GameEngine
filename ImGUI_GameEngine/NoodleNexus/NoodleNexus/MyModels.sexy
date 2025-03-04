@@ -1,0 +1,8 @@
+Number_Of_Models: 3
+assets/models/Dragon 2.5Edited_xyz_only.ply
+pos: 1, 0, -10
+rot: 0, 0, 0 
+rgba: 1, 1, 0, 1
+scale: 0.5
+assets/models/VintageRacingCar_xyz_only.ply
+assets/models/Simple_MeshLab_terrain_xyz_only.ply

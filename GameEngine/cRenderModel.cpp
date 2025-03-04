@@ -8,6 +8,9 @@ void cRenderModel::Render(GLuint shaderProgram, cLoadModels* model)
 	glUniform1i(glGetUniformLocation(shaderProgram, "bIsRefractive"), model->bIsRefractive);
 	glUniform1i(glGetUniformLocation(shaderProgram, "bIsCubeMap"), model->bIsCubeMap);
 
+	if (model->bIsReflective) {
+		glUniform1f(glGetUniformLocation(shaderProgram, "reflectiveIndex"), model->reflectiveIndex);
+	}
 	if (model->bIsRefractive) {
 		glUniform1f(glGetUniformLocation(shaderProgram, "refractiveIndex"), model->refractiveIndex);
 	}

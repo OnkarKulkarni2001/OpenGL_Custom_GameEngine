@@ -181,6 +181,9 @@ int main() {
     }//for (float x = -boxLimit...
     // ------------------------------Multiple Bunnies----------------------------------------------------
 
+    scene.pModels[0].bIsReflective = true;
+    scene.pModels[0].reflectiveIndex = 1;
+
     // -----------------------------------------------LUA----------------------------------------------
     
     cLua lua;

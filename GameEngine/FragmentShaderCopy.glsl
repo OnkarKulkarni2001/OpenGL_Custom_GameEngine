@@ -130,7 +130,7 @@ const char* fragmentShaderSource = R"(
        if(bIsReflective) {
 	        reflectRay = reflect(eyeToVertexRay, FragNormal.xyz);	
 	        reflectColour = texture( cubeMap, reflectRay.xyz ).rgb;
-            finalColor.rgb += reflectColour.rgb * 0.9;
+            finalColor.rgb += reflectColour.rgb * reflectiveIndex;
        }
 
        if(bIsRefractive) {

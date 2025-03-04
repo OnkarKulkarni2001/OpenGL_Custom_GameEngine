@@ -74,7 +74,7 @@ void cTextureCreator::FillImage24Bit(cBMPImage* image24Bit)
 	p24BitImage = new sColor24Bit[image24Bit->GetImageWidth() * image24Bit->GetImageHeight() * 3];
 	for (int x = 0; x != image24Bit->GetImageWidth(); x++) {
 		for (int y = 0; y != image24Bit->GetImageHeight(); y++) {
-			p24BitImage[pixelCount] = image24Bit->GetColor24Bit(x, y);
+			p24BitImage[pixelCount] = image24Bit->GetColor24Bit(y, x);
 			pixelCount++;
 		}
 	}
@@ -86,7 +86,7 @@ void cTextureCreator::FillImage32Bit(cBMPImage* image32Bit)
 	p32BitImage = new sColor32Bit[image32Bit->GetImageWidth() * image32Bit->GetImageHeight() * 4];
 	for (int x = 0; x != image32Bit->GetImageWidth(); x++) {
 		for (int y = 0; y != image32Bit->GetImageHeight(); y++) {
-			p32BitImage[pixelCount] = image32Bit->GetColor32Bit(x, y);
+			p32BitImage[pixelCount] = image32Bit->GetColor32Bit(y, x);
 			pixelCount++;
 		}
 	}

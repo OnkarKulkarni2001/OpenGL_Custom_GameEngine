@@ -1,0 +1,2 @@
+A set of internal flags that affect how certain input/output operations are interpreted or generated.
+See member type fmtflags.
